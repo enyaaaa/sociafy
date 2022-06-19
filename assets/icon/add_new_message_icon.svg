@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31">
+  <g id="Group_43" transform="translate(-340 -53)">
+    <rect id="Rectangle_20" width="31" height="31" rx="10" transform="translate(340 53)" fill="#c4e4e8"/>
+    <path id="Icon_feather-message-circle" d="M19.591,11.626a7.026,7.026,0,0,1-.755,3.186,7.126,7.126,0,0,1-6.372,3.94A7.026,7.026,0,0,1,9.279,18L4.5,19.591l1.593-4.779a7.026,7.026,0,0,1-.755-3.186,7.126,7.126,0,0,1,3.94-6.372A7.026,7.026,0,0,1,12.465,4.5h.419a7.109,7.109,0,0,1,6.707,6.707Z" transform="translate(343.455 56.455)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <path id="Icon_ionic-ios-add" d="M15.616,12.07H12.953V9.406a.442.442,0,0,0-.883,0V12.07H9.406a.442.442,0,0,0,0,.883H12.07v2.663a.442.442,0,1,0,.883,0V12.953h2.663a.442.442,0,1,0,0-.883Z" transform="translate(342.989 55.989)" fill="#707070"/>
+  </g>
+</svg>
