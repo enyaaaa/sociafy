@@ -19,7 +19,8 @@ class AddPost extends StatefulWidget {
 
 class _AddPostState extends State<AddPost> {
 
-  final Key = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  final caption = TextEditingController();
 
   File? _pickedFile;
   bool loading = false;
@@ -30,7 +31,6 @@ class _AddPostState extends State<AddPost> {
   String userprofilePic = "assets/users/zendaya.jpg";
   DateTime timeAgo = DateTime.now();
   String? image;
-  String caption = "";
   String location = "";
   bool isliked = false;
   int likecount = 0;
@@ -98,11 +98,11 @@ class _AddPostState extends State<AddPost> {
       return;
     }
 
-    if (!Key.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter a caption'),));
-      return;
-    }
+    // if (!_formKey.currentState!.validate()) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text('Please enter a caption'),));
+    //   return;
+    // }
 
     print(caption);
     print(_pickedFile);
@@ -116,7 +116,7 @@ class _AddPostState extends State<AddPost> {
         userprofilePic: userprofilePic,
         timeAgo: timeAgo,
         image: image,
-        caption: caption,
+        caption: caption.text,
         location: location,
         isliked: isliked,
         likecount: likecount,
@@ -233,10 +233,11 @@ class _AddPostState extends State<AddPost> {
             )
         ),
         Form(
-          key: Key,
+          key: _formKey,
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: TextFormField(
+              controller: caption,
               decoration: InputDecoration(
                 hintText: "Write a caption",
                 border: InputBorder.none,
@@ -244,12 +245,11 @@ class _AddPostState extends State<AddPost> {
                     fontFamily: "Poppins"
                 ),
               ),
-              validator: (text){
-                if (text == null){
-                  return "Caption is empty";
+              validator: (caption) {
+                if (caption == null || caption.isEmpty) {
+                  return 'Caption is empty';
                 }
-                else
-                  return null;
+                return null;
               },
             ),
           ),

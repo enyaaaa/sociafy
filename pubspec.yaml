@@ -39,14 +39,12 @@ dependencies:
   path_provider:
   image_cropper:
   image_picker:
-  flutter_staggered_grid_view:
   flutter_image_compress:
   transparent_image:
   jiffy:
   faker:
   story_view:
   grouped_list:
-  cached_network_image:
   intl:
 
 
