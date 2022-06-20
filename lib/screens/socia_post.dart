@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/myMedia.dart';
-import 'package:sociafy/screens/view_post.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class socia extends StatelessWidget {
   const socia({Key? key}) : super(key: key);
@@ -70,13 +70,13 @@ class socia extends StatelessWidget {
                                             fontSize: 12
                                         ),
                                       ): SizedBox.shrink(),
-                                      // Text(
-                                      //   currentPost.timeAgo,
-                                      //   style: TextStyle(
-                                      //       fontFamily: "Poppins",
-                                      //       fontSize: 10
-                                      //   ),
-                                      // ),
+                                      Text(
+                                        timeago.format(currentPost.timeAgo),
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 10
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

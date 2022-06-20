@@ -1,170 +1,172 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/screens/view_post.dart';
-
-import '../models/post.dart';
+import 'package:sociafy/models/post.dart';
 
 class post_item extends StatelessWidget {
-  post_item({Key? key, required this.post,}) : super(key: key);
-
-  Post post;
+  const post_item({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
+    return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10.0),
-        decoration: BoxDecoration(
-            color: postItem,
-            borderRadius: BorderRadius.all(Radius.circular(20))
-        ),
-        child: Column(
-          children: [
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+        child: ListView.builder(
+            itemCount: posts.length,
+            itemBuilder: (BuildContext context, int index){
+              Posts userpost = posts[index];
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  decoration: BoxDecoration(
+                      color: postItem,
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                  child: Column(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Container(
-                          width: 45,
-                          height: 45,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: AssetImage(post.userprofilePic),
-                                fit: BoxFit.cover,
-                              )
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: Column(
+                      Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              post.username,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins",
-                                  fontSize: 13
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 16),
+                                  child: Container(
+                                    width: 45,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(
+                                          image: AssetImage(userpost.user.image),
+                                          fit: BoxFit.cover,
+                                        )
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10.0),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        userpost.user.username,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Poppins",
+                                            fontSize: 13
+                                        ),
+                                      ),
+                                      userpost.location != null
+                                          ? Text(userpost.location!,
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 12
+                                        ),
+                                      ): SizedBox.shrink(),
+                                      Text(
+                                        userpost.timeAgo,
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 10
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.more_vert),
+                                      color: primary,
+                                      onPressed: () => print('More'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            userpost.caption != null
+                                ? Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: Container(
+                                  child: ReadMoreText(userpost.caption!,
+                                    trimLines: 5,
+                                    textAlign: TextAlign.justify,
+                                    trimMode: TrimMode.Line,
+                                    trimCollapsedText: " Show More ",
+                                    trimExpandedText: " Show Less ",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      height: 2,
+                                      fontFamily: "Poppins",
+                                    ),
+                                  ),
+                                )
+                            ): Padding(padding: EdgeInsets.only(left: 10, right: 15)),
+                            Container(
+                              margin: EdgeInsets.only(left: 10, right: 10, top: 10 ,bottom: 0),
+                              width: double.infinity,
+                              height: 390.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: postbackground,
+                                    offset: Offset(0, 1),
+                                    blurRadius: 8.0,
+                                  ),
+                                ],
+                                image: DecorationImage(
+                                  image: AssetImage(userpost.image),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                            post.location != null
-                                ? Text(post.location!,
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 12
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () => print('Liked'),
+                                          icon: SvgPicture.asset(userpost.isliked ?"assets/icon/like_active_icon.svg" : "assets/icon/like_icon.svg" ,
+                                            width: 27,),
+                                        ),
+                                        Text("${userpost.likecount}"),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        InkWell(
+                                          onTap: (){}, child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text("${userpost.likecount}"),
+                                      ],
+                                    ),
+                                    IconButton(
+                                      onPressed: () => print('Saved'),
+                                      icon: SvgPicture.asset(userpost.isliked ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
+                                        width: 27,),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ): SizedBox.shrink(),
-                            Text(
-                              post.timeAgo,
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 10
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.more_vert),
-                            color: primary,
-                            onPressed: () => print('More'),
-                          ),
-                        ],
+                            )
+                          ]
                       ),
                     ],
                   ),
-                  post.caption != null
-                      ? Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Container(
-                      child: ReadMoreText(post.caption!,
-                        trimLines: 5,
-                        textAlign: TextAlign.justify,
-                        trimMode: TrimMode.Line,
-                        trimCollapsedText: " Show More ",
-                        trimExpandedText: " Show Less ",
-                        style: TextStyle(
-                          fontSize: 14,
-                          height: 2,
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                    )
-                  ): Padding(padding: EdgeInsets.only(left: 10, right: 15)),
-                  post.image != null
-                      ? Container(
-                    margin: EdgeInsets.only(left: 10, right: 10, top: 10 ,bottom: 0),
-                    width: double.infinity,
-                    height: 390.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: postbackground,
-                          offset: Offset(0, 1),
-                          blurRadius: 8.0,
-                        ),
-                      ],
-                      image: DecorationImage(
-                        image: AssetImage(post.image!),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ): Padding(padding: EdgeInsets.only(left: 10, right: 15, top: 5)),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () => print('Liked'),
-                                icon: SvgPicture.asset(post.isliked ?"assets/icon/like_active_icon.svg" : "assets/icon/like_icon.svg" ,
-                                  width: 27,),
-                              ),
-                              Text("${post.likecount}"),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              InkWell(
-                                onTap: (){
-                                  Navigator.of(context).push(ViewPost.route(post));
-                                }, child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("${post.likecount}"),
-                            ],
-                          ),
-                          IconButton(
-                            onPressed: () => print('Saved'),
-                            icon: SvgPicture.asset(post.isliked ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
-                              width: 27,),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ]
-            ),
-          ],
-        ),
+                ),
+              );
+            }
+        )
       ),
     );
   }

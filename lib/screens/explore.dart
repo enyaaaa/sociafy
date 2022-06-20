@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/explore.dart';
+import 'package:sociafy/widgets/search_item.dart';
 
 class Explore extends StatefulWidget {
 
@@ -23,37 +24,7 @@ class _ExploreState extends State<Explore> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            SafeArea(child: Row(
-              children: [
-                SizedBox(
-                  width: 15,
-                ),
-                Container(
-                  width: 360,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: background
-                  ),
-                  child: TextField(
-                    cursorColor: primary,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search",
-                        hintStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 14
-                        ),
-                        prefixIcon: Icon(Icons.search,color: primary,)
-                    ),
-                    style: TextStyle(
-                      color: primary,
-                      fontFamily: "poppins",
-                    ),
-                  ),
-                ),
-              ],
-            )),
+            search_item(),
             SizedBox(height: 15,),
             Padding(
               padding: const EdgeInsets.only(left: 20,right: 20),

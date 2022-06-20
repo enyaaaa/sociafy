@@ -1,119 +1,120 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/messages.dart';
-import 'package:sociafy/screens/chat.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+import '../screens/chat.dart';
 
 class message_item extends StatelessWidget {
-  message_item({Key? key, required this.message}) : super(key: key);
-
-  Messages message;
+  const message_item({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        Navigator.of(context).push(Chat.route(message));
-      },
-      child: Container(
-        height: 100,
-        decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-                  color: primary,
-                  width: 0.2,
-                )
-            )
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                      image: AssetImage(message.userprofilePic),
-                      fit: BoxFit.cover
+    return Expanded(
+        child: ListView.builder(
+            itemCount: chats.length,
+            itemBuilder: (BuildContext context, int index){
+              Messages chat = chats[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Chat(
+                        user: chat.sender,
+                      )
+                  ));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right:20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.only(
+                      top: 5,
+                      bottom: 5,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                child: Image.asset(
+                                    chat.sender.image,
+                                    fit: BoxFit.cover
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  chat.sender.username,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width*0.45,
+                                  child: Text(
+                                    chat.text,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontSize: 13,),),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              timeago.format(chat.datetime),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 9,
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            chat.unread? CircleAvatar(
+                              backgroundColor: iconbutton,
+                              radius: 10,
+                              child: Text("1", style: TextStyle(
+                                color: primary,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),),
+                            ): Container(),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: Text(message.username,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                        child: Text(message.message,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 10
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    message.dateMessage.toLowerCase(),
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: primary,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    width: 18,
-                    height: 18,
-                    decoration: BoxDecoration(
-                      color: iconbutton,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text('1',
-                          style:TextStyle(
-                            fontSize: 10,
-                            color: primary,
-                          )
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
+              );
+            }
         ),
-      ),
     );
   }
 }

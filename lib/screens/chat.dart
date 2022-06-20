@@ -1,189 +1,233 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/chatmessage.dart';
 import 'package:sociafy/models/messages.dart';
+import 'package:sociafy/models/user.dart';
 
 class Chat extends StatefulWidget {
-
-  static route(Messages data)=> MaterialPageRoute(
-    builder: (context)=> Chat(
-      message: data,
-    ),
-  );
-
-  Chat({Key? key, required this.message}) : super(key: key);
-
-  Messages message;
+  User user;
+  Chat({Key? key, required this.user}) : super(key: key);
 
   @override
   State<Chat> createState() => _ChatState();
 }
 
 class _ChatState extends State<Chat> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title:appBarTitle(
-          message: widget.message,
-        ),
-        actions: [
-          IconButton(
-            onPressed:(){
-            },
-            icon: SvgPicture.asset("assets/icon/voice_call_icon.svg"),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: IconButton(
-              onPressed:(){
-
-              },
-              icon: SvgPicture.asset("assets/icon/video_call_icon.svg"),
-            ),
-          )
-        ],
+      appBar: PreferredSize(
+        child: getAppBar(),
+        preferredSize: Size.fromHeight(60),
       ),
       body: getBody(),
     );
   }
 
+  Widget getAppBar(){
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                  image: AssetImage(widget.user.image),
+                  fit: BoxFit.cover
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.user.username,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: primary,
+                    ),
+                  ),
+                  Text(
+                    "Active",
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 10,
+                        color: textbutton
+                    ),
+                  )
+                ],
+              ),
+          ),
+        ],
+      ),
+      actions: [
+        IconButton(
+          onPressed:(){},
+          icon: SvgPicture.asset("assets/icon/voice_call_icon.svg"),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 10),
+          child: IconButton(
+            onPressed:(){},
+            icon: SvgPicture.asset("assets/icon/video_call_icon.svg"),
+          ),
+        )
+      ],
+    );
+  }
   Widget getBody(){
     return Column(
       children: [
         Expanded(
-          child: GroupedListView<Chatmessage, DateTime>(
-          padding: EdgeInsets.all(8),
-          reverse: true,
-          order: GroupedListOrder.DESC,
-          useStickyGroupSeparators: true,
-          floatingHeader: true,
-          elements: chatmessages,
-          groupBy: (chatmessage) => DateTime(
-            chatmessage.date.year,
-            chatmessage.date.month,
-            chatmessage.date.day,
-          ),
-          groupHeaderBuilder: (Chatmessage chatmessage) => SizedBox(
-            height: 40,
-            child: Center(
+          child: GroupedListView<Messages, DateTime>(
+            padding: EdgeInsets.all(8),
+            reverse: true,
+            order: GroupedListOrder.DESC,
+            useStickyGroupSeparators: true,
+            floatingHeader: true,
+            elements: messages,
+            groupBy: (message) => DateTime(
+              message.datetime.year,
+              message.datetime.month,
+              message.datetime.day,
+            ),
+            groupHeaderBuilder: (Messages message) => SizedBox(
+              height: 40,
+              child: Center(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  color: lightbackground,
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Text(
+                      DateFormat.yMMMd().format(message.datetime),
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: primary,
+                          fontFamily: "poppins"
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            itemBuilder: (context, Messages message) => Align(
+              alignment: message.isSentByMe
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
               child: Card(
-                color: primary,
+                color: message.isSentByMe ? background : iconbutton,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                elevation: 3,
                 child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Text(
-                    DateFormat.yMMMd().format(chatmessage.date),
-                    style: TextStyle(color: Colors.white),
+                  padding: EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        message.text,
+                        style: TextStyle(
+                            color: primary,
+                            fontFamily: "poppins"
+                        ),
+                      ),
+                      Text(
+                        DateFormat.jm().format(message.datetime),
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: primary,
+                            fontFamily: "poppins"
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
-          itemBuilder: (context, Chatmessage chatmessage) => Align(
-            alignment: chatmessage.isSentByMe
-                ? Alignment.centerRight
-                : Alignment.centerLeft,
-            child: Card(
-              elevation: 8,
-              child: Padding(
-                padding: EdgeInsets.all(12),
-                child: Text(chatmessage.text),
-              ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            height: 60,
+            decoration: BoxDecoration(
+              color: white,
+              borderRadius: BorderRadius.circular(20),
             ),
-          ),
-        ),),
-        TextField(
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(12),
-              hintText: "Type your message here...",
-              hintStyle: TextStyle(
-                  color: primary,
-                  fontFamily: "poppins"
-              ),
-              border: InputBorder.none
-          ),
-          onSubmitted: (text){
-            final chatmessage = Chatmessage(
-                text: text,
-                date: DateTime.now(),
-                isSentByMe: true
-            );
-            setState(() => chatmessages.add(chatmessage));
-          },
-        ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: FloatingActionButton(
-            onPressed: (){},
-            child: Icon(Icons.send, color: white,),
-            backgroundColor: iconbutton,
-            elevation: 0,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class appBarTitle extends StatelessWidget {
-  appBarTitle({Key? key, required this.message}) : super(key: key);
-
-  Messages message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-                image: AssetImage(message.userprofilePic),
-                fit: BoxFit.cover
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 15,
-        ),
-        Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text(
-                  message.username,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: primary,
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(12),
+                        hintText: "Type your message here...",
+                        hintStyle: TextStyle(
+                            color: primary,
+                            fontFamily: "poppins"
+                        ),
+                        border: InputBorder.none
+                    ),
+                    style: TextStyle(
+                      color: primary,
+                      fontFamily: "poppins",
+                    ),
+                    onSubmitted: (text){
+                      final message = Messages(
+                          sender: currentUser,
+                          text: text,
+                          datetime: DateTime.now(),
+                          unread: true,
+                          isSentByMe: true
+                      );
+                      setState(() => messages.add(message));
+                    },
                   ),
                 ),
-                Text(
-                  "Active",
-                  style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 10,
-                      color: textbutton
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: iconbutton,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: IconButton(
+                      onPressed: (){},
+                      icon: Icon(
+                        Icons.near_me,
+                        size: 25,
+                        color: primary,
+                      ),
+                    ),
                   ),
                 )
               ],
-            )
-        ),
+            ),
+          ),
+        )
       ],
     );
   }
 }
-
-

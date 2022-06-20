@@ -41,9 +41,8 @@ dependencies:
   image_picker:
   flutter_image_compress:
   transparent_image:
-  jiffy:
-  faker:
   story_view:
+  timeago:
   grouped_list:
   intl:
 

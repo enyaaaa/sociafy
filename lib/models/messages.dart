@@ -1,51 +1,75 @@
 import 'dart:math';
 
+import 'package:sociafy/models/user.dart';
+
 class Messages {
-  String username;
-  String userprofilePic;
-  DateTime messageDate;
-  String dateMessage;
-  String message;
+  User sender;
+  DateTime datetime;
+  String text;
+  bool unread;
+  bool isSentByMe;
 
   Messages({
-    required this.username,
-    required this.userprofilePic,
-    required this.messageDate,
-    required this.dateMessage,
-    required this.message,
+    required this.sender,
+    required this.datetime,
+    required this.text,
+    required this.unread,
+    required this.isSentByMe
   });
 }
 
-List<Messages> messages = [
+
+List<Messages> chats = [
   Messages(
-    username: "corbynbesson",
-    userprofilePic: "assets/users/corbynbesson.jpg",
-    messageDate: DateTime.now(),
-    message: "",
-    dateMessage: "",
+    sender: corbynbesson,
+    datetime: DateTime.now().subtract(Duration(minutes: 10)),
+    text: "hello!",
+    unread: true,
+    isSentByMe: false,
   ),
   Messages(
-    username: "haileybieber",
-    userprofilePic: "assets/users/haileybieber.jpg",
-    messageDate: DateTime.now(),
-    message: "",
-    dateMessage: "",
+    sender: harrystyles,
+    datetime: DateTime.now().subtract(Duration(hours: 5)),
+    text: "hello!",
+    unread: true,
+    isSentByMe: false,
   ),
   Messages(
-    username: "tomholland2013",
-    userprofilePic: "assets/users/tomholland2013.jpg",
-    messageDate: DateTime.now(),
-    message: "",
-    dateMessage: "",
+    sender: oliviarodrigo,
+    datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+    text: "hello!",
+    unread: false,
+    isSentByMe: false,
   ),
 ];
 
-class Helpers{
-  static final random = Random();
-
-  static DateTime randomDate(){
-    final random = Random();
-    final currentDate = DateTime.now();
-    return currentDate.subtract(Duration(seconds: random.nextInt(200000)));
-  }
-}
+List<Messages> messages = [
+  Messages(
+    sender: corbynbesson,
+    datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+    text: "whatsup",
+    unread: true,
+    isSentByMe: false,
+  ),
+  Messages(
+    sender: corbynbesson,
+    datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+    text: "i am so happy",
+    unread: true,
+    isSentByMe: true,
+  ),
+  Messages(
+    sender: currentUser,
+    datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+    text: "what you doing",
+    unread: true,
+    isSentByMe: false,
+  ),
+  Messages(
+    sender: oliviarodrigo,
+    datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+    text: "woo hoo",
+    unread: true,
+    isSentByMe: true,
+  ),
+];

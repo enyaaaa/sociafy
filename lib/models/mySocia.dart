@@ -27,19 +27,7 @@ class mySocia{
 }
 
 class mySociaList with ChangeNotifier{
-  List<mySocia> mySocias = [
-    mySocia(
-        username: "zendaya",
-        userprofilePic: "assets/users/zendaya.jpg",
-        timeAgo: DateTime.now(),
-        image: "assets/post/zendaya_post.jpg",
-        caption: "caption",
-        location: "location",
-        isliked: false,
-        likecount: 0,
-        commentcount: 0,
-        likedby: null)
-  ];
+  List<mySocia> mySocias = [];
 
   List<mySocia> getmyPostList(){
     return mySocias;

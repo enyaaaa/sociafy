@@ -1,34 +1,18 @@
+import 'package:sociafy/models/user.dart';
+
 class Stories{
-  String image;
-  String username;
+  User user;
 
   Stories ({
-    required this.image,
-    required this.username,
+    required this.user,
   });
 }
 
 List<Stories> stories = [
-
-  Stories(
-      image: 'assets/users/seaveydaniel.jpg',
-      username: 'seaveydaniel'
-  ),
-  Stories(
-      image: 'assets/users/haileybieber.jpg',
-      username: 'haileybieber'
-  ),
-  Stories(
-      image: 'assets/users/oliviarodrigo.jpg',
-      username: 'oliviarodrigo'
-  ),
-  Stories(
-      image: 'assets/users/harrystyles.jpg',
-      username: 'harrystyles'
-  ),
-  Stories(
-      image: 'assets/users/blakelively.jpg',
-      username: 'blakelively'
-  ),
-
+  Stories( user: currentUser ),
+  Stories( user: seaveydaniel ),
+  Stories( user: haileybieber ),
+  Stories( user: oliviarodrigo ),
+  Stories( user: harrystyles ),
+  Stories( user: blakelively ),
 ];

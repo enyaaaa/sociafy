@@ -98,12 +98,6 @@ class _AddPostState extends State<AddPost> {
       return;
     }
 
-    // if (!_formKey.currentState!.validate()) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(content: Text('Please enter a caption'),));
-    //   return;
-    // }
-
     print(caption);
     print(_pickedFile);
 

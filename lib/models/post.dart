@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sociafy/models/user.dart';
 
-class Post{
-  String username;
-  String userprofilePic;
+class Posts{
+  User user;
   String timeAgo;
-  String? image;
+  String image;
   String? caption;
   String? location;
   var isliked;
@@ -13,11 +13,10 @@ class Post{
   String? likedby;
   var issaved;
 
-  Post({
-    required this.username,
-    required this.userprofilePic,
+  Posts({
+    required this.user,
     required this.timeAgo,
-    this.image,
+    required this.image,
     this.caption,
     this.location,
     this.isliked,
@@ -28,23 +27,9 @@ class Post{
   });
 }
 
-List<Post> posts = [
-  Post(
-    username: "tomholland2013",
-    userprofilePic: "assets/users/tomholland2013.jpg",
-    timeAgo: "3 mins",
-    image: null,
-    caption: "Amazing weekend having the family come out and surprise me. If you want to come out to LA for the Spiderman Far from home premier head to the link in my bio. I hope it’s your lucky day.",
-    location: null,
-    isliked: false,
-    likecount: 0,
-    commentcount: 0,
-    likedby: null,
-    issaved: false,
-  ),
-  Post(
-    username: "corbynbesson",
-    userprofilePic: "assets/users/corbynbesson.jpg",
+List<Posts> posts = [
+  Posts(
+    user: corbynbesson,
     timeAgo: "10 min",
     image: "assets/post/corbynbesson_post.jpg",
     caption: "I'm flying",
@@ -55,10 +40,9 @@ List<Post> posts = [
     likedby: null,
     issaved: false,
   ),
-  Post(
-    username: "seaveydaniel",
-    userprofilePic: "assets/users/seaveydaniel.jpg",
-    timeAgo: "10 min",
+  Posts(
+    user: seaveydaniel,
+    timeAgo: "2h",
     image: "assets/post/seaveydaniel_post.jpg",
     caption: null,
     location: "californa",

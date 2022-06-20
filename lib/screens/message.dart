@@ -1,12 +1,11 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/messages.dart';
 import 'package:sociafy/models/user.dart';
 import 'package:sociafy/widgets/drawer.dart';
 import 'package:sociafy/widgets/message_item.dart';
+import 'package:sociafy/widgets/search_item.dart';
 
 class Message extends StatelessWidget {
 
@@ -62,57 +61,11 @@ class Message extends StatelessWidget {
     );
   }
   Widget getBody(){
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        children: [
-          SafeArea(child: Row(
-            children: [
-              SizedBox(
-                width: 15,
-              ),
-              Container(
-                width: 360,
-                height: 40,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: background
-                ),
-                child: TextField(
-                  cursorColor: primary,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Search direct message",
-                      hintStyle: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 14
-                      ),
-                      prefixIcon: Icon(Icons.search,color: primary,)
-                  ),
-                  style: TextStyle(
-                    color: primary,
-                    fontFamily: "poppins",
-                  ),
-                ),
-              ),
-            ],
-          )),
-          Column(children: List.generate(messages.length, (index){
-            final Faker faker = Faker();
-            final date = Helpers.randomDate();
-            return message_item(
-              message: Messages(
-                username: messages[index].username,
-                userprofilePic: messages[index].userprofilePic,
-                message: faker.lorem.sentence(),
-                messageDate: date,
-                dateMessage: Jiffy(date).fromNow(),
-              ),
-            );
-          })
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        search_item(),
+        message_item(),
+      ],
     );
   }
 }
