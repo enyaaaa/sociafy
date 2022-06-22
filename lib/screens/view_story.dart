@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:story_view/story_view.dart';
 
-
 class ViewStory extends StatelessWidget {
   final StoryController controller = StoryController();
 

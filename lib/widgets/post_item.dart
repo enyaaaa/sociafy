@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/post.dart';
+import 'package:sociafy/providers/data.dart';
+import 'package:sociafy/screens/view_post.dart';
 
 class post_item extends StatelessWidget {
   const post_item({Key? key}) : super(key: key);
@@ -125,7 +127,7 @@ class post_item extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: EdgeInsets.only(left: 10, top: 10),
                               child: Container(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,12 +144,16 @@ class post_item extends StatelessWidget {
                                           width: 20,
                                         ),
                                         InkWell(
-                                          onTap: (){}, child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
+                                          onTap: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => ViewPost(post: userpost)),
+                                          );}, child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
                                         ),
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Text("${userpost.likecount}"),
+                                        Text("${userpost.likecount}",),
                                       ],
                                     ),
                                     IconButton(

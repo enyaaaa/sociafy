@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/user.dart';
-import 'package:sociafy/screens/add_post.dart';
+import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/media_post.dart';
 import 'package:sociafy/screens/socia_post.dart';
 
@@ -32,17 +31,18 @@ class _ProfileState extends State<Profile> {
       elevation: 0,
       title: Text(currentUser.username,
         style: TextStyle(
-            color: primary,
-            fontFamily: "Poppins",
-            fontSize: 15
+          color: primary,
+          fontFamily: "Poppins",
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
         ),
       ),
       actions: [
         IconButton(
           onPressed:(){
-            Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddPost()),
-            );
+            // Navigator.push(context,
+            //   MaterialPageRoute(builder: (context) => AddPost()),
+            // );
           },
           icon: Icon(Icons.qr_code_2_rounded, color: primary,),
         ),

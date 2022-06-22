@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/stories.dart';
-import 'package:sociafy/models/user.dart';
+import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/view_story.dart';
 
 class story_item extends StatefulWidget {

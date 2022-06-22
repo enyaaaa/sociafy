@@ -1,14 +1,14 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:sociafy/models/myMedia.dart';
+import 'package:sociafy/models/myPost.dart';
 import 'package:sociafy/screens/profile.dart';
 
 class AddPost extends StatefulWidget {
@@ -18,6 +18,19 @@ class AddPost extends StatefulWidget {
 }
 
 class _AddPostState extends State<AddPost> {
+  SharedPreferences? prefs;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   loadSharedPref();
+  // }
+  // void loadSharedPref() async {
+  //   prefs = await SharedPreferences.getInstance();
+  //
+  //   if (prefs!.containsKey('post'))
+  //     postImage(prefs!.getBool('post'));
+  // }
 
   final _formKey = GlobalKey<FormState>();
   final caption = TextEditingController();
@@ -31,7 +44,7 @@ class _AddPostState extends State<AddPost> {
   String userprofilePic = "assets/users/zendaya.jpg";
   DateTime timeAgo = DateTime.now();
   String? image;
-  String location = "";
+  String? location = null;
   bool isliked = false;
   int likecount = 0;
   int commentcount = 0;
@@ -104,6 +117,7 @@ class _AddPostState extends State<AddPost> {
     _setLoading(true);
 
     final image = _pickedFile!.path;
+    prefs!.setString("post", image);
 
     context.read<myPostList>().addPost(myPost(
         username: username,

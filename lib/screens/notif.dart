@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/user.dart';
+import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/widgets/drawer.dart';
 
 class Notif extends StatelessWidget {

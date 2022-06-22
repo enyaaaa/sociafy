@@ -5,8 +5,8 @@ class myPost{
   String userprofilePic;
   DateTime timeAgo;
   String image;
-  String caption;
-  String location;
+  String? caption;
+  String? location;
   var isliked;
   int likecount;
   int commentcount;
@@ -27,6 +27,7 @@ class myPost{
 class myPostList with ChangeNotifier{
   List<myPost> myPosts = [];
 
+
   List<myPost> getmyPostList(){
     return myPosts;
   }
@@ -39,6 +40,4 @@ class myPostList with ChangeNotifier{
     myPosts.removeAt(i);
     notifyListeners();
   }
-
-
 }

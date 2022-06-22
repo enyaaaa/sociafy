@@ -1,45 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:sociafy/color/colors.dart';
 
-class search_item extends StatelessWidget {
-  const search_item({Key? key}) : super(key: key);
+class search_item extends StatefulWidget {
+  final String text;
+  final ValueChanged<String> onChanged;
+  final String hintText;
+
+  const search_item({
+    Key? key,
+    required this.text,
+    required this.onChanged,
+    required this.hintText
+  }) : super(key: key);
+
+  @override
+  State<search_item> createState() => _search_itemState();
+}
+
+class _search_itemState extends State<search_item> {
+
+  final controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SafeArea(child: Row(
-          children: [
-            SizedBox(
-              width: 15,
-            ),
-            Container(
-              width: 360,
-              height: 40,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: background
-              ),
-              child: TextField(
-                cursorColor: primary,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Search",
-                    hintStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 14
-                    ),
-                    prefixIcon: Icon(Icons.search,color: primary,)
-                ),
-                style: TextStyle(
-                  color: primary,
-                  fontFamily: "poppins",
-                ),
-              ),
-            ),
-          ],
-        )),
-      ],
+    final styleActive = TextStyle(color: primary, fontFamily: "Poppins",fontSize: 14);
+    final styleHint = TextStyle(color: primary, fontFamily: "Poppins",fontSize: 14);
+    final style = widget.text.isEmpty ? styleHint: styleActive;
+    return Container(
+      height: 40,
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: background,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          icon: Icon(Icons.search, color: primary),
+          suffixIcon: widget.text.isNotEmpty
+              ? GestureDetector(
+                  child: Icon(Icons.close, color: primary),
+                  onTap: () {
+                    controller.clear();
+                    widget.onChanged('');
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                )
+              : null,
+          hintText: widget.hintText,
+          hintStyle: style,
+          border: InputBorder.none,
+        ),
+        style: style,
+        onChanged: widget.onChanged,
+      ),
     );
   }
 }

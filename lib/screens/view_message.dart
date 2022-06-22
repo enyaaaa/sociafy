@@ -5,16 +5,17 @@ import 'package:intl/intl.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/messages.dart';
 import 'package:sociafy/models/user.dart';
+import 'package:sociafy/providers/data.dart';
 
-class Chat extends StatefulWidget {
+class ViewMessage extends StatefulWidget {
   User user;
-  Chat({Key? key, required this.user}) : super(key: key);
+  ViewMessage({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<Chat> createState() => _ChatState();
+  State<ViewMessage> createState() => _ViewMessageState();
 }
 
-class _ChatState extends State<Chat> {
+class _ViewMessageState extends State<ViewMessage> {
 
   @override
   Widget build(BuildContext context) {
@@ -49,30 +50,30 @@ class _ChatState extends State<Chat> {
             width: 15,
           ),
           Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.user.username,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: primary,
-                    ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.user.username,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: primary,
                   ),
-                  Text(
-                    "Active",
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 10,
-                        color: textbutton
-                    ),
-                  )
-                ],
-              ),
+                ),
+                Text(
+                  "Active",
+                  style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 10,
+                      color: textbutton
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -107,7 +108,7 @@ class _ChatState extends State<Chat> {
               message.datetime.month,
               message.datetime.day,
             ),
-            groupHeaderBuilder: (Messages message) => SizedBox(
+            groupHeaderBuilder: (Messages messages) => SizedBox(
               height: 40,
               child: Center(
                 child: Card(
@@ -118,7 +119,7 @@ class _ChatState extends State<Chat> {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: Text(
-                      DateFormat.yMMMd().format(message.datetime),
+                      DateFormat.yMMMd().format(messages.datetime),
                       style: TextStyle(
                           fontSize: 10,
                           color: primary,
@@ -129,12 +130,12 @@ class _ChatState extends State<Chat> {
                 ),
               ),
             ),
-            itemBuilder: (context, Messages message) => Align(
-              alignment: message.isSentByMe
+            itemBuilder: (context, Messages messages) => Align(
+              alignment: messages.isSentByMe
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
               child: Card(
-                color: message.isSentByMe ? background : iconbutton,
+                color: messages.isSentByMe ? background : iconbutton,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -145,14 +146,14 @@ class _ChatState extends State<Chat> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        message.text,
+                        messages.text,
                         style: TextStyle(
                             color: primary,
                             fontFamily: "poppins"
                         ),
                       ),
                       Text(
-                        DateFormat.jm().format(message.datetime),
+                        DateFormat.jm().format(messages.datetime),
                         style: TextStyle(
                             fontSize: 10,
                             color: primary,
@@ -193,14 +194,14 @@ class _ChatState extends State<Chat> {
                       fontFamily: "poppins",
                     ),
                     onSubmitted: (text){
-                      final message = Messages(
-                          sender: currentUser,
-                          text: text,
-                          datetime: DateTime.now(),
-                          unread: true,
-                          isSentByMe: true
-                      );
-                      setState(() => messages.add(message));
+                        final message = Messages(
+                            sender: currentUser,
+                            text: text,
+                            datetime: DateTime.now(),
+                            unread: true,
+                            isSentByMe: true,
+                        );
+                        setState(() => messages.add(message));
                     },
                   ),
                 ),
@@ -210,8 +211,8 @@ class _ChatState extends State<Chat> {
                     height: 40,
                     width: 40,
                     decoration: BoxDecoration(
-                      color: iconbutton,
-                      borderRadius: BorderRadius.circular(10)
+                        color: iconbutton,
+                        borderRadius: BorderRadius.circular(10)
                     ),
                     child: IconButton(
                       onPressed: (){},

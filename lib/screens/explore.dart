@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/explore.dart';
+import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/widgets/search_item.dart';
 
 class Explore extends StatefulWidget {
@@ -11,21 +11,49 @@ class Explore extends StatefulWidget {
 }
 
 class _ExploreState extends State<Explore> {
+  String query = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        child: getAppBar(),
+        preferredSize: Size.fromHeight(60),
+      ),
       body: getBody(),
     );
   }
-
+  Widget getAppBar(){
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      title: buildSearch()
+    );
+  }
+  Widget buildSearch() => search_item(
+      text: query,
+      onChanged: searchExplore,
+      hintText: "Search"
+  );
+  void searchExplore(String query){
+    // final friend = friends.where((userfriends){
+    //   final titleLower = userfriends.user.username.toLowerCase();
+    //   final searchLower = query.toLowerCase();
+    //
+    //   return titleLower.contains(searchLower);
+    // }).toList();
+    //
+    // setState(() {
+    //   this.query = query;
+    //   this.friend = friend;
+    // });
+  }
   Widget getBody(){
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            search_item(),
-            SizedBox(height: 15,),
             Padding(
               padding: const EdgeInsets.only(left: 20,right: 20),
               child: SingleChildScrollView(

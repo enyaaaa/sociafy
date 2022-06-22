@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/user.dart';
+import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/add_post.dart';
 import 'package:sociafy/screens/search.dart';
 import 'package:sociafy/widgets/drawer.dart';

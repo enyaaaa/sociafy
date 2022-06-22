@@ -45,6 +45,7 @@ dependencies:
   timeago:
   grouped_list:
   intl:
+  shared_preferences:
 
 
 dev_dependencies:

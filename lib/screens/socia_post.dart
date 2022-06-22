@@ -5,23 +5,51 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/myMedia.dart';
+import 'package:sociafy/models/myPost.dart';
+import 'package:sociafy/providers/data.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class socia extends StatelessWidget {
+class socia extends StatefulWidget {
   const socia({Key? key}) : super(key: key);
+
+  @override
+  State<socia> createState() => _sociaState();
+}
+
+class _sociaState extends State<socia> {
 
   @override
   Widget build(BuildContext context) {
     myPostList myPosts = Provider.of<myPostList>(context);
 
-    return Scaffold(
-      body: ListView.builder(
-          itemCount: myPosts.getmyPostList().length,
-          itemBuilder: (ctx, i){
-            myPost currentPost = myPosts.getmyPostList()[i];
-            return Container(
-              child: Padding(
+    void removePhoto(i){
+      showDialog<Null>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Confirmation'),
+              content: Text('Are you sure you want to delete?'),
+              actions: [
+                TextButton(onPressed: (){
+                  setState(() {
+                    myPosts.getmyPostList().removeAt(i);
+                  });
+                  Navigator.of(context).pop();
+                }, child: Text('Yes')),
+                TextButton(onPressed: (){
+                  Navigator.of(context).pop();
+                }, child: Text('No')),
+              ],
+            );
+          });
+    }
+
+    return  Container(
+        child: myPosts.getmyPostList().length > 0 ? ListView.builder(
+            itemCount: myPosts.getmyPostList().length,
+            itemBuilder: (ctx, i){
+              myPost mypost = myPosts.getmyPostList()[i];
+              return Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -34,70 +62,113 @@ class socia extends StatelessWidget {
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 16),
-                                  child: Container(
-                                    width: 45,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                          image: AssetImage(currentPost.userprofilePic),
-                                          fit: BoxFit.cover,
-                                        )
+                            Padding(
+                              padding: const EdgeInsets.only(right: 16),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 16),
+                                    child: Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            image: AssetImage(currentUser.image),
+                                            fit: BoxFit.cover,
+                                          )
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: 10.0),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  SizedBox(width: 10.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          currentUser.username,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "Poppins",
+                                              fontSize: 13
+                                          ),
+                                        ),
+                                        mypost.location != null
+                                            ? Text(mypost.location!,
+                                          style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontSize: 12
+                                          ),
+                                        ): SizedBox.shrink(),
+                                        Text(
+                                          timeago.format(mypost.timeAgo),
+                                          style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontSize: 10
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text(
-                                        currentPost.username,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Poppins",
-                                            fontSize: 13
+                                      PopupMenuButton<MenuValues>(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(15.0))
                                         ),
-                                      ),
-                                      currentPost.location != null
-                                          ? Text(currentPost.location,
-                                        style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 12
+                                        itemBuilder: (BuildContext context) => [
+                                          PopupMenuItem(
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.edit, color: primary,),
+                                                SizedBox(width: 5,),
+                                                Text("edit",
+                                                  style: TextStyle(
+                                                    fontFamily: "Poppins",
+                                                    fontSize: 12
+                                                ),),
+                                              ],
+                                            ),value: MenuValues.edit,
+                                          ),
+                                          PopupMenuItem(
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.delete_outline_rounded, color: primary,),
+                                                SizedBox(width: 5,),
+                                                Text("delete",
+                                                  style: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 12
+                                                  ),),
+                                              ],
+                                            ),value: MenuValues.delete,
+                                          ),
+                                        ],
+                                        child: Icon(
+                                          Icons.more_vert,
+                                          color: primary,
                                         ),
-                                      ): SizedBox.shrink(),
-                                      Text(
-                                        timeago.format(currentPost.timeAgo),
-                                        style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 10
-                                        ),
+                                        onSelected: (value){
+                                          switch (value){
+                                            case MenuValues.edit:
+                                              break;
+                                            case MenuValues.delete:
+                                              removePhoto(i);
+                                          }
+                                        },
                                       ),
                                     ],
                                   ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.more_vert),
-                                      color: primary,
-                                      onPressed: () => print('More'),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                            currentPost.caption != null
+                            mypost.caption != null
                                 ? Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Container(
-                                  child: ReadMoreText(currentPost.caption,
+                                  child: ReadMoreText(mypost.caption!,
                                     trimLines: 5,
                                     textAlign: TextAlign.justify,
                                     trimMode: TrimMode.Line,
@@ -111,8 +182,7 @@ class socia extends StatelessWidget {
                                   ),
                                 )
                             ): Padding(padding: EdgeInsets.only(left: 10, right: 15)),
-                            currentPost.image != null
-                                ? Container(
+                            Container(
                               margin: EdgeInsets.only(left: 10, right: 10, top: 10 ,bottom: 0),
                               width: double.infinity,
                               height: 390.0,
@@ -126,13 +196,13 @@ class socia extends StatelessWidget {
                                   ),
                                 ],
                                 image: DecorationImage(
-                                  image: Image.file(File(currentPost.image)).image,
+                                  image: Image.file(File(mypost.image)).image,
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                            ): Padding(padding: EdgeInsets.only(left: 10, right: 15, top: 5)),
+                            ),
                             Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: EdgeInsets.only(left: 10, top: 10),
                               child: Container(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,27 +211,30 @@ class socia extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           onPressed: () => print('Liked'),
-                                          icon: SvgPicture.asset(currentPost.isliked ?"assets/icon/like_active_icon.svg" : "assets/icon/like_icon.svg" ,
+                                          icon: SvgPicture.asset(mypost.isliked ?"assets/icon/like_active_icon.svg" : "assets/icon/like_icon.svg" ,
                                             width: 27,),
                                         ),
-                                        Text("${currentPost.likecount}"),
+                                        Text("${mypost.likecount}"),
                                         SizedBox(
                                           width: 20,
                                         ),
-                                        // InkWell(
-                                        //   onTap: (){
-                                        //     Navigator.of(context).push(ViewPost.route(post));
-                                        //   }, child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
-                                        // ),
+                                        InkWell(
+                                          // onTap: (){
+                                          //   Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(builder: (context) => ViewPost(post: mypost)),
+                                          //   );},
+                                          child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
+                                        ),
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Text("${currentPost.likecount}"),
+                                        Text("${mypost.likecount}"),
                                       ],
                                     ),
                                     IconButton(
                                       onPressed: () => print('Saved'),
-                                      icon: SvgPicture.asset(currentPost.isliked ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
+                                      icon: SvgPicture.asset(mypost.isliked ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
                                         width: 27,),
                                     )
                                   ],
@@ -173,10 +246,26 @@ class socia extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-            );
-          }
-      ),
+              );
+            }
+        ):
+        Column(
+          children: [
+            SizedBox(height: 80,),
+            SvgPicture.asset("assets/icon/camera_icon.svg", width: 70,),
+            Text('No Post Yet',
+              style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),),
+          ],
+        ),
     );
   }
+}
+
+enum MenuValues{
+  edit,
+  delete,
 }
