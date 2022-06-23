@@ -9,7 +9,7 @@ import 'package:sociafy/providers/data.dart';
 
 class ViewMessage extends StatefulWidget {
   User user;
-  ViewMessage({Key? key, required this.user}) : super(key: key);
+  ViewMessage({Key? key, required this.user,}) : super(key: key);
 
   @override
   State<ViewMessage> createState() => _ViewMessageState();
@@ -195,7 +195,6 @@ class _ViewMessageState extends State<ViewMessage> {
                     ),
                     onSubmitted: (text){
                         final message = Messages(
-                            sender: currentUser,
                             text: text,
                             datetime: DateTime.now(),
                             unread: true,

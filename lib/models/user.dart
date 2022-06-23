@@ -1,3 +1,5 @@
+import 'package:sociafy/models/stories.dart';
+
 class User{
   String image;
   String username;

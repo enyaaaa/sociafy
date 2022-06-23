@@ -90,19 +90,27 @@ class _SearchState extends State<Search> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                userfriends.user.name,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Poppins",
-                                    fontSize: 13
+                              SizedBox(
+                                width: 180,
+                                child: Text(
+                                  userfriends.user.name,
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Poppins",
+                                      fontSize: 13
+                                  ),
                                 ),
                               ),
-                              Text(
-                                "@" + userfriends.user.username,
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 12
+                              SizedBox(
+                                width: 180,
+                                child: Text(
+                                  "@" + userfriends.user.username,
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontFamily: "Poppins",
+                                      fontSize: 12
+                                  ),
                                 ),
                               )
                             ],
@@ -118,8 +126,8 @@ class _SearchState extends State<Search> {
                         child: MaterialButton(
                           elevation: 0,
                           color: userfriends.isfollowedByMe
-                              ? Colors.white
-                              : iconbutton,
+                              ? iconbutton
+                              : Colors.white,
                           onPressed: () {
                             setState(() {
                               userfriends.isfollowedByMe =
@@ -130,7 +138,7 @@ class _SearchState extends State<Search> {
                               borderRadius: BorderRadius.circular(20)
                           ),
                           child: Text(
-                            userfriends.isfollowedByMe ? "Follow" : "Following",
+                            userfriends.isfollowedByMe ? "Following" : "Follow",
                             style: TextStyle(
                                 fontFamily: "Poppins",
                                 color: primary

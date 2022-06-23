@@ -16,7 +16,7 @@ class Message extends StatefulWidget {
 
 class _MessageState extends State<Message> {
   String query = '';
-  late List<Messages> chat;
+  late List<UserChats> chat;
   var scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
@@ -85,11 +85,11 @@ class _MessageState extends State<Message> {
       child: ListView.builder(
           itemCount: chat.length,
           itemBuilder: (BuildContext context, int index){
-            Messages userchat = chat[index];
+            UserChats userchat = chat[index];
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ViewMessage(user: userchat.sender,),
+                  builder: (context) => ViewMessage(user: userchat.userchats,),
                 ));
               },
               child: Padding(
@@ -118,7 +118,7 @@ class _MessageState extends State<Message> {
                               height: 60,
                               width: 60,
                               child: Image.asset(
-                                  userchat.sender.image,
+                                  userchat.userchats.image,
                                   fit: BoxFit.cover
                               ),
                             ),
@@ -129,25 +129,31 @@ class _MessageState extends State<Message> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                userchat.sender.username,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,),
+                              SizedBox(
+                                width: 180,
+                                child: Text(
+                                  userchat.userchats.username,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,),
+                                ),
                               ),
                               SizedBox(
                                 height: 5,
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width*0.45,
-                                child: Text(
-                                  userchat.text,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 13,),),
+                                child: SizedBox(
+                                  width: 180,
+                                  child: Text(
+                                    userchat.text,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontSize: 13,),),
+                                ),
                               )
                             ],
                           )
@@ -156,12 +162,15 @@ class _MessageState extends State<Message> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            timeago.format(userchat.datetime),
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 9,
+                          SizedBox(
+                            width: 55,
+                            child: Text(
+                              timeago.format(userchat.datetime),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 9,
+                              ),
                             ),
                           ),
                           SizedBox(height: 10,),
@@ -191,7 +200,7 @@ class _MessageState extends State<Message> {
       hintText: "Search Messages");
   void searchMessages(String query){
     final chat = chats.where((userchat){
-      final titleLower = userchat.sender.username.toLowerCase();
+      final titleLower = userchat.userchats.username.toLowerCase();
       final searchLower = query.toLowerCase();
 
       return titleLower.contains(searchLower);

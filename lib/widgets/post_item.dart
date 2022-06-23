@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
+import 'package:sociafy/models/friends.dart';
 import 'package:sociafy/models/post.dart';
 import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/view_post.dart';
+import 'package:sociafy/widgets/heart_animation.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-class post_item extends StatelessWidget {
+class post_item extends StatefulWidget {
   const post_item({Key? key}) : super(key: key);
+
+  @override
+  State<post_item> createState() => _post_itemState();
+}
+
+class _post_itemState extends State<post_item> {
+  bool isHeartAnimating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +77,7 @@ class post_item extends StatelessWidget {
                                         ),
                                       ): SizedBox.shrink(),
                                       Text(
-                                        userpost.timeAgo,
+                                        timeago.format(userpost.timeAgo),
                                         style: TextStyle(
                                             fontFamily: "Poppins",
                                             fontSize: 10
@@ -107,24 +117,46 @@ class post_item extends StatelessWidget {
                                   ),
                                 )
                             ): Padding(padding: EdgeInsets.only(left: 10, right: 15)),
-                            Container(
-                              margin: EdgeInsets.only(left: 10, right: 10, top: 10 ,bottom: 0),
-                              width: double.infinity,
-                              height: 390.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: postbackground,
-                                    offset: Offset(0, 1),
-                                    blurRadius: 8.0,
+                            GestureDetector(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10, right: 10, top: 10 ,bottom: 0),
+                                    width: double.infinity,
+                                    height: 390.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: postbackground,
+                                          offset: Offset(0, 1),
+                                          blurRadius: 8.0,
+                                        ),
+                                      ],
+                                      image: DecorationImage(
+                                        image: AssetImage(userpost.image),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
+                                  Opacity(
+                                    opacity: isHeartAnimating ? 1 : 0,
+                                    child: HeartAnimation(
+                                      isAnimating: isHeartAnimating,
+                                      duration: Duration(milliseconds: 700),
+                                      child: SvgPicture.asset("assets/icon/like_active_icon.svg", width: 60,),
+                                      onEnd: () => setState(() => isHeartAnimating = false,
+                                    ),
+                                  ),),
                                 ],
-                                image: DecorationImage(
-                                  image: AssetImage(userpost.image),
-                                  fit: BoxFit.cover,
-                                ),
                               ),
+                              onDoubleTap: (){
+                                setState(() {
+                                  isHeartAnimating = true;
+                                  userpost.isliked = true;
+                                });
+                              },
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: 10, top: 10),
@@ -135,13 +167,17 @@ class post_item extends StatelessWidget {
                                     Row(
                                       children: [
                                         IconButton(
-                                          onPressed: () => print('Liked'),
+                                          onPressed: () {
+                                            setState(() {
+                                              userpost.isliked =
+                                              !userpost.isliked;
+                                            });
+                                          },
                                           icon: SvgPicture.asset(userpost.isliked ?"assets/icon/like_active_icon.svg" : "assets/icon/like_icon.svg" ,
                                             width: 27,),
                                         ),
-                                        Text("${userpost.likecount}"),
                                         SizedBox(
-                                          width: 20,
+                                          width: 10,
                                         ),
                                         InkWell(
                                           onTap: (){
@@ -150,15 +186,16 @@ class post_item extends StatelessWidget {
                                               MaterialPageRoute(builder: (context) => ViewPost(post: userpost)),
                                           );}, child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
                                         ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text("${userpost.likecount}",),
                                       ],
                                     ),
                                     IconButton(
-                                      onPressed: () => print('Saved'),
-                                      icon: SvgPicture.asset(userpost.isliked ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
+                                      onPressed: () {
+                                        setState(() {
+                                          userpost.issaved =
+                                          !userpost.issaved;
+                                        });
+                                      },
+                                      icon: SvgPicture.asset(userpost.issaved ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
                                         width: 27,),
                                     )
                                   ],

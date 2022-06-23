@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/post.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ViewPost extends StatelessWidget {
 
@@ -101,7 +102,7 @@ class viewPostBody extends StatelessWidget {
                                 ),
                               ): SizedBox.shrink(),
                               Text(
-                                post.timeAgo,
+                                timeago.format(post.timeAgo,),
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontSize: 10
@@ -174,7 +175,6 @@ class viewPostBody extends StatelessWidget {
                                   icon: SvgPicture.asset(post.isliked ?"assets/icon/like_active_icon.svg" : "assets/icon/like_icon.svg" ,
                                     width: 27,),
                                 ),
-                                Text("${post.likecount}"),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -183,15 +183,11 @@ class viewPostBody extends StatelessWidget {
                                     Navigator.of(context).push(ViewPost.route(post));
                                   }, child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text("${post.likecount}"),
                               ],
                             ),
                             IconButton(
                               onPressed: () => print('Saved'),
-                              icon: SvgPicture.asset(post.isliked ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
+                              icon: SvgPicture.asset(post.issaved ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
                                 width: 27,),
                             )
                           ],

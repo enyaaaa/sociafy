@@ -8,8 +8,7 @@ class myPost{
   String? caption;
   String? location;
   var isliked;
-  int likecount;
-  int commentcount;
+  var issaved;
 
   myPost({
     required this.username,
@@ -19,8 +18,7 @@ class myPost{
     required this.caption,
     required this.location,
     required this.isliked,
-    required this.likecount,
-    required this.commentcount,
+    this.issaved
   });
 }
 

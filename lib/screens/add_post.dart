@@ -4,7 +4,6 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -18,19 +17,6 @@ class AddPost extends StatefulWidget {
 }
 
 class _AddPostState extends State<AddPost> {
-  SharedPreferences? prefs;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   loadSharedPref();
-  // }
-  // void loadSharedPref() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //
-  //   if (prefs!.containsKey('post'))
-  //     postImage(prefs!.getBool('post'));
-  // }
 
   final _formKey = GlobalKey<FormState>();
   final caption = TextEditingController();
@@ -46,8 +32,7 @@ class _AddPostState extends State<AddPost> {
   String? image;
   String? location = null;
   bool isliked = false;
-  int likecount = 0;
-  int commentcount = 0;
+  bool issaved = false;
 
   Future selectphoto() async{
     await showModalBottomSheet(context: context, builder: (context)=> BottomSheet(
@@ -117,20 +102,17 @@ class _AddPostState extends State<AddPost> {
     _setLoading(true);
 
     final image = _pickedFile!.path;
-    prefs!.setString("post", image);
 
     context.read<myPostList>().addPost(myPost(
-        username: username,
-        userprofilePic: userprofilePic,
-        timeAgo: timeAgo,
-        image: image,
-        caption: caption.text,
-        location: location,
-        isliked: isliked,
-        likecount: likecount,
-        commentcount: commentcount
-    )
-    );
+      username: username,
+      userprofilePic: userprofilePic,
+      timeAgo: timeAgo,
+      image: image,
+      caption: caption.text,
+      location: location,
+      isliked: isliked,
+      issaved: issaved,
+    ));
 
     Navigator.pop(context);
 

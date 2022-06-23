@@ -1,6 +1,7 @@
 import 'package:sociafy/models/friends.dart';
 import 'package:sociafy/models/messages.dart';
 import 'package:sociafy/models/post.dart';
+import 'package:sociafy/models/explore.dart';
 import 'package:sociafy/models/stories.dart';
 import 'package:sociafy/models/user.dart';
 
@@ -87,49 +88,69 @@ User tomholland2013 = User(
   totalFollowing: 0,
 );
 
+List<UserStories> userstories = [
+  UserStories(
+    userstory: currentUser,
+    stories: danielstories,
+  ),
+  UserStories(
+    userstory: seaveydaniel,
+    stories: harrystories,
+  ),
+  UserStories(
+    userstory: oliviarodrigo,
+    stories: danielstories,
+  ),
+  UserStories(
+    userstory: harrystyles,
+    stories: harrystories,
+  ),
+  UserStories(
+    userstory: haileybieber,
+    stories: danielstories,
+  ),
+  UserStories(
+    userstory: blakelively,
+    stories: harrystories,
+  ),
+  UserStories(
+    userstory: tomholland2013,
+    stories: danielstories,
+  ),
+];
+
 //Stories
-List<Stories> stories = [
+List<Stories> danielstories = [
   Stories(
-    user: currentUser,
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
     'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    datetime: DateTime.now().subtract(Duration(hours: 5)),
   ),
   Stories(
-    user: seaveydaniel,
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
     'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    datetime: DateTime.now().subtract(Duration(hours: 4)),
+  ),
+];
+
+List<Stories> harrystories = [
+  Stories(
+    media: MediaType.image,
+    duration: Duration(seconds: 5),
+    url:
+    'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    datetime: DateTime.now().subtract(Duration(hours: 1)),
   ),
   Stories(
-    user: haileybieber,
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
     'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-  ),
-  Stories(
-    user: oliviarodrigo,
-    media: MediaType.image,
-    duration: Duration(seconds: 5),
-    url:
-    'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-  ),
-  Stories(
-    user: harrystyles,
-    media: MediaType.image,
-    duration: Duration(seconds: 5),
-    url:
-    'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-  ),
-  Stories(
-    user: blakelively,
-    media: MediaType.image,
-    duration: Duration(seconds: 5),
-    url:
-    'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    datetime: DateTime.now().subtract(Duration(hours: 3)),
   ),
 ];
 
@@ -137,37 +158,41 @@ List<Stories> stories = [
 List<Posts> posts = [
   Posts(
     user: corbynbesson,
-    timeAgo: "10 min",
+    timeAgo: DateTime.now().subtract(Duration(hours: 4)),
     image: "assets/post/corbynbesson_post.jpg",
     caption: "I'm flying",
     location: "Coachella, California",
     isliked: false,
-    likecount: 0,
-    commentcount: 0,
     likedby: null,
     issaved: false,
   ),
   Posts(
     user: seaveydaniel,
-    timeAgo: "2h",
+    timeAgo: DateTime.now().subtract(Duration(minutes: 7)),
     image: "assets/post/seaveydaniel_post.jpg",
     caption: null,
     location: "californa",
-    isliked: false,
-    likecount: 0,
-    commentcount: 0,
+    isliked: true,
     likedby: null,
     issaved: false,
   ),
   Posts(
-    user: seaveydaniel,
-    timeAgo: "2h",
-    image: "assets/post/seaveydaniel_post.jpg",
+    user: oliviarodrigo,
+    timeAgo: DateTime.now().subtract(Duration(days: 3)),
+    image: "assets/post/oliviarodrigo_post.jpg",
     caption: null,
     location: null,
     isliked: false,
-    likecount: 0,
-    commentcount: 0,
+    likedby: null,
+    issaved: false,
+  ),
+  Posts(
+    user: tomholland2013,
+    timeAgo: DateTime.now().subtract(Duration(days: 3)),
+    image: "assets/post/doggie_post.jpg",
+    caption: null,
+    location: null,
+    isliked: false,
     likedby: null,
     issaved: false,
   ),
@@ -177,117 +202,95 @@ List<Posts> posts = [
 List<Posts> comments = [
   Posts(
     user: seaveydaniel,
-    timeAgo: "2h",
+    timeAgo: DateTime.now().subtract(Duration(minutes: 5)),
     image: "assets/post/seaveydaniel_post.jpg",
     caption: "wow",
     location: null,
     isliked: false,
-    likecount: 0,
-    commentcount: 0,
     likedby: null,
     issaved: false,
   )
 ];
 
 //chats
-List<Messages> chats = [
-  Messages(
-    sender: corbynbesson,
+List<UserChats> chats = [
+  UserChats(
+    userchats: corbynbesson,
     datetime: DateTime.now().subtract(Duration(minutes: 5)),
     text: "hello!",
     unread: true,
-    isSentByMe: false,
   ),
-  Messages(
-    sender: harrystyles,
-    datetime: DateTime.now().subtract(Duration(hours: 5)),
-    text: "hello!",
+  UserChats(
+    userchats: harrystyles,
+    datetime: DateTime.now().subtract(Duration(minutes: 20)),
+    text: "What you are up to",
     unread: true,
-    isSentByMe: true,
   ),
-  Messages(
-    sender: oliviarodrigo,
-    datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
-    text: "hello!",
+  UserChats(
+    userchats: oliviarodrigo,
+    datetime: DateTime.now().subtract(Duration(hours: 7)),
+    text: "okay",
     unread: false,
-    isSentByMe: false,
+  ),
+  UserChats(
+    userchats: tomholland2013,
+    datetime: DateTime.now().subtract(Duration(hours: 5)),
+    text: "whatsup!",
+    unread: true,
   ),
 ];
 
 //messages
 List<Messages> messages = [
   Messages(
-    sender: corbynbesson,
     datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
     text: "whatsup",
     unread: true,
     isSentByMe: false,
   ),
   Messages(
-    sender: corbynbesson,
     datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
     text: "i am so happy",
     unread: true,
     isSentByMe: true,
   ),
   Messages(
-    sender: currentUser,
     datetime: DateTime.now().subtract(Duration(days: 1, minutes: 2)),
     text: "what you doing",
     unread: true,
     isSentByMe: false,
   ),
   Messages(
-    sender: oliviarodrigo,
     datetime: DateTime.now().subtract(Duration(days: 1, minutes: 44)),
     text: "woo hoo",
     unread: true,
     isSentByMe: true,
   ),
   Messages(
-    sender: currentUser,
     datetime: DateTime.now().subtract(Duration(days: 4, minutes: 32)),
     text: "woo hoo",
     unread: true,
     isSentByMe: true,
   ),
   Messages(
-    sender: oliviarodrigo,
     datetime: DateTime.now().subtract(Duration(days: 6, minutes: 24)),
     text: "woo hoo",
     unread: true,
     isSentByMe: false,
   ),
   Messages(
-    sender: currentUser,
     datetime: DateTime.now().subtract(Duration(days: 7, minutes: 10)),
     text: "woo hoo",
     unread: true,
     isSentByMe: true,
   ),
   Messages(
-    sender: oliviarodrigo,
     datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
     text: "woo hoo",
     unread: true,
     isSentByMe: true,
   ),
   Messages(
-    sender: currentUser,
-    datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
-    text: "woo hoo",
-    unread: true,
-    isSentByMe: false,
-  ),
-  Messages(
-    sender: oliviarodrigo,
-    datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
-    text: "woo hoo",
-    unread: true,
-    isSentByMe: true,
-  ),
-  Messages(
-    sender: currentUser,
     datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
     text: "woo hoo",
     unread: true,
@@ -299,7 +302,7 @@ List<Messages> messages = [
 List <Friends> friends = [
   Friends(
     user: corbynbesson,
-    isfollowedByMe: false,
+    isfollowedByMe: true,
   ),
   Friends(
     user: seaveydaniel,
@@ -307,7 +310,7 @@ List <Friends> friends = [
   ),
   Friends(
     user: harrystyles,
-    isfollowedByMe: false,
+    isfollowedByMe: true,
   ),
   Friends(
     user: oliviarodrigo,
@@ -315,7 +318,7 @@ List <Friends> friends = [
   ),
   Friends(
     user: haileybieber,
-    isfollowedByMe: false,
+    isfollowedByMe: true,
   ),
   Friends(
     user: blakelively,
@@ -323,7 +326,7 @@ List <Friends> friends = [
   ),
   Friends(
     user: tomholland2013,
-    isfollowedByMe: false,
+    isfollowedByMe: true,
   ),
 ];
 
@@ -337,31 +340,106 @@ List searchCategories = [
   "Art"
 ];
 
-List searchImages = [
-  "assets/post/ammachamberlain_post.jpg",
-  "assets/post/arianagrande_post.jpg",
-  "assets/post/italy_post.jpg",
-  "assets/post/ballet_post.jpg",
-  "assets/post/billieeilish_post.jpg",
-  "assets/post/corbynbesson_post.jpg",
-  "assets/post/germany_post.jpg",
-  "assets/post/corndogs_post.jpg",
-  "assets/post/doggie_post.jpg",
-  "assets/post/japan_post.jpg",
-  "assets/post/johnnyorlando_post.jpg",
-  "assets/post/justinbieber_post.jpg",
-  "assets/post/dubai_post.jpg",
-  "assets/post/lillyk_post.jpg",
-  "assets/post/oliviarodrigo_post.jpg",
-  "assets/post/pointe_post.jpg",
-  "assets/post/portugal_post.jpg",
-  "assets/post/sabrinacarpenter_post.jpg",
-  "assets/post/scotland_post.jpg",
-  "assets/post/seaveydaniel_post.jpg",
-  "assets/post/shawnmendes_post.jpg",
-  "assets/post/greece_post.jpg",
-  "assets/post/sofiedossi_post.jpg",
-  "assets/post/taylorswift_post.jpg",
-  "assets/post/zendaya_post.jpg",
+List<SearchExplore> search = [
+  SearchExplore(
+    name: "ammachamberlain",
+    image: "assets/post/ammachamberlain_post.jpg",
+  ),
+  SearchExplore(
+    name: "arianagrande",
+    image: "assets/post/arianagrande_post.jpg",
+  ),
+  SearchExplore(
+    name: "italy",
+    image: "assets/post/italy_post.jpg",
+  ),
+  SearchExplore(
+    name: "ballet",
+    image: "assets/post/ballet_post.jpg",
+  ),
+  SearchExplore(
+    name: "billieeilish",
+    image: "assets/post/billieeilish_post.jpg",
+  ),
+  SearchExplore(
+    name: "corbynbesson",
+    image: "assets/post/corbynbesson_post.jpg",
+  ),
+  SearchExplore(
+    name: "germany",
+    image: "assets/post/germany_post.jpg",
+  ),
+  SearchExplore(
+    name: "corndogs",
+    image: "assets/post/corndogs_post.jpg",
+  ),
+  SearchExplore(
+    name: "doggie",
+    image: "assets/post/doggie_post.jpg",
+  ),
+  SearchExplore(
+    name: "japan",
+    image: "assets/post/japan_post.jpg",
+  ),
+  SearchExplore(
+    name: "johnnyorlando",
+    image: "assets/post/johnnyorlando_post.jpg",
+  ),
+  SearchExplore(
+    name: "justinbieber",
+    image: "assets/post/justinbieber_post.jpg",
+  ),
+  SearchExplore(
+    name: "dubai",
+    image:  "assets/post/dubai_post.jpg",
+  ),
+  SearchExplore(
+    name: "lillyk",
+    image: "assets/post/lillyk_post.jpg",
+  ),
+  SearchExplore(
+    name: "oliviarodrigo",
+    image: "assets/post/oliviarodrigo_post.jpg",
+  ),
+  SearchExplore(
+    name: "pointe",
+    image: "assets/post/pointe_post.jpg",
+  ),
+  SearchExplore(
+    name: "portugal",
+    image: "assets/post/portugal_post.jpg",
+  ),
+  SearchExplore(
+    name: "sabrinacarpenter",
+    image: "assets/post/sabrinacarpenter_post.jpg",
+  ),
+  SearchExplore(
+    name: "scotland",
+    image: "assets/post/scotland_post.jpg",
+  ),
+  SearchExplore(
+    name: "seaveydaniel",
+    image: "assets/post/seaveydaniel_post.jpg",
+  ),
+  SearchExplore(
+    name: "shawnmendes",
+    image: "assets/post/shawnmendes_post.jpg",
+  ),
+  SearchExplore(
+    name: "greece",
+    image: "assets/post/greece_post.jpg",
+  ),
+  SearchExplore(
+    name: "sofiedossi",
+    image: "assets/post/sofiedossi_post.jpg",
+  ),
+  SearchExplore(
+    name: "taylorswift",
+    image:  "assets/post/taylorswift_post.jpg",
+  ),
+  SearchExplore(
+    name: "zendaya",
+    image: "assets/post/zendaya_post.jpg",
+  ),
 ];
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sociafy/color/colors.dart';
+import 'package:sociafy/models/explore.dart';
 import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/widgets/search_item.dart';
 
@@ -12,13 +13,21 @@ class Explore extends StatefulWidget {
 
 class _ExploreState extends State<Explore> {
   String query = '';
+  late List<SearchExplore> searchexplore;
+
+  @override
+  void initState(){
+    super.initState();
+
+    searchexplore = search;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         child: getAppBar(),
-        preferredSize: Size.fromHeight(60),
+        preferredSize: Size.fromHeight(5),
       ),
       body: getBody(),
     );
@@ -27,7 +36,6 @@ class _ExploreState extends State<Explore> {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      title: buildSearch()
     );
   }
   Widget buildSearch() => search_item(
@@ -36,76 +44,84 @@ class _ExploreState extends State<Explore> {
       hintText: "Search"
   );
   void searchExplore(String query){
-    // final friend = friends.where((userfriends){
-    //   final titleLower = userfriends.user.username.toLowerCase();
-    //   final searchLower = query.toLowerCase();
-    //
-    //   return titleLower.contains(searchLower);
-    // }).toList();
-    //
-    // setState(() {
-    //   this.query = query;
-    //   this.friend = friend;
-    // });
+    final searchexplore = search.where((explore){
+      final titleLower = explore.name.toLowerCase();
+      final searchLower = query.toLowerCase();
+
+      return titleLower.contains(searchLower);
+    }).toList();
+
+    setState(() {
+      this.query = query;
+      this.searchexplore = searchexplore;
+    });
   }
   Widget getBody(){
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                    children:
-                    List.generate(searchCategories.length, (index){
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  color: iconbutton
-                              )
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
-                            child: Text(searchCategories[index],
-                              style: TextStyle(
-                                  color: primary,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15
-                              ),
+      child: Column(
+        children: [
+          buildSearch(),
+          SizedBox(height: 10,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                  children:
+                  List.generate(searchCategories.length, (index){
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                                color: iconbutton
+                            )
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+                          child: Text(searchCategories[index],
+                            style: TextStyle(
+                                color: primary,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15
                             ),
                           ),
                         ),
-                      );
-                    })
-                ),
+                      ),
+                    );
+                  })
               ),
             ),
-            SizedBox(height: 20,),
-            Wrap(
-                spacing: 3,
-                runSpacing: 3,
-                children: List.generate(searchImages.length, (index){
-                  return Container(
-                    width: 125,
-                    height: 125,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: AssetImage(searchImages[index]),
-                        fit: BoxFit.cover,
+          ),
+          SizedBox(height: 10,),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 2,
+                  ),
+                  itemBuilder: (ctx, i) {
+                    SearchExplore explore = searchexplore[i];
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: AssetImage(explore.image),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  );
-                },)
+                    );
+                  },
+                  itemCount: searchexplore.length
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

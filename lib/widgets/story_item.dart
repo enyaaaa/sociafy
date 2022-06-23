@@ -5,6 +5,7 @@ import 'package:sociafy/models/stories.dart';
 import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/view_story.dart';
 
+
 class story_item extends StatefulWidget {
   const story_item({Key? key}) : super(key: key);
 
@@ -18,10 +19,10 @@ class _story_itemState extends State<story_item> {
     return Container(
       height: 110,
       child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-          itemCount: stories.length,
+          scrollDirection: Axis.horizontal,
+          itemCount: userstories.length,
           itemBuilder: (BuildContext context, int index){
-            Stories userstory = stories[index];
+            UserStories story = userstories[index];
             if (index == 0 ){
               return Padding(
                 padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10, top: 10),
@@ -91,7 +92,8 @@ class _story_itemState extends State<story_item> {
                   GestureDetector(
                     onTap: ()=> Navigator.push(
                         context, MaterialPageRoute(
-                        builder: (context)=> ViewStory())),
+                        builder: (context)=> ViewStory(user: story.userstory),
+                    )),
                     child: Container(
                       width: 59,
                       height: 62,
@@ -100,7 +102,7 @@ class _story_itemState extends State<story_item> {
                           color: Colors.blueGrey,
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
-                              image: AssetImage(userstory.user.image),
+                              image: AssetImage(story.userstory.image),
                               fit: BoxFit.cover),
                           boxShadow: [
                             BoxShadow(
@@ -115,7 +117,7 @@ class _story_itemState extends State<story_item> {
                   SizedBox(height: 8,),
                   SizedBox(
                       width: 70,
-                      child: Text(userstory.user.username,
+                      child: Text(story.userstory.username,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

@@ -7,6 +7,7 @@ import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/myPost.dart';
 import 'package:sociafy/providers/data.dart';
+import 'package:sociafy/widgets/heart_animation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class socia extends StatefulWidget {
@@ -17,6 +18,8 @@ class socia extends StatefulWidget {
 }
 
 class _sociaState extends State<socia> {
+
+  bool isHeartAnimating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -182,24 +185,46 @@ class _sociaState extends State<socia> {
                                   ),
                                 )
                             ): Padding(padding: EdgeInsets.only(left: 10, right: 15)),
-                            Container(
-                              margin: EdgeInsets.only(left: 10, right: 10, top: 10 ,bottom: 0),
-                              width: double.infinity,
-                              height: 390.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: postbackground,
-                                    offset: Offset(0, 1),
-                                    blurRadius: 8.0,
+                            GestureDetector(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10, right: 10, top: 10 ,bottom: 0),
+                                    width: double.infinity,
+                                    height: 390.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: postbackground,
+                                          offset: Offset(0, 1),
+                                          blurRadius: 8.0,
+                                        ),
+                                      ],
+                                      image: DecorationImage(
+                                        image: Image.file(File(mypost.image)).image,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
+                                  Opacity(
+                                    opacity: isHeartAnimating ? 1 : 0,
+                                    child: HeartAnimation(
+                                      isAnimating: isHeartAnimating,
+                                      duration: Duration(milliseconds: 700),
+                                      child: SvgPicture.asset("assets/icon/like_active_icon.svg", width: 60,),
+                                      onEnd: () => setState(() => isHeartAnimating = false,
+                                      ),
+                                    ),),
                                 ],
-                                image: DecorationImage(
-                                  image: Image.file(File(mypost.image)).image,
-                                  fit: BoxFit.cover,
-                                ),
                               ),
+                              onDoubleTap: (){
+                                setState(() {
+                                  isHeartAnimating = true;
+                                  mypost.isliked = true;
+                                });
+                              },
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: 10, top: 10),
@@ -210,13 +235,17 @@ class _sociaState extends State<socia> {
                                     Row(
                                       children: [
                                         IconButton(
-                                          onPressed: () => print('Liked'),
+                                          onPressed: () {
+                                            setState(() {
+                                              mypost.isliked =
+                                              !mypost.isliked;
+                                            });
+                                          },
                                           icon: SvgPicture.asset(mypost.isliked ?"assets/icon/like_active_icon.svg" : "assets/icon/like_icon.svg" ,
                                             width: 27,),
                                         ),
-                                        Text("${mypost.likecount}"),
                                         SizedBox(
-                                          width: 20,
+                                          width: 10,
                                         ),
                                         InkWell(
                                           // onTap: (){
@@ -226,15 +255,16 @@ class _sociaState extends State<socia> {
                                           //   );},
                                           child: SvgPicture.asset("assets/icon/comment_icon.svg", width: 27,),
                                         ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text("${mypost.likecount}"),
                                       ],
                                     ),
                                     IconButton(
-                                      onPressed: () => print('Saved'),
-                                      icon: SvgPicture.asset(mypost.isliked ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
+                                      onPressed: () {
+                                        setState(() {
+                                          mypost.issaved =
+                                          !mypost.issaved;
+                                        });
+                                      },
+                                      icon: SvgPicture.asset(mypost.issaved ? "assets/icon/save_active_icon.svg" : "assets/icon/save_icon.svg",
                                         width: 27,),
                                     )
                                   ],

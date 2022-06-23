@@ -1,14 +1,13 @@
+import 'package:sociafy/models/friends.dart';
 import 'package:sociafy/models/user.dart';
 
 class Posts{
   User user;
-  String timeAgo;
+  DateTime timeAgo;
   String image;
   String? caption;
   String? location;
   var isliked;
-  int likecount;
-  int commentcount;
   String? likedby;
   var issaved;
 
@@ -19,8 +18,6 @@ class Posts{
     this.caption,
     this.location,
     this.isliked,
-    required this.likecount,
-    required this.commentcount,
     this.likedby,
     this.issaved
   });
