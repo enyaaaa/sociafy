@@ -7,9 +7,9 @@ class Posts{
   String image;
   String? caption;
   String? location;
-  var isliked;
+  bool isliked;
   String? likedby;
-  var issaved;
+  bool issaved;
 
   Posts({
     required this.user,
@@ -17,8 +17,20 @@ class Posts{
     required this.image,
     this.caption,
     this.location,
-    this.isliked,
+    required this.isliked,
     this.likedby,
-    this.issaved
+    required this.issaved,
+  });
+}
+
+class Comments {
+  User user;
+  String comment;
+  bool isliked;
+
+  Comments({
+    required this.user,
+    required this.comment,
+    required this.isliked,
   });
 }

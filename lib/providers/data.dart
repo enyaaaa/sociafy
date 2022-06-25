@@ -11,8 +11,8 @@ User currentUser = User(
   username: 'zendaya',
   name: '😂😱😩',
   bio:
-  'Zendaya @euphoria @spidermanmovie @dunemovie “I’m Tired” out now @labrinth lab.lnk.to/ImTired',
-  totalPost: 0,
+      'Zendaya @euphoria @spidermanmovie @dunemovie “I’m Tired” out now @labrinth lab.lnk.to/ImTired',
+  isFollowedbyMe: true,
   totalFollower: 0,
   totalFollowing: 0,
 );
@@ -22,10 +22,10 @@ User corbynbesson = User(
   username: 'corbynbesson',
   name: 'Corbyn 🛸',
   bio:
-  'i’m in a band. we’re on tour this summer. “HOW DO YOU LOVE SOMEBODY” OUT NOW ❤️‍🔥',
-  totalPost: 0,
-  totalFollower: 0,
-  totalFollowing: 0,
+      'i’m in a band. we’re on tour this summer. “HOW DO YOU LOVE SOMEBODY” OUT NOW ❤️‍🔥',
+  isFollowedbyMe: true,
+  totalFollower: 453,
+  totalFollowing: 323,
 );
 
 User harrystyles = User(
@@ -33,9 +33,9 @@ User harrystyles = User(
   username: 'harrystyles',
   name: 'Harry Styles.',
   bio: '',
-  totalPost: 0,
-  totalFollower: 0,
-  totalFollowing: 0,
+  isFollowedbyMe: true,
+  totalFollower: 578,
+  totalFollowing: 289,
 );
 
 User oliviarodrigo = User(
@@ -43,9 +43,9 @@ User oliviarodrigo = User(
   username: 'oliviarodrigo',
   name: 'Olivia Rodrigo',
   bio: 'spicy pisces',
-  totalPost: 0,
-  totalFollower: 0,
-  totalFollowing: 0,
+  isFollowedbyMe: true,
+  totalFollower: 678,
+  totalFollowing: 367,
 );
 
 User seaveydaniel = User(
@@ -53,9 +53,9 @@ User seaveydaniel = User(
   username: 'seaveydaniel',
   name: 'Daniel',
   bio: '@whydontwemusic',
-  totalPost: 0,
-  totalFollower: 0,
-  totalFollowing: 0,
+  isFollowedbyMe: true,
+  totalFollower: 546,
+  totalFollowing: 234,
 );
 
 User haileybieber = User(
@@ -63,9 +63,9 @@ User haileybieber = User(
   username: 'haileybieber',
   name: 'Hailey Rhode Baldwin Bieber',
   bio: '@rhode',
-  totalPost: 0,
-  totalFollower: 0,
-  totalFollowing: 0,
+  isFollowedbyMe: true,
+  totalFollower: 678,
+  totalFollowing: 237,
 );
 
 User blakelively = User(
@@ -73,9 +73,9 @@ User blakelively = User(
   username: 'blakelively',
   name: 'Blake Lively',
   bio: '',
-  totalPost: 0,
-  totalFollower: 0,
-  totalFollowing: 0,
+  isFollowedbyMe: true,
+  totalFollower: 786,
+  totalFollowing: 256,
 );
 
 User tomholland2013 = User(
@@ -83,11 +83,12 @@ User tomholland2013 = User(
   username: 'tomholland2013',
   name: 'Tom Holland',
   bio: 'Life is good @thebrotherstrust',
-  totalPost: 0,
-  totalFollower: 0,
-  totalFollowing: 0,
+  isFollowedbyMe: true,
+  totalFollower: 867,
+  totalFollowing: 276,
 );
 
+//users story info
 List<UserStories> userstories = [
   UserStories(
     userstory: currentUser,
@@ -124,15 +125,35 @@ List<Stories> danielstories = [
   Stories(
     media: MediaType.image,
     duration: Duration(seconds: 5),
-    url:
-    'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    url: 'https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif',
     datetime: DateTime.now().subtract(Duration(hours: 5)),
   ),
   Stories(
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+        'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    datetime: DateTime.now().subtract(Duration(hours: 4)),
+  ),
+  Stories(
+    media: MediaType.image,
+    duration: Duration(seconds: 5),
+    url:
+        'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    datetime: DateTime.now().subtract(Duration(hours: 4)),
+  ),
+  Stories(
+    media: MediaType.image,
+    duration: Duration(seconds: 5),
+    url:
+        'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+    datetime: DateTime.now().subtract(Duration(hours: 4)),
+  ),
+  Stories(
+    media: MediaType.image,
+    duration: Duration(seconds: 5),
+    url:
+        'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
     datetime: DateTime.now().subtract(Duration(hours: 4)),
   ),
 ];
@@ -142,14 +163,14 @@ List<Stories> harrystories = [
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+        'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
     datetime: DateTime.now().subtract(Duration(hours: 1)),
   ),
   Stories(
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+        'https://images.unsplash.com/photo-1534103362078-d07e750bd0c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
     datetime: DateTime.now().subtract(Duration(hours: 3)),
   ),
 ];
@@ -172,7 +193,7 @@ List<Posts> posts = [
     image: "assets/post/seaveydaniel_post.jpg",
     caption: null,
     location: "californa",
-    isliked: true,
+    isliked: false,
     likedby: null,
     issaved: false,
   ),
@@ -199,17 +220,52 @@ List<Posts> posts = [
 ];
 
 //comments
-List<Posts> comments = [
-  Posts(
+List<Comments> comments = [
+  Comments(
     user: seaveydaniel,
-    timeAgo: DateTime.now().subtract(Duration(minutes: 5)),
-    image: "assets/post/seaveydaniel_post.jpg",
-    caption: "wow",
-    location: null,
+    comment: "Love this",
     isliked: false,
-    likedby: null,
-    issaved: false,
-  )
+  ),
+  Comments(
+    user: seaveydaniel,
+    comment: "Love this",
+    isliked: false,
+  ),
+  Comments(
+    user: seaveydaniel,
+    comment: "Love this",
+    isliked: false,
+  ),
+  Comments(
+    user: seaveydaniel,
+    comment: "Love this",
+    isliked: false,
+  ),
+  Comments(
+    user: seaveydaniel,
+    comment: "Love this",
+    isliked: false,
+  ),
+  Comments(
+    user: seaveydaniel,
+    comment: "Love this",
+    isliked: false,
+  ),
+  Comments(
+    user: seaveydaniel,
+    comment: "Love this",
+    isliked: false,
+  ),
+  Comments(
+    user: seaveydaniel,
+    comment: "Love this",
+    isliked: false,
+  ),
+  Comments(
+    user: seaveydaniel,
+    comment: "Love this",
+    isliked: false,
+  ),
 ];
 
 //chats
@@ -299,7 +355,7 @@ List<Messages> messages = [
 ];
 
 //friends
-List <Friends> friends = [
+List<Friends> friends = [
   Friends(
     user: corbynbesson,
     isfollowedByMe: true,
@@ -391,7 +447,7 @@ List<SearchExplore> search = [
   ),
   SearchExplore(
     name: "dubai",
-    image:  "assets/post/dubai_post.jpg",
+    image: "assets/post/dubai_post.jpg",
   ),
   SearchExplore(
     name: "lillyk",
@@ -435,11 +491,10 @@ List<SearchExplore> search = [
   ),
   SearchExplore(
     name: "taylorswift",
-    image:  "assets/post/taylorswift_post.jpg",
+    image: "assets/post/taylorswift_post.jpg",
   ),
   SearchExplore(
     name: "zendaya",
     image: "assets/post/zendaya_post.jpg",
   ),
 ];
-

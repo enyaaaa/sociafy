@@ -3,10 +3,12 @@ import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/user.dart';
 import 'package:sociafy/providers/data.dart';
-
+import 'package:sociafy/root_page.dart';
+import 'package:sociafy/screens/message.dart';
 
 class ViewUser extends StatefulWidget {
   User user;
+
   ViewUser({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -21,40 +23,66 @@ class _ViewUserState extends State<ViewUser> {
         child: getAppBar(),
         preferredSize: Size.fromHeight(60),
       ),
-      body: Column(
-        children: [
-          ProfileHeader(),
-        ],
+      body: DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, _){
+              return [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      ProfileHeader(),
+                    ],
+                  ),
+                ),
+              ];
+            },
+            body: Column(
+              children: [
+                Material(
+                  child: TabBar(
+                    labelColor: primary,
+                    unselectedLabelColor: Colors.grey[400],
+                    indicatorWeight: 1,
+                    indicatorColor: primary,
+
+                    tabs: [
+                      Tab(text: 'media'),
+                      Tab(text: 'socia'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
       ),
     );
   }
-  Widget getAppBar(){
+
+  Widget getAppBar() {
     return AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
-      title: Text(widget.user.username,
+      title: Text(
+        widget.user.username,
         style: TextStyle(
-            color: primary,
-            fontFamily: "Poppins",
-            fontSize: 15,
+          color: primary,
+          fontFamily: "Poppins",
+          fontSize: 15,
           fontWeight: FontWeight.bold,
         ),
       ),
     );
   }
-  Widget ProfileHeader(){
+
+  Widget ProfileHeader() {
     return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-          color: Colors.white
-      ),
-      child: Padding(
-        padding: EdgeInsets.only(left: 18, bottom: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            SizedBox(height: 8,),
+        width: double.infinity,
+        decoration: BoxDecoration(color: Colors.white),
+        child: Padding(
+          padding: EdgeInsets.only(left: 18, bottom: 10),
+          child: Column(children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,29 +91,24 @@ class _ViewUserState extends State<ViewUser> {
                   radius: 40,
                   backgroundImage: AssetImage(widget.user.image),
                 ),
-                SizedBox(width: 130,),
-                Container(
-                  width: 100,
-                  height: 35,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    border: Border.all(color: iconbutton),
-                  ),
+                SizedBox(
+                  height: 8,
                 ),
-                SizedBox(height: 8,),
-                Text(widget.user.username,
+                Text(
+                  widget.user.username,
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8,),
-                Padding(
+                SizedBox(
+                  height: 8,
+                ),
+                widget.user.bio != "" ? Padding(
                   padding: const EdgeInsets.only(right: 110),
-                  child: ReadMoreText(widget.user.bio,
+                  child: ReadMoreText(
+                    widget.user.bio,
                     trimLines: 2,
                     trimMode: TrimMode.Line,
                     trimCollapsedText: " Show More ",
@@ -95,54 +118,102 @@ class _ViewUserState extends State<ViewUser> {
                       fontFamily: "Poppins",
                     ),
                   ),
+                ):SizedBox.shrink(),
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "${widget.user.totalFollower}",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Followers",
+                      style: TextStyle(fontFamily: "Poppins", fontSize: 12),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      "${widget.user.totalFollowing}",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 6),
+                    Text(
+                      "Following",
+                      style: TextStyle(fontFamily: "Poppins", fontSize: 12),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 8,),
                 Row(
                   children: [
-                    Row(
-                      children: [
-                        Text("${currentUser.totalFollower}",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: iconbutton),
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: MaterialButton(
+                        elevation: 0,
+                        color: widget.user.isFollowedbyMe
+                            ? iconbutton
+                            : Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            widget.user.isFollowedbyMe =
+                            !widget.user.isFollowedbyMe;
+                          });
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
                         ),
-                        SizedBox(width: 5),
-                        Text("Followers",
+                        child: Text(
+                          widget.user.isFollowedbyMe ? "Following" : "Follow",
                           style: TextStyle(
                               fontFamily: "Poppins",
-                              fontSize: 12
+                              color: primary
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                    SizedBox(width: 15,),
-                    Row(
-                      children: [
-                        Text("${currentUser.totalFollowing}",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(width: 6),
-                        Text("Following",
+                    SizedBox(width: 8,),
+                    Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: iconbutton),
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: MaterialButton(
+                        color: Colors.white,
+                        elevation: 0,
+                        onPressed: () {},
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),),
+                        child: Text(
+                          "Message",
                           style: TextStyle(
                               fontFamily: "Poppins",
-                              fontSize: 12
+                              color: primary
                           ),
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 )
               ],
             )
-          ],
-        ),
-      ),
-    );
+          ]),
+        ));
   }
 }

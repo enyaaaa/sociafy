@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sociafy/models/stories.dart';
-import 'package:sociafy/models/user.dart';
-import 'package:sociafy/providers/data.dart';
+import 'package:sociafy/widgets/storyview_item.dart';
+
+import '../providers/data.dart';
 
 class ViewStory extends StatefulWidget {
- User user;
+  UserStories user;
 
   ViewStory({Key? key, required this.user}) : super(key: key);
 
@@ -20,12 +21,22 @@ class _ViewStoryState extends State<ViewStory> {
   void initState(){
     super.initState();
 
-    // final initialPage = userstories.indexOf(widget.user.username);
-    // controller = PageController(initialPage: initialPage);
-}
+    final initialPage = userstories.indexOf(widget.user);
+    controller = PageController(initialPage: initialPage);
+  }
+
+  @override
+  void dispose(){
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => PageView(
     controller: controller,
+    children: userstories.map((user) => storyview_item(
+        user: user,
+        controller: controller,
+      )).toList(),
   );
 }

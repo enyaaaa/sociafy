@@ -1,8 +1,8 @@
 import 'package:sociafy/models/user.dart';
 
 class UserStories{
-  final User userstory;
-  final List<Stories> stories;
+  User userstory;
+  List<Stories> stories;
 
   UserStories({
     required this.userstory,

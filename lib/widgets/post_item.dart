@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/friends.dart';
 import 'package:sociafy/models/post.dart';
 import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/view_post.dart';
@@ -104,7 +103,7 @@ class _post_itemState extends State<post_item> {
                                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Container(
                                   child: ReadMoreText(userpost.caption!,
-                                    trimLines: 5,
+                                    trimLines: 2,
                                     textAlign: TextAlign.justify,
                                     trimMode: TrimMode.Line,
                                     trimCollapsedText: " Show More ",

@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:search_map_location/search_map_location.dart';
+import 'package:search_map_location/utils/google_search/latlng.dart';
+import 'package:search_map_location/utils/google_search/place.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -19,7 +23,6 @@ class AddPost extends StatefulWidget {
 class _AddPostState extends State<AddPost> {
 
   final _formKey = GlobalKey<FormState>();
-  final caption = TextEditingController();
 
   File? _pickedFile;
   bool loading = false;
@@ -30,7 +33,8 @@ class _AddPostState extends State<AddPost> {
   String userprofilePic = "assets/users/zendaya.jpg";
   DateTime timeAgo = DateTime.now();
   String? image;
-  String? location = null;
+  String? caption;
+  String? location;
   bool isliked = false;
   bool issaved = false;
 
@@ -96,10 +100,10 @@ class _AddPostState extends State<AddPost> {
       return;
     }
 
-    print(caption);
-    print(_pickedFile);
 
     _setLoading(true);
+
+    _formKey.currentState!.save();
 
     final image = _pickedFile!.path;
 
@@ -108,7 +112,7 @@ class _AddPostState extends State<AddPost> {
       userprofilePic: userprofilePic,
       timeAgo: timeAgo,
       image: image,
-      caption: caption.text,
+      caption: caption,
       location: location,
       isliked: isliked,
       issaved: issaved,
@@ -226,21 +230,29 @@ class _AddPostState extends State<AddPost> {
           key: _formKey,
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
-            child: TextFormField(
-              controller: caption,
-              decoration: InputDecoration(
-                hintText: "Write a caption",
-                border: InputBorder.none,
-                hintStyle: TextStyle(
-                    fontFamily: "Poppins"
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Write a caption",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                        fontFamily: "Poppins"
+                    ),
+                  ),
+                  onSaved: (value) {caption = value;},
                 ),
-              ),
-              validator: (caption) {
-                if (caption == null || caption.isEmpty) {
-                  return 'Caption is empty';
-                }
-                return null;
-              },
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Put in a location",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                        fontFamily: "Poppins"
+                    ),
+                  ),
+                  onSaved: (value) {location = value;},
+                ),
+              ],
             ),
           ),
         )

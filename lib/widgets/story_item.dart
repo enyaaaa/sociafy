@@ -90,10 +90,11 @@ class _story_itemState extends State<story_item> {
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: ()=> Navigator.push(
-                        context, MaterialPageRoute(
-                        builder: (context)=> ViewStory(user: story.userstory),
-                    )),
+                    onTap: () {
+                      Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ViewStory(user: story)),
+                      );
+                    },
                     child: Container(
                       width: 59,
                       height: 62,

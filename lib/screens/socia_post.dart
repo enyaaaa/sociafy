@@ -32,6 +32,9 @@ class _sociaState extends State<socia> {
             return AlertDialog(
               title: Text('Confirmation'),
               content: Text('Are you sure you want to delete?'),
+              backgroundColor: iconbutton,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
               actions: [
                 TextButton(onPressed: (){
                   setState(() {
@@ -96,7 +99,7 @@ class _sociaState extends State<socia> {
                                               fontSize: 13
                                           ),
                                         ),
-                                        mypost.location != null
+                                        mypost.location != ""
                                             ? Text(mypost.location!,
                                           style: TextStyle(
                                               fontFamily: "Poppins",
@@ -167,7 +170,7 @@ class _sociaState extends State<socia> {
                                 ],
                               ),
                             ),
-                            mypost.caption != null
+                            mypost.caption != ""
                                 ? Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Container(

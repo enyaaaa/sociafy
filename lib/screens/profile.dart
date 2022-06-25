@@ -39,11 +39,7 @@ class _ProfileState extends State<Profile> {
       ),
       actions: [
         IconButton(
-          onPressed:(){
-            // Navigator.push(context,
-            //   MaterialPageRoute(builder: (context) => AddPost()),
-            // );
-          },
+          onPressed:(){},
           icon: Icon(Icons.qr_code_2_rounded, color: primary,),
         ),
       ],

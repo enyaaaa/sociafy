@@ -5,7 +5,7 @@ class User{
   String username;
   String name;
   String bio;
-  int totalPost;
+  bool isFollowedbyMe;
   int totalFollower;
   int totalFollowing;
 
@@ -14,7 +14,7 @@ class User{
     required this.username,
     required this.name,
     required this.bio,
-    required this.totalPost,
+    required this.isFollowedbyMe,
     required this.totalFollower,
     required this.totalFollowing,
   });
