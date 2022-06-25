@@ -1,4 +1,3 @@
-import 'package:sociafy/models/friends.dart';
 import 'package:sociafy/models/user.dart';
 
 class Posts{
@@ -20,17 +19,20 @@ class Posts{
     required this.isliked,
     this.likedby,
     required this.issaved,
+
   });
 }
 
 class Comments {
   User user;
   String comment;
+  DateTime datetime;
   bool isliked;
 
   Comments({
     required this.user,
     required this.comment,
     required this.isliked,
+    required this.datetime,
   });
 }

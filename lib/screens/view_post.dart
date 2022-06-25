@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/friends.dart';
 import 'package:sociafy/models/post.dart';
 import 'package:sociafy/widgets/heart_animation.dart';
-import 'package:sociafy/widgets/post_item.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../providers/data.dart';
 
-class ViewPost extends StatelessWidget {
-  static route(Posts data) => MaterialPageRoute(
+class ViewPost extends StatefulWidget {
+  static route(Posts data,) => MaterialPageRoute(
         builder: (context) => ViewPost(
           post: data,
         ),
@@ -23,6 +21,11 @@ class ViewPost extends StatelessWidget {
   Posts post;
 
   @override
+  State<ViewPost> createState() => _ViewPostState();
+}
+
+class _ViewPostState extends State<ViewPost> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
@@ -30,8 +33,58 @@ class ViewPost extends StatelessWidget {
           preferredSize: Size.fromHeight(60),
         ),
         body: viewPostBody(
-          post: post,
-        ));
+          post: widget.post,
+        ),
+      bottomNavigationBar: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(12),
+                  hintText: "Type your message here...",
+                  hintStyle: TextStyle(
+                      color: primary,
+                      fontFamily: "poppins"
+                  ),
+                  border: InputBorder.none
+              ),
+              style: TextStyle(
+                color: primary,
+                fontFamily: "poppins",
+              ),
+              onSubmitted: (text){
+                final comment = Comments(
+                  user: currentUser,
+                  comment: text,
+                  datetime: DateTime.now(),
+                  isliked: false,
+                );
+                setState(() => comments.add(comment));
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                  color: iconbutton,
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: IconButton(
+                onPressed: (){},
+                icon: Icon(
+                  Icons.near_me,
+                  size: 25,
+                  color: primary,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Widget getAppBar() {
@@ -76,6 +129,7 @@ class _viewPostBodyState extends State<viewPostBody> {
                   borderRadius: BorderRadius.all(Radius.circular(20))
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -290,12 +344,13 @@ class _viewPostBodyState extends State<viewPostBody> {
                                             ),
                                             SizedBox(
                                               width: 180,
-                                              child: Text(
-                                                comment.comment,
-                                                style: TextStyle(
-                                                    overflow: TextOverflow.ellipsis,
-                                                    fontFamily: "Poppins",
-                                                    fontSize: 12
+                                              child: Expanded(
+                                                child: Text(
+                                                  comment.comment,
+                                                  style: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 12
+                                                  ),
                                                 ),
                                               ),
                                             )
@@ -320,7 +375,7 @@ class _viewPostBodyState extends State<viewPostBody> {
                           }
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

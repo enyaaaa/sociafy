@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/providers/data.dart';
+import 'package:sociafy/screens/edit_profile.dart';
 import 'package:sociafy/screens/media_post.dart';
 import 'package:sociafy/screens/socia_post.dart';
 
@@ -116,19 +117,29 @@ class profileBody extends StatelessWidget {
                     ),
                     SizedBox(width: 130,),
                     Container(
-                      width: 100,
                       height: 35,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        border: Border.all(color: iconbutton),
+                          border: Border.all(color: iconbutton),
+                          borderRadius: BorderRadius.circular(20)
                       ),
-                      child: Center(
-                        child: Text( "edit profile", style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 13
-                        ),),
+                      child: MaterialButton(
+                        color: Colors.white,
+                        elevation: 0,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditProfile()),
+                          );
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),),
+                        child: Text(
+                          "Edit Profile",
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              color: primary
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(width: 10,),

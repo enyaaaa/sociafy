@@ -149,7 +149,8 @@ class _ViewMessageState extends State<ViewMessage> {
                         messages.text,
                         style: TextStyle(
                             color: primary,
-                            fontFamily: "poppins"
+                            fontFamily: "poppins",
+                            fontSize: 13,
                         ),
                       ),
                       Text(
