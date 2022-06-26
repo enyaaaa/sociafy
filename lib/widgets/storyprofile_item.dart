@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:sociafy/models/stories.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../models/stories.dart';
+
+//profile displaying on the top of the story when user click into the story
 class storyprofile_item extends StatelessWidget {
   UserStories user;
   DateTime date;
 
-  storyprofile_item({
-    Key? key,
-    required this.user,
-    required this.date
-  }) : super(key: key);
+  storyprofile_item({Key? key, required this.user, required this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => Material(
@@ -31,14 +30,15 @@ class storyprofile_item extends StatelessWidget {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Text(
                     user.userstory.username,
                     style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 12,
-                        color: Colors.white
-                    ),
+                        color: Colors.white),
                   ),
                   Text(
                     timeago.format(date),

@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/messages.dart';
-import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/view_message.dart';
-import 'package:sociafy/widgets/drawer.dart';
-import 'package:sociafy/widgets/search_item.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class Message extends StatefulWidget {
+import '../color/colors.dart';
+import '../models/messages.dart';
+import '../providers/data.dart';
+import '../widgets/drawer.dart';
+import '../widgets/search_item.dart';
 
+class Message extends StatefulWidget {
   @override
   State<Message> createState() => _MessageState();
 }
 
 class _MessageState extends State<Message> {
+  //creating an empty string
   String query = '';
+  //list of user chats
   late List<UserChats> chat;
   var scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     chat = chats;
@@ -29,21 +31,22 @@ class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key:scaffoldkey,
-      drawer:AppDrawer(),
-      appBar: PreferredSize(
+        key: scaffoldkey,
+        drawer: AppDrawer(),
+        appBar: PreferredSize(
           child: getAppBar(),
           preferredSize: Size.fromHeight(60),
-      ),
-      body: Column(
-        children: [
-          buildSearch(),
-          getMessages(),
-        ],
-      )
-    );
+        ),
+        body: Column(
+          children: [
+            buildSearch(),
+            getMessages(),
+          ],
+        ));
   }
-  Widget getAppBar(){
+
+
+  Widget getAppBar() {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -69,10 +72,13 @@ class _MessageState extends State<Message> {
         padding: const EdgeInsets.only(left: 80),
         child: Row(
           children: [
-            Text("Messages", style: TextStyle(
-              fontFamily: 'Poppins',
-              color: primary,
-            ),),
+            Text(
+              "Messages",
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                color: primary,
+              ),
+            ),
             SizedBox(width: 90),
             SvgPicture.asset("assets/icon/add_new_message_icon.svg"),
           ],
@@ -80,20 +86,24 @@ class _MessageState extends State<Message> {
       ),
     );
   }
-  Widget getMessages(){
+
+  //displaying the list of messages the user has chat with
+  Widget getMessages() {
     return Expanded(
       child: ListView.builder(
           itemCount: chat.length,
-          itemBuilder: (BuildContext context, int index){
+          itemBuilder: (BuildContext context, int index) {
             UserChats userchat = chat[index];
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ViewMessage(user: userchat.userchats,),
+                  builder: (context) => ViewMessage(
+                    user: userchat.userchats,
+                  ),
                 ));
               },
               child: Padding(
-                padding: const EdgeInsets.only(left: 20, right:20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -117,10 +127,8 @@ class _MessageState extends State<Message> {
                             child: Container(
                               height: 60,
                               width: 60,
-                              child: Image.asset(
-                                  userchat.userchats.image,
-                                  fit: BoxFit.cover
-                              ),
+                              child: Image.asset(userchat.userchats.image,
+                                  fit: BoxFit.cover),
                             ),
                           ),
                           SizedBox(
@@ -137,14 +145,15 @@ class _MessageState extends State<Message> {
                                   style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontSize: 13,
-                                    fontWeight: FontWeight.bold,),
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               SizedBox(
                                 height: 5,
                               ),
                               Container(
-                                width: MediaQuery.of(context).size.width*0.45,
+                                width: MediaQuery.of(context).size.width * 0.45,
                                 child: SizedBox(
                                   width: 180,
                                   child: Text(
@@ -152,7 +161,9 @@ class _MessageState extends State<Message> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontFamily: "Poppins",
-                                      fontSize: 13,),),
+                                      fontSize: 13,
+                                    ),
+                                  ),
                                 ),
                               )
                             ],
@@ -173,16 +184,23 @@ class _MessageState extends State<Message> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10,),
-                          userchat.unread? CircleAvatar(
-                            backgroundColor: iconbutton,
-                            radius: 10,
-                            child: Text("1", style: TextStyle(
-                              color: primary,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),),
-                          ): Container(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          userchat.unread
+                              ? CircleAvatar(
+                                  backgroundColor: iconbutton,
+                                  radius: 10,
+                                  child: Text(
+                                    "1",
+                                    style: TextStyle(
+                                      color: primary,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              : Container(),
                         ],
                       )
                     ],
@@ -190,16 +208,15 @@ class _MessageState extends State<Message> {
                 ),
               ),
             );
-          }
-      ),
+          }),
     );
   }
+
   Widget buildSearch() => search_item(
-      text: query,
-      onChanged: searchMessages,
-      hintText: "Search Messages");
-  void searchMessages(String query){
-    final chat = chats.where((userchat){
+      text: query, onChanged: searchMessages, hintText: "Search Messages");
+
+  void searchMessages(String query) {
+    final chat = chats.where((userchat) {
       final titleLower = userchat.userchats.username.toLowerCase();
       final searchLower = query.toLowerCase();
 
@@ -212,4 +229,3 @@ class _MessageState extends State<Message> {
     });
   }
 }
-

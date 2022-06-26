@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sociafy/screens/message.dart';
 import 'package:sociafy/screens/explore.dart';
 import 'package:sociafy/screens/home.dart';
+import 'package:sociafy/screens/message.dart';
 import 'package:sociafy/screens/notif.dart';
 
 class Rootpage extends StatefulWidget {
-
   @override
   State<Rootpage> createState() => _RootpageState();
 }
 
 class _RootpageState extends State<Rootpage> {
-
+  //default page index to be the home page
   int pageIndex = 0;
 
+  //main pages to navigate to
   List<Widget> children = [
     Home(),
     Message(),
@@ -30,6 +30,7 @@ class _RootpageState extends State<Rootpage> {
     );
   }
 
+  //navigation bar
   Widget getFooter() {
     List icons = [
       pageIndex == 0
@@ -49,22 +50,26 @@ class _RootpageState extends State<Rootpage> {
       width: double.infinity,
       height: 80,
       child: Padding(
-        padding: const EdgeInsets.only(
-            left: 50, right: 50, bottom: 20, top: 15),
+        padding:
+            const EdgeInsets.only(left: 50, right: 50, bottom: 20, top: 15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(icons.length, (index) {
             return InkWell(
                 onTap: () {
                   selectedTab(index);
-                  },
-                child: SvgPicture.asset(icons[index], width: 27,));
+                },
+                child: SvgPicture.asset(
+                  icons[index],
+                  width: 27,
+                ));
           }),
         ),
       ),
     );
   }
 
+  //selected page that user have clicked on
   selectedTab(index) {
     setState(() {
       pageIndex = index;

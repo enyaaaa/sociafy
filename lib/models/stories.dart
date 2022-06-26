@@ -1,5 +1,6 @@
 import 'package:sociafy/models/user.dart';
 
+//models for user stories
 class UserStories{
   User userstory;
   List<Stories> stories;
@@ -10,11 +11,13 @@ class UserStories{
   });
 }
 
+//type of media
 enum MediaType{
   image,
   video,
 }
 
+//the details on the story that users have posted
 class Stories{
   MediaType media;
   Duration duration;

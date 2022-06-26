@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sociafy/models/stories.dart';
-import 'package:sociafy/widgets/storyview_item.dart';
 
+import '../models/stories.dart';
 import '../providers/data.dart';
+import '../widgets/storyview_item.dart';
 
 class ViewStory extends StatefulWidget {
   UserStories user;
@@ -14,29 +14,32 @@ class ViewStory extends StatefulWidget {
 }
 
 class _ViewStoryState extends State<ViewStory> {
-
   late PageController controller;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
+    //bringing user to the story that user have click on
     final initialPage = userstories.indexOf(widget.user);
     controller = PageController(initialPage: initialPage);
   }
 
   @override
-  void dispose(){
+  void dispose() {
     controller.dispose();
     super.dispose();
   }
 
+  //displaying user stories
   @override
   Widget build(BuildContext context) => PageView(
-    controller: controller,
-    children: userstories.map((user) => storyview_item(
-        user: user,
         controller: controller,
-      )).toList(),
-  );
+        children: userstories
+            .map((user) => storyview_item(
+                  user: user,
+                  controller: controller,
+                ))
+            .toList(),
+      );
 }

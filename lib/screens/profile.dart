@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:readmore/readmore.dart';
-import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/edit_profile.dart';
 import 'package:sociafy/screens/media_post.dart';
 import 'package:sociafy/screens/socia_post.dart';
 
-class Profile extends StatefulWidget {
+import '../color/colors.dart';
+import '../providers/data.dart';
 
+class Profile extends StatefulWidget {
   @override
   State<Profile> createState() => _ProfileState();
 }
@@ -16,7 +16,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: PreferredSize(
         child: getAppBar(),
@@ -25,12 +24,14 @@ class _ProfileState extends State<Profile> {
       body: profileBody(),
     );
   }
-  Widget getAppBar(){
+
+  Widget getAppBar() {
     return AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
-      title: Text(currentUser.username,
+      title: Text(
+        currentUser.username,
         style: TextStyle(
           color: primary,
           fontFamily: "Poppins",
@@ -40,14 +41,18 @@ class _ProfileState extends State<Profile> {
       ),
       actions: [
         IconButton(
-          onPressed:(){},
-          icon: Icon(Icons.qr_code_2_rounded, color: primary,),
+          onPressed: () {},
+          icon: Icon(
+            Icons.qr_code_2_rounded,
+            color: primary,
+          ),
         ),
       ],
     );
   }
 }
 
+//displaying users information displaying on this profile page and 2 tab bars that users can navigate to
 class profileBody extends StatelessWidget {
   const profileBody({Key? key}) : super(key: key);
 
@@ -56,7 +61,7 @@ class profileBody extends StatelessWidget {
     return DefaultTabController(
         length: 2,
         child: NestedScrollView(
-          headerSliverBuilder: (context, _){
+          headerSliverBuilder: (context, _) {
             return [
               SliverList(
                 delegate: SliverChildListDelegate(
@@ -75,14 +80,14 @@ class profileBody extends StatelessWidget {
                   unselectedLabelColor: Colors.grey[400],
                   indicatorWeight: 1,
                   indicatorColor: primary,
-
                   tabs: [
                     Tab(text: 'media'),
                     Tab(text: 'socia'),
                   ],
                 ),
               ),
-              Expanded(child: TabBarView(
+              Expanded(
+                  child: TabBarView(
                 children: [
                   media(),
                   socia(),
@@ -90,21 +95,22 @@ class profileBody extends StatelessWidget {
               ))
             ],
           ),
-        )
-    );
+        ));
   }
-  Widget profileHeader (BuildContext context){
+
+  //profile header display
+  Widget profileHeader(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white
-      ),
+      decoration: BoxDecoration(color: Colors.white),
       child: Padding(
         padding: EdgeInsets.only(left: 18, bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,34 +121,37 @@ class profileBody extends StatelessWidget {
                       radius: 40,
                       backgroundImage: AssetImage(currentUser.image),
                     ),
-                    SizedBox(width: 130,),
+                    SizedBox(
+                      width: 130,
+                    ),
                     Container(
                       height: 35,
                       decoration: BoxDecoration(
                           border: Border.all(color: iconbutton),
-                          borderRadius: BorderRadius.circular(20)
-                      ),
+                          borderRadius: BorderRadius.circular(20)),
                       child: MaterialButton(
                         color: Colors.white,
                         elevation: 0,
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => EditProfile()),
+                            MaterialPageRoute(
+                                builder: (context) => EditProfile()),
                           );
                         },
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         child: Text(
                           "Edit Profile",
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              color: primary
-                          ),
+                          style:
+                              TextStyle(fontFamily: "Poppins", color: primary),
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Container(
                       width: 45,
                       height: 35,
@@ -153,25 +162,32 @@ class profileBody extends StatelessWidget {
                         border: Border.all(color: iconbutton),
                       ),
                       child: Center(
-                        child: Icon(Icons.more_horiz,
+                          child: Icon(
+                        Icons.more_horiz,
                         color: primary,
-                        size: 20,)
-                      ),
+                        size: 20,
+                      )),
                     ),
                   ],
                 ),
-                SizedBox(height: 8,),
-                Text(currentUser.name,
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  currentUser.name,
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8,),
+                SizedBox(
+                  height: 8,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(right: 110),
-                  child: ReadMoreText(currentUser.bio,
+                  child: ReadMoreText(
+                    currentUser.bio,
                     trimLines: 2,
                     trimMode: TrimMode.Line,
                     trimCollapsedText: " Show More ",
@@ -182,31 +198,35 @@ class profileBody extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 8,),
+                SizedBox(
+                  height: 8,
+                ),
                 Row(
                   children: [
                     Row(
                       children: [
-                        Text("${currentUser.totalFollower}",
+                        Text(
+                          "${currentUser.totalFollower}",
                           style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                            fontFamily: "Poppins",
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(width: 5),
-                        Text("Followers",
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 12
-                          ),
+                        Text(
+                          "Followers",
+                          style: TextStyle(fontFamily: "Poppins", fontSize: 12),
                         ),
                       ],
                     ),
-                    SizedBox(width: 15,),
+                    SizedBox(
+                      width: 15,
+                    ),
                     Row(
                       children: [
-                        Text("${currentUser.totalFollowing}",
+                        Text(
+                          "${currentUser.totalFollowing}",
                           style: TextStyle(
                             fontFamily: "Poppins",
                             fontSize: 12,
@@ -214,11 +234,9 @@ class profileBody extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 6),
-                        Text("Following",
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 12
-                          ),
+                        Text(
+                          "Following",
+                          style: TextStyle(fontFamily: "Poppins", fontSize: 12),
                         ),
                       ],
                     ),
@@ -232,6 +250,3 @@ class profileBody extends StatelessWidget {
     );
   }
 }
-
-
-

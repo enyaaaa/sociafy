@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/friends.dart';
-import 'package:sociafy/providers/data.dart';
 import 'package:sociafy/screens/view_user.dart';
-import 'package:sociafy/widgets/search_item.dart';
+
+import '../color/colors.dart';
+import '../models/friends.dart';
+import '../providers/data.dart';
+import '../widgets/search_item.dart';
 
 class Search extends StatefulWidget {
-
   @override
   State<Search> createState() => _SearchState();
 }
@@ -16,7 +16,7 @@ class _SearchState extends State<Search> {
   late List<Friends> friend;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     friend = friends;
@@ -25,26 +25,27 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        child: getAppBar(),
-        preferredSize: Size.fromHeight(60),
-      ),
-      body: Column(
-        children: [
-          buildSearch(),
-          getFriends(),
-        ],
-      )
-    );
+        appBar: PreferredSize(
+          child: getAppBar(),
+          preferredSize: Size.fromHeight(60),
+        ),
+        body: Column(
+          children: [
+            buildSearch(),
+            getFriends(),
+          ],
+        ));
   }
-  Widget getAppBar(){
+
+  Widget getAppBar() {
     return AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
       title: Column(
         children: [
-          Text( "Search",
+          Text(
+            "Search",
             style: TextStyle(
               fontFamily: 'Poppins',
               color: primary,
@@ -55,7 +56,7 @@ class _SearchState extends State<Search> {
     );
   }
 
-  Widget getFriends(){
+  Widget getFriends() {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(left: 15, top: 10, right: 15),
@@ -69,9 +70,8 @@ class _SearchState extends State<Search> {
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ViewUser(
-                          user: userfriends.user,
-                        )
-                    ));
+                              user: userfriends.user,
+                            )));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +86,9 @@ class _SearchState extends State<Search> {
                               child: Image.asset(userfriends.user.image),
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -98,8 +100,7 @@ class _SearchState extends State<Search> {
                                       overflow: TextOverflow.ellipsis,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "Poppins",
-                                      fontSize: 13
-                                  ),
+                                      fontSize: 13),
                                 ),
                               ),
                               SizedBox(
@@ -109,8 +110,7 @@ class _SearchState extends State<Search> {
                                   style: TextStyle(
                                       overflow: TextOverflow.ellipsis,
                                       fontFamily: "Poppins",
-                                      fontSize: 12
-                                  ),
+                                      fontSize: 12),
                                 ),
                               )
                             ],
@@ -121,28 +121,26 @@ class _SearchState extends State<Search> {
                         height: 40,
                         decoration: BoxDecoration(
                             border: Border.all(color: iconbutton),
-                            borderRadius: BorderRadius.circular(20)
-                        ),
+                            borderRadius: BorderRadius.circular(20)),
                         child: MaterialButton(
                           elevation: 0,
                           color: userfriends.isfollowedByMe
                               ? iconbutton
                               : Colors.white,
                           onPressed: () {
+                            //change the state of the button
                             setState(() {
                               userfriends.isfollowedByMe =
-                              !userfriends.isfollowedByMe;
+                                  !userfriends.isfollowedByMe;
                             });
                           },
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)
-                          ),
+                              borderRadius: BorderRadius.circular(20)),
                           child: Text(
+                            //if user is followed by me it will display following if not it will display follow
                             userfriends.isfollowedByMe ? "Following" : "Follow",
                             style: TextStyle(
-                                fontFamily: "Poppins",
-                                color: primary
-                            ),
+                                fontFamily: "Poppins", color: primary),
                           ),
                         ),
                       )
@@ -150,17 +148,17 @@ class _SearchState extends State<Search> {
                   ),
                 ),
               );
-            }
-        ),
+            }),
       ),
     );
   }
+
+  //users can search for items base on users username
   Widget buildSearch() => search_item(
-      text: query,
-      onChanged: searchFriends,
-      hintText: "Search Friends");
-  void searchFriends(String query){
-    final friend = friends.where((userfriends){
+      text: query, onChanged: searchFriends, hintText: "Search Friends");
+
+  void searchFriends(String query) {
+    final friend = friends.where((userfriends) {
       final titleLower = userfriends.user.username.toLowerCase();
       final searchLower = query.toLowerCase();
 

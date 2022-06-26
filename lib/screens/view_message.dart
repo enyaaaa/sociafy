@@ -2,21 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/messages.dart';
-import 'package:sociafy/models/user.dart';
-import 'package:sociafy/providers/data.dart';
+
+import '../color/colors.dart';
+import '../models/messages.dart';
+import '../models/user.dart';
+import '../providers/data.dart';
 
 class ViewMessage extends StatefulWidget {
+  //initialising the users in the data
   User user;
-  ViewMessage({Key? key, required this.user,}) : super(key: key);
+
+  ViewMessage({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   State<ViewMessage> createState() => _ViewMessageState();
 }
 
 class _ViewMessageState extends State<ViewMessage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +33,8 @@ class _ViewMessageState extends State<ViewMessage> {
     );
   }
 
-  Widget getAppBar(){
+  //display selected user information
+  Widget getAppBar() {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -41,9 +47,7 @@ class _ViewMessageState extends State<ViewMessage> {
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
-                  image: AssetImage(widget.user.image),
-                  fit: BoxFit.cover
-              ),
+                  image: AssetImage(widget.user.image), fit: BoxFit.cover),
             ),
           ),
           SizedBox(
@@ -67,10 +71,7 @@ class _ViewMessageState extends State<ViewMessage> {
                 Text(
                   "Active",
                   style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 10,
-                      color: textbutton
-                  ),
+                      fontFamily: "Poppins", fontSize: 10, color: textbutton),
                 )
               ],
             ),
@@ -79,20 +80,22 @@ class _ViewMessageState extends State<ViewMessage> {
       ),
       actions: [
         IconButton(
-          onPressed:(){},
+          onPressed: () {},
           icon: SvgPicture.asset("assets/icon/voice_call_icon.svg"),
         ),
         Padding(
           padding: EdgeInsets.only(right: 10),
           child: IconButton(
-            onPressed:(){},
+            onPressed: () {},
             icon: SvgPicture.asset("assets/icon/video_call_icon.svg"),
           ),
         )
       ],
     );
   }
-  Widget getBody(){
+
+  //displaying the conversation and grouping them according to the date time sent
+  Widget getBody() {
     return Column(
       children: [
         Expanded(
@@ -121,16 +124,14 @@ class _ViewMessageState extends State<ViewMessage> {
                     child: Text(
                       DateFormat.yMMMd().format(messages.datetime),
                       style: TextStyle(
-                          fontSize: 10,
-                          color: primary,
-                          fontFamily: "poppins"
-                      ),
+                          fontSize: 10, color: primary, fontFamily: "poppins"),
                     ),
                   ),
                 ),
               ),
             ),
             itemBuilder: (context, Messages messages) => Align(
+              //is it is send by me it will display on the right if not it will display on the left
               alignment: messages.isSentByMe
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
@@ -148,9 +149,9 @@ class _ViewMessageState extends State<ViewMessage> {
                       Text(
                         messages.text,
                         style: TextStyle(
-                            color: primary,
-                            fontFamily: "poppins",
-                            fontSize: 13,
+                          color: primary,
+                          fontFamily: "poppins",
+                          fontSize: 13,
                         ),
                       ),
                       Text(
@@ -158,8 +159,7 @@ class _ViewMessageState extends State<ViewMessage> {
                         style: TextStyle(
                             fontSize: 10,
                             color: primary,
-                            fontFamily: "poppins"
-                        ),
+                            fontFamily: "poppins"),
                       ),
                     ],
                   ),
@@ -174,7 +174,7 @@ class _ViewMessageState extends State<ViewMessage> {
             padding: EdgeInsets.symmetric(horizontal: 8),
             height: 60,
             decoration: BoxDecoration(
-              color: white,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -184,24 +184,21 @@ class _ViewMessageState extends State<ViewMessage> {
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(12),
                         hintText: "Type your message here...",
-                        hintStyle: TextStyle(
-                            color: primary,
-                            fontFamily: "poppins"
-                        ),
-                        border: InputBorder.none
-                    ),
+                        hintStyle:
+                            TextStyle(color: primary, fontFamily: "poppins"),
+                        border: InputBorder.none),
                     style: TextStyle(
                       color: primary,
                       fontFamily: "poppins",
                     ),
-                    onSubmitted: (text){
-                        final message = Messages(
-                            text: text,
-                            datetime: DateTime.now(),
-                            unread: true,
-                            isSentByMe: true,
-                        );
-                        setState(() => messages.add(message));
+                    onSubmitted: (text) {
+                      final message = Messages(
+                        text: text,
+                        datetime: DateTime.now(),
+                        unread: true,
+                        isSentByMe: true,
+                      );
+                      setState(() => messages.add(message));
                     },
                   ),
                 ),
@@ -212,10 +209,9 @@ class _ViewMessageState extends State<ViewMessage> {
                     width: 40,
                     decoration: BoxDecoration(
                         color: iconbutton,
-                        borderRadius: BorderRadius.circular(10)
-                    ),
+                        borderRadius: BorderRadius.circular(10)),
                     child: IconButton(
-                      onPressed: (){},
+                      onPressed: () {},
                       icon: Icon(
                         Icons.near_me,
                         size: 25,

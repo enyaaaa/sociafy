@@ -1,5 +1,6 @@
 import 'package:sociafy/models/user.dart';
 
+//models for search page
 class Friends{
   User user;
   bool isfollowedByMe;

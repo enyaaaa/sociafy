@@ -1,3 +1,4 @@
+//models for explore page
 class SearchExplore{
   String name;
   String image;

@@ -1,5 +1,4 @@
-import 'package:sociafy/models/stories.dart';
-
+//models of user details
 class User{
   String image;
   String username;

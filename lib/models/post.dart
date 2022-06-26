@@ -1,5 +1,6 @@
 import 'package:sociafy/models/user.dart';
 
+//models for other users post
 class Posts{
   User user;
   DateTime timeAgo;
@@ -23,6 +24,7 @@ class Posts{
   });
 }
 
+//models of comments left on the post
 class Comments {
   User user;
   String comment;

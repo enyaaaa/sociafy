@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sociafy/color/colors.dart';
 import 'package:sociafy/models/myPost.dart';
 import 'package:sociafy/root_page.dart';
+
+import 'color/colors.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -15,17 +16,15 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers:[
-        ChangeNotifierProvider<myPostList>(
-            create: (ctx) => myPostList()
-        ),
+      providers: [
+        ChangeNotifierProvider<myPostList>(create: (ctx) => myPostList()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        //navigate to the root page
         home: Rootpage(),
         theme: ThemeData(
           primarySwatch: Colors.grey,

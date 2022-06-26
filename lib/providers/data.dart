@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:sociafy/models/friends.dart';
 import 'package:sociafy/models/messages.dart';
+import 'package:sociafy/models/notifs.dart';
 import 'package:sociafy/models/post.dart';
 import 'package:sociafy/models/explore.dart';
 import 'package:sociafy/models/stories.dart';
@@ -14,8 +14,8 @@ User currentUser = User(
   bio:
       'Zendaya @euphoria @spidermanmovie @dunemovie “I’m Tired” out now @labrinth lab.lnk.to/ImTired',
   isFollowedbyMe: true,
-  totalFollower: 0,
-  totalFollowing: 0,
+  totalFollower: 10,
+  totalFollowing: 7,
 );
 
 User corbynbesson = User(
@@ -126,7 +126,8 @@ List<Stories> danielstories = [
   Stories(
     media: MediaType.image,
     duration: Duration(seconds: 5),
-    url: 'https://i.pinimg.com/564x/ac/d5/25/acd5252414b37a0db415552058cd1bff.jpg',
+    url:
+        'https://i.pinimg.com/564x/ac/d5/25/acd5252414b37a0db415552058cd1bff.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 5)),
   ),
   Stories(
@@ -140,7 +141,7 @@ List<Stories> danielstories = [
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://media4.giphy.com/media/463AvJ8VbvFkHKNgOT/giphy.gif?cid=ecf05e47v26115p7f6qg4wctikx9whce5qsga7uc41a7jo87&rid=giphy.gif&ct=g',
+        'https://media4.giphy.com/media/463AvJ8VbvFkHKNgOT/giphy.gif?cid=ecf05e47v26115p7f6qg4wctikx9whce5qsga7uc41a7jo87&rid=giphy.gif&ct=g',
     datetime: DateTime.now().subtract(Duration(minutes: 40)),
   ),
 ];
@@ -150,14 +151,14 @@ List<Stories> oliviastories = [
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://i.pinimg.com/564x/2b/44/1b/2b441b1c727a9fdc0718f9ad60ffd17c.jpg',
+        'https://i.pinimg.com/564x/2b/44/1b/2b441b1c727a9fdc0718f9ad60ffd17c.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 1)),
   ),
   Stories(
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://i.pinimg.com/564x/51/8c/3a/518c3afc0b281f81673a89109f61e2f4.jpg',
+        'https://i.pinimg.com/564x/51/8c/3a/518c3afc0b281f81673a89109f61e2f4.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 3)),
   ),
 ];
@@ -184,21 +185,21 @@ List<Stories> haileystories = [
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://i.pinimg.com/564x/69/ac/4d/69ac4d75c14e4ee8517f9b93fabc5d35.jpg',
+        'https://i.pinimg.com/564x/69/ac/4d/69ac4d75c14e4ee8517f9b93fabc5d35.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 3)),
   ),
   Stories(
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://i.pinimg.com/564x/3d/8b/12/3d8b12498527ef99784fd343f112f2c4.jpg',
+        'https://i.pinimg.com/564x/3d/8b/12/3d8b12498527ef99784fd343f112f2c4.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 3)),
   ),
   Stories(
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://i.pinimg.com/564x/9b/0e/e2/9b0ee2929997aa235b32168c5b52d0c2.jpg',
+        'https://i.pinimg.com/564x/9b/0e/e2/9b0ee2929997aa235b32168c5b52d0c2.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 3)),
   ),
 ];
@@ -208,7 +209,7 @@ List<Stories> emmastories = [
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://i.pinimg.com/564x/67/5c/70/675c705c8062328f34e384a22d954870.jpg',
+        'https://i.pinimg.com/564x/67/5c/70/675c705c8062328f34e384a22d954870.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 1)),
   ),
 ];
@@ -218,14 +219,14 @@ List<Stories> tomstories = [
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://i.pinimg.com/564x/44/28/c9/4428c9ab7b1cc6a0f4430816672f8a32.jpg',
+        'https://i.pinimg.com/564x/44/28/c9/4428c9ab7b1cc6a0f4430816672f8a32.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 1)),
   ),
   Stories(
     media: MediaType.image,
     duration: Duration(seconds: 5),
     url:
-    'https://i.pinimg.com/564x/51/de/36/51de361a2b2e77d81f05bb786a92b7c9.jpg',
+        'https://i.pinimg.com/564x/51/de/36/51de361a2b2e77d81f05bb786a92b7c9.jpg',
     datetime: DateTime.now().subtract(Duration(hours: 1)),
   ),
 ];
@@ -317,6 +318,7 @@ List<Comments> comments = [
     isliked: false,
   ),
 ];
+
 //chats
 List<UserChats> chats = [
   UserChats(
@@ -373,7 +375,8 @@ List<Messages> messages = [
   ),
   Messages(
     datetime: DateTime.now().subtract(Duration(days: 4, minutes: 32)),
-    text: "you must watch this show called stranger things its scary but you should definitely watch it",
+    text:
+        "you must watch this show called stranger things its scary but you should definitely watch it",
     unread: true,
     isSentByMe: true,
   ),
@@ -435,6 +438,59 @@ List<Friends> friends = [
   ),
 ];
 
+//notifications
+List<Notifs> notifs = [
+  Notifs(
+      user: haileybieber,
+      datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+      notiftype: "liked your post",
+      postreact: "assets/post/zendaya_post.jpg",
+      icon: "assets/icon/like_active_icon.svg"),
+  Notifs(
+      user: haileybieber,
+      datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+      notiftype: "commented on your post",
+      postreact: "assets/post/zendaya_post.jpg",
+      icon: "assets/icon/commented_icon.svg"),
+  Notifs(
+      user: harrystyles,
+      datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+      notiftype: "liked your post",
+      postreact: "assets/post/zendaya_post.jpg",
+      icon: "assets/icon/like_active_icon.svg"),
+  Notifs(
+      user: oliviarodrigo,
+      datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+      notiftype: "liked your post",
+      postreact: "assets/post/zendaya_post.jpg",
+      icon: "assets/icon/like_active_icon.svg"),
+  Notifs(
+      user: harrystyles,
+      datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+      notiftype: "commneted on your post",
+      postreact: "assets/post/zendaya_post.jpg",
+      icon: "assets/icon/commented_icon.svg"),
+  Notifs(
+      user: seaveydaniel,
+      datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+      notiftype: "followed you",
+      postreact: null,
+      icon: "assets/icon/user_icon.svg"),
+  Notifs(
+      user: emmawatson,
+      datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+      notiftype: "liked your post",
+      postreact: "assets/post/zendaya_post.jpg",
+      icon: "assets/icon/like_active_icon.svg"),
+  Notifs(
+      user: tomholland2013,
+      datetime: DateTime.now().subtract(Duration(days: 1, minutes: 4)),
+      notiftype: "liked your post",
+      postreact: "assets/post/zendaya_post.jpg",
+      icon: "assets/icon/like_active_icon.svg"),
+];
+
+//search categories
 List searchCategories = [
   "Trending",
   "Hacks",
@@ -445,6 +501,7 @@ List searchCategories = [
   "Art"
 ];
 
+//images in search explorer
 List<SearchExplore> search = [
   SearchExplore(
     name: "ammachamberlain",

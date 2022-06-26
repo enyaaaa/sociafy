@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sociafy/color/colors.dart';
-import 'package:sociafy/models/stories.dart';
-import 'package:sociafy/providers/data.dart';
-import 'package:sociafy/screens/view_story.dart';
 
+import '../color/colors.dart';
+import '../models/stories.dart';
+import '../providers/data.dart';
+import '../screens/view_story.dart';
 
+//a list view of story item displaying horizontally on the home page
 class story_item extends StatefulWidget {
   const story_item({Key? key}) : super(key: key);
 
@@ -21,11 +22,12 @@ class _story_itemState extends State<story_item> {
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: userstories.length,
-          itemBuilder: (BuildContext context, int index){
+          itemBuilder: (BuildContext context, int index) {
             UserStories story = userstories[index];
-            if (index == 0 ){
+            if (index == 0) {
               return Padding(
-                padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10, top: 10),
+                padding: const EdgeInsets.only(
+                    right: 15, left: 15, bottom: 10, top: 10),
                 child: Column(
                   children: [
                     Container(
@@ -46,11 +48,10 @@ class _story_itemState extends State<story_item> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.blueGrey,
-                                    offset: Offset(0,2),
+                                    offset: Offset(0, 2),
                                     blurRadius: 8.0,
                                   )
-                                ]
-                            ),
+                                ]),
                           ),
                           Positioned(
                               bottom: 0,
@@ -59,28 +60,27 @@ class _story_itemState extends State<story_item> {
                                 width: 20,
                                 height: 20,
                                 decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: primary
-                                ),
-                                child: Icon(Icons.add_circle,
-                                  color: iconbutton,size: 20,
+                                    shape: BoxShape.circle, color: primary),
+                                child: Icon(
+                                  Icons.add_circle,
+                                  color: iconbutton,
+                                  size: 20,
                                 ),
                               ))
                         ],
                       ),
                     ),
-                    SizedBox(height: 8,),
+                    SizedBox(
+                      height: 8,
+                    ),
                     SizedBox(
                         width: 70,
-                        child: Text("Your story",
+                        child: Text(
+                          "Your story",
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 12
-                          ),
-                        )
-                    )
+                          style: TextStyle(fontFamily: "Poppins", fontSize: 12),
+                        ))
                   ],
                 ),
               );
@@ -92,7 +92,8 @@ class _story_itemState extends State<story_item> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ViewStory(user: story)),
+                        MaterialPageRoute(
+                            builder: (context) => ViewStory(user: story)),
                       );
                     },
                     child: Container(
@@ -108,30 +109,27 @@ class _story_itemState extends State<story_item> {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.blueGrey,
-                              offset: Offset(0,2),
+                              offset: Offset(0, 2),
                               blurRadius: 8.0,
                             )
-                          ]
-                      ),
+                          ]),
                     ),
                   ),
-                  SizedBox(height: 8,),
+                  SizedBox(
+                    height: 8,
+                  ),
                   SizedBox(
                       width: 70,
-                      child: Text(story.userstory.username,
+                      child: Text(
+                        story.userstory.username,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 12
-                        ),
-                      )
-                  )
+                        style: TextStyle(fontFamily: 'Poppins', fontSize: 12),
+                      ))
                 ],
               ),
             );
-          }
-      ),
+          }),
     );
   }
 }

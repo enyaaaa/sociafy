@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//models for my own post
 class myPost{
   String username;
   String userprofilePic;
@@ -22,6 +23,7 @@ class myPost{
   });
 }
 
+//post list with change notifier where user can create their post
 class myPostList with ChangeNotifier{
   List<myPost> myPosts = [];
 

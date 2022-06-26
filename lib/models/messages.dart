@@ -1,5 +1,6 @@
 import 'package:sociafy/models/user.dart';
 
+//chats that user have texted with
 class UserChats{
   User userchats;
   DateTime datetime;
@@ -14,6 +15,7 @@ class UserChats{
   });
 }
 
+//messgaes of the chats
 class Messages {
   DateTime datetime;
   String text;
