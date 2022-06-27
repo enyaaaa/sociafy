@@ -11,8 +11,8 @@ import '../widgets/heart_animation.dart';
 
 class ViewPost extends StatefulWidget {
   static route(
-    Posts data,
-  ) =>
+      Posts data,
+      ) =>
       MaterialPageRoute(
         builder: (context) => ViewPost(
           post: data,
@@ -37,49 +37,6 @@ class _ViewPostState extends State<ViewPost> {
       ),
       body: viewPostBody(
         post: widget.post,
-      ),
-      bottomNavigationBar: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(12),
-                  hintText: "Type your message here...",
-                  hintStyle: TextStyle(color: primary, fontFamily: "poppins"),
-                  border: InputBorder.none),
-              style: TextStyle(
-                color: primary,
-                fontFamily: "poppins",
-              ),
-              onSubmitted: (text) {
-                final comment = Comments(
-                  user: currentUser,
-                  comment: text,
-                  datetime: DateTime.now(),
-                  isliked: false,
-                );
-                setState(() => comments.add(comment));
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  color: iconbutton, borderRadius: BorderRadius.circular(10)),
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.near_me,
-                  size: 25,
-                  color: primary,
-                ),
-              ),
-            ),
-          )
-        ],
       ),
     );
   }
@@ -111,9 +68,11 @@ class viewPostBody extends StatefulWidget {
 class _viewPostBodyState extends State<viewPostBody> {
   bool isHeartAnimating = false;
 
+  final controller = TextEditingController();
   //when user click into the comments of the post it will navigate to this scroll view displaying all the comments
   @override
   Widget build(BuildContext context) {
+    final controller = TextEditingController();
     return SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         child: Padding(
@@ -157,10 +116,10 @@ class _viewPostBodyState extends State<viewPostBody> {
                               ),
                               widget.post.location != null
                                   ? Text(
-                                      widget.post.location!,
-                                      style: TextStyle(
-                                          fontFamily: "Poppins", fontSize: 12),
-                                    )
+                                widget.post.location!,
+                                style: TextStyle(
+                                    fontFamily: "Poppins", fontSize: 12),
+                              )
                                   : SizedBox.shrink(),
                               Text(
                                 timeago.format(widget.post.timeAgo),
@@ -185,24 +144,24 @@ class _viewPostBodyState extends State<viewPostBody> {
                     ),
                     widget.post.caption != null
                         ? Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Container(
-                              child: ReadMoreText(
-                                widget.post.caption!,
-                                trimLines: 2,
-                                textAlign: TextAlign.justify,
-                                trimMode: TrimMode.Line,
-                                trimCollapsedText: " Show More ",
-                                trimExpandedText: " Show Less ",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  height: 2,
-                                  fontFamily: "Poppins",
-                                ),
-                              ),
-                            ))
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Container(
+                          child: ReadMoreText(
+                            widget.post.caption!,
+                            trimLines: 2,
+                            textAlign: TextAlign.justify,
+                            trimMode: TrimMode.Line,
+                            trimCollapsedText: " Show More ",
+                            trimExpandedText: " Show Less ",
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 2,
+                              fontFamily: "Poppins",
+                            ),
+                          ),
+                        ))
                         : Padding(
-                            padding: EdgeInsets.only(left: 10, right: 15)),
+                        padding: EdgeInsets.only(left: 10, right: 15)),
                     GestureDetector(
                       child: Stack(
                         alignment: Alignment.center,
@@ -237,7 +196,7 @@ class _viewPostBodyState extends State<viewPostBody> {
                                 width: 60,
                               ),
                               onEnd: () => setState(
-                                () => isHeartAnimating = false,
+                                    () => isHeartAnimating = false,
                               ),
                             ),
                           ),
@@ -262,7 +221,7 @@ class _viewPostBodyState extends State<viewPostBody> {
                                   onPressed: () {
                                     setState(() {
                                       widget.post.isliked =
-                                          !widget.post.isliked;
+                                      !widget.post.isliked;
                                     });
                                   },
                                   icon: SvgPicture.asset(
@@ -306,7 +265,7 @@ class _viewPostBodyState extends State<viewPostBody> {
               ),
               Container(
                 width: double.infinity,
-                height: 700,
+                height: 500,
                 decoration: BoxDecoration(
                     color: postItem,
                     borderRadius: BorderRadius.only(
@@ -318,7 +277,7 @@ class _viewPostBodyState extends State<viewPostBody> {
                     Expanded(
                       child: Padding(
                         padding:
-                            const EdgeInsets.only(left: 15, top: 10, right: 15),
+                        const EdgeInsets.only(left: 15, top: 10, right: 15),
                         child: ListView.builder(
                             itemCount: comments.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -328,7 +287,7 @@ class _viewPostBodyState extends State<viewPostBody> {
                                 child: GestureDetector(
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -337,7 +296,7 @@ class _viewPostBodyState extends State<viewPostBody> {
                                             height: 40,
                                             child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(5),
+                                              BorderRadius.circular(5),
                                               child: Image.asset(
                                                   comment.user.image),
                                             ),
@@ -347,7 +306,7 @@ class _viewPostBodyState extends State<viewPostBody> {
                                           ),
                                           Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               SizedBox(
                                                 width: 180,
@@ -355,9 +314,9 @@ class _viewPostBodyState extends State<viewPostBody> {
                                                   comment.user.username,
                                                   style: TextStyle(
                                                       overflow:
-                                                          TextOverflow.ellipsis,
+                                                      TextOverflow.ellipsis,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       fontFamily: "Poppins",
                                                       fontSize: 13),
                                                 ),
@@ -395,6 +354,78 @@ class _viewPostBodyState extends State<viewPostBody> {
                             }),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: controller,
+                                decoration: InputDecoration(
+                                    suffixIcon: GestureDetector(
+                                      child: Icon(Icons.close, color: primary),
+                                      onTap: () {
+                                        controller.clear();
+                                        FocusScope.of(context).requestFocus(FocusNode());
+                                      },
+                                    ),
+                                    contentPadding: EdgeInsets.all(12),
+                                    hintText: "Type your message here...",
+                                    hintStyle:
+                                    TextStyle(color: primary, fontFamily: "poppins"),
+                                    border: InputBorder.none),
+                                style: TextStyle(
+                                  color: primary,
+                                  fontFamily: "poppins",
+                                ),
+                                onSubmitted: (text) {
+                                  final comment = Comments(
+                                    user: currentUser,
+                                    comment: text,
+                                    datetime: DateTime.now(),
+                                    isliked: false,
+                                  );
+                                  setState(() => comments.add(comment));
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    color: iconbutton,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: IconButton(
+                                  onPressed: () {
+                                    final comment = Comments(
+                                      user: currentUser,
+                                      comment: controller.text,
+                                      datetime: DateTime.now(),
+                                      isliked: false,
+                                    );
+                                    setState(() => comments.add(comment));
+                                  },
+                                  icon: Icon(
+                                    Icons.near_me,
+                                    size: 25,
+                                    color: primary,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

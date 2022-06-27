@@ -49,10 +49,10 @@ class _post_itemState extends State<post_item> {
                                       height: 45,
                                       decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                          BorderRadius.circular(10),
                                           image: DecorationImage(
                                             image:
-                                                AssetImage(userpost.user.image),
+                                            AssetImage(userpost.user.image),
                                             fit: BoxFit.cover,
                                           )),
                                     ),
@@ -61,7 +61,7 @@ class _post_itemState extends State<post_item> {
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           userpost.user.username,
@@ -72,11 +72,11 @@ class _post_itemState extends State<post_item> {
                                         ),
                                         userpost.location != null
                                             ? Text(
-                                                userpost.location!,
-                                                style: TextStyle(
-                                                    fontFamily: "Poppins",
-                                                    fontSize: 12),
-                                              )
+                                          userpost.location!,
+                                          style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontSize: 12),
+                                        )
                                             : SizedBox.shrink(),
                                         Text(
                                           timeago.format(userpost.timeAgo),
@@ -102,26 +102,26 @@ class _post_itemState extends State<post_item> {
                               ),
                               userpost.caption != null
                                   ? Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: Container(
-                                        child: ReadMoreText(
-                                          userpost.caption!,
-                                          trimLines: 2,
-                                          textAlign: TextAlign.justify,
-                                          trimMode: TrimMode.Line,
-                                          trimCollapsedText: " Show More ",
-                                          trimExpandedText: " Show Less ",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            height: 2,
-                                            fontFamily: "Poppins",
-                                          ),
-                                        ),
-                                      ))
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: Container(
+                                    child: ReadMoreText(
+                                      userpost.caption!,
+                                      trimLines: 2,
+                                      textAlign: TextAlign.justify,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: " Show More ",
+                                      trimExpandedText: " Show Less ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        height: 2,
+                                        fontFamily: "Poppins",
+                                      ),
+                                    ),
+                                  ))
                                   : Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 15)),
+                                  padding:
+                                  EdgeInsets.only(left: 10, right: 15)),
                               GestureDetector(
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -136,7 +136,7 @@ class _post_itemState extends State<post_item> {
                                       height: 390.0,
                                       decoration: BoxDecoration(
                                         borderRadius:
-                                            BorderRadius.circular(25.0),
+                                        BorderRadius.circular(25.0),
                                         boxShadow: [
                                           BoxShadow(
                                             color: postbackground,
@@ -160,7 +160,7 @@ class _post_itemState extends State<post_item> {
                                           width: 60,
                                         ),
                                         onEnd: () => setState(
-                                          () => isHeartAnimating = false,
+                                              () => isHeartAnimating = false,
                                         ),
                                       ),
                                     ),
@@ -178,7 +178,7 @@ class _post_itemState extends State<post_item> {
                                 child: Container(
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -186,7 +186,7 @@ class _post_itemState extends State<post_item> {
                                             onPressed: () {
                                               setState(() {
                                                 userpost.isliked =
-                                                    !userpost.isliked;
+                                                !userpost.isliked;
                                               });
                                             },
                                             icon: SvgPicture.asset(
@@ -220,7 +220,7 @@ class _post_itemState extends State<post_item> {
                                         onPressed: () {
                                           setState(() {
                                             userpost.issaved =
-                                                !userpost.issaved;
+                                            !userpost.issaved;
                                           });
                                         },
                                         icon: SvgPicture.asset(

@@ -55,7 +55,6 @@ class _sociaState extends State<socia> {
           });
     }
 
-
     //displaying users post in a list form, if user does not have any post it will display "no post yet"
     return Container(
       child: myPosts.getmyPostList().length > 0
@@ -334,7 +333,7 @@ class _sociaState extends State<socia> {
           : Column(
               children: [
                 SizedBox(
-                  height: 80,
+                  height: 50,
                 ),
                 SvgPicture.asset(
                   "assets/icon/camera_icon.svg",

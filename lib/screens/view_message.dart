@@ -22,6 +22,7 @@ class ViewMessage extends StatefulWidget {
 }
 
 class _ViewMessageState extends State<ViewMessage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +97,7 @@ class _ViewMessageState extends State<ViewMessage> {
 
   //displaying the conversation and grouping them according to the date time sent
   Widget getBody() {
+    final controller = TextEditingController();
     return Column(
       children: [
         Expanded(
@@ -181,11 +183,19 @@ class _ViewMessageState extends State<ViewMessage> {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: controller,
                     decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          child: Icon(Icons.close, color: primary),
+                          onTap: () {
+                            controller.clear();
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                        ),
                         contentPadding: EdgeInsets.all(12),
                         hintText: "Type your message here...",
                         hintStyle:
-                            TextStyle(color: primary, fontFamily: "poppins"),
+                        TextStyle(color: primary, fontFamily: "poppins"),
                         border: InputBorder.none),
                     style: TextStyle(
                       color: primary,
@@ -211,7 +221,15 @@ class _ViewMessageState extends State<ViewMessage> {
                         color: iconbutton,
                         borderRadius: BorderRadius.circular(10)),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        final message = Messages(
+                          text: controller.text,
+                          datetime: DateTime.now(),
+                          unread: true,
+                          isSentByMe: true,
+                        );
+                        setState(() => messages.add(message));
+                      },
                       icon: Icon(
                         Icons.near_me,
                         size: 25,

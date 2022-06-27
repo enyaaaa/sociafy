@@ -257,6 +257,10 @@ class _AddPostState extends State<AddPost> {
                         onSaved: (value) {
                           caption = value;
                         },
+                        style: TextStyle(
+                          color: primary,
+                          fontFamily: "poppins",
+                        ),
                       ),
                       TextFormField(
                         decoration: InputDecoration(
@@ -267,6 +271,10 @@ class _AddPostState extends State<AddPost> {
                         onSaved: (value) {
                           location = value;
                         },
+                        style: TextStyle(
+                          color: primary,
+                          fontFamily: "poppins",
+                        ),
                       ),
                     ],
                   ),

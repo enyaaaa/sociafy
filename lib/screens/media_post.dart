@@ -47,7 +47,7 @@ class _mediaState extends State<media> {
               padding: const EdgeInsets.only(left: 140),
               child: Column(
                 children: [
-                  SizedBox(height: 80),
+                  SizedBox(height: 50),
                   SvgPicture.asset(
                     "assets/icon/camera_icon.svg",
                     width: 70,
