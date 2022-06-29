@@ -10,6 +10,7 @@ import '../color/colors.dart';
 import '../models/myPost.dart';
 import '../providers/data.dart';
 import '../widgets/heart_animation.dart';
+import 'edit_post.dart';
 
 class socia extends StatefulWidget {
   const socia({Key? key}) : super(key: key);
@@ -183,6 +184,16 @@ class _sociaState extends State<socia> {
                                           onSelected: (value) {
                                             switch (value) {
                                               case MenuValues.edit:
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EditPost(
+                                                            mypost: mypost,
+                                                            i: i,
+                                                            socialScreenSetState: setState
+                                                          )),
+                                                );
                                                 break;
                                               case MenuValues.delete:
                                                 removePhoto(i);
@@ -215,7 +226,7 @@ class _sociaState extends State<socia> {
                                       ))
                                   : Padding(
                                       padding:
-                                          EdgeInsets.only(left: 10, right: 15)),
+                                          EdgeInsets.only(top: 10)),
                               GestureDetector(
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -239,8 +250,7 @@ class _sociaState extends State<socia> {
                                           ),
                                         ],
                                         image: DecorationImage(
-                                          image: Image.file(File(mypost.image))
-                                              .image,
+                                          image: Image.file(File(mypost.image)).image,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -285,7 +295,7 @@ class _sociaState extends State<socia> {
                                               });
                                             },
                                             icon: SvgPicture.asset(
-                                              mypost.isliked
+                                              mypost.isliked ?? false
                                                   ? "assets/icon/like_active_icon.svg"
                                                   : "assets/icon/like_icon.svg",
                                               width: 27,
@@ -314,7 +324,7 @@ class _sociaState extends State<socia> {
                                           });
                                         },
                                         icon: SvgPicture.asset(
-                                          mypost.issaved
+                                          mypost.issaved ?? false
                                               ? "assets/icon/save_active_icon.svg"
                                               : "assets/icon/save_icon.svg",
                                           width: 27,

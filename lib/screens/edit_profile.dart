@@ -13,7 +13,7 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   // set initial password field to not show the password
-  bool showPassword = false;
+  bool showPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +95,11 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(
                 height: 30,
               ),
-              buildTextField("Name", currentUser.name, false),
-              buildTextField("Username", currentUser.username, false),
-              buildTextField("Email", "zendaya@gmail.com", false),
-              buildTextField("Password", "*******", true),
-              buildTextField("Bio", currentUser.bio, false),
+              buildTextField("Name", "Name", false,currentUser.name),
+              buildTextField("Username", "Username", false, currentUser.username),
+              buildTextField("Email", "Email", false, "zendaya@gmail.com"),
+              buildTextField("Password", "*******", true, "erterter"),
+              buildTextField("Bio", currentUser.bio, false, currentUser.bio),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 80),
                 child: Row(
@@ -148,10 +148,11 @@ class _EditProfileState extends State<EditProfile> {
 
   //style of the text field for edit profile
   Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
+      String labelText, String placeholder, bool isPasswordTextField, String initialdetails) {
     return Padding(
       padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
-      child: TextField(
+      child: TextFormField(
+        initialValue: initialdetails,
         obscureText: isPasswordTextField ? showPassword : false,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
@@ -178,6 +179,11 @@ class _EditProfileState extends State<EditProfile> {
               fontFamily: 'Poppins',
               color: primary,
             )),
+        style: TextStyle(
+          fontSize: 14,
+          height: 2,
+          fontFamily: "Poppins",
+        ),
       ),
     );
   }

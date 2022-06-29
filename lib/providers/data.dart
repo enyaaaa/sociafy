@@ -1,5 +1,6 @@
 import 'package:sociafy/models/friends.dart';
 import 'package:sociafy/models/messages.dart';
+import 'package:sociafy/models/myPost.dart';
 import 'package:sociafy/models/notifs.dart';
 import 'package:sociafy/models/post.dart';
 import 'package:sociafy/models/explore.dart';
@@ -489,6 +490,8 @@ List<Notifs> notifs = [
       postreact: "assets/post/zendaya_post.jpg",
       icon: "assets/icon/like_active_icon.svg"),
 ];
+
+List<myPost> myPosts = [];
 
 //search categories
 List searchCategories = [
