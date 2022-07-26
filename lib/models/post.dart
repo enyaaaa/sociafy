@@ -1,40 +1,74 @@
-import 'package:sociafy/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //models for other users post
-class Posts{
-  User user;
-  DateTime timeAgo;
-  String image;
-  String? caption;
-  String? location;
-  bool isliked;
-  String? likedby;
-  bool issaved;
+class Post{
+  final String uid;
+  final String username;
+  final String image;
+  final String postId;
+  final String caption;
+  final String location;
+  final DateTime timeAgo;
+  final String postUrl;
+  final likes;
+  final saved;
 
-  Posts({
-    required this.user,
-    required this.timeAgo,
+
+  Post({
+    required this.uid,
+    required this.username,
     required this.image,
-    this.caption,
-    this.location,
-    required this.isliked,
-    this.likedby,
-    required this.issaved,
-
+    required this.postId,
+    required this.caption,
+    required this.location,
+    required this.timeAgo,
+    required this.postUrl,
+    required this.likes,
+    required this.saved,
   });
+
+  static Post fromSnap(DocumentSnapshot snap){
+    var snapshot = snap.data() as Map<String, dynamic>;
+
+    return Post(
+      uid: snapshot['uid'],
+      username: snapshot['username'],
+      image: snapshot['image'],
+      postId: snapshot['postId'],
+      caption: snapshot['caption'],
+      location: snapshot['location'],
+      timeAgo: snapshot['timeAgo'],
+      postUrl: snapshot['postUrl'],
+      likes: snapshot['likes'],
+      saved: snapshot['saved'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    "uid": uid,
+    "username": username,
+    "image": image,
+    "postId": postId,
+    "caption": caption,
+    "location": location,
+    "timeAgo": timeAgo,
+    "postUrl": postUrl,
+    "likes": likes,
+    "saved": saved,
+  };
 }
 
-//models of comments left on the post
-class Comments {
-  User user;
-  String comment;
-  DateTime datetime;
-  bool isliked;
-
-  Comments({
-    required this.user,
-    required this.comment,
-    required this.isliked,
-    required this.datetime,
-  });
-}
+// //models of comments left on the post
+// class Comments {
+//   UserModel user;
+//   String comment;
+//   DateTime datetime;
+//   bool isliked;
+//
+//   Comments({
+//     required this.user,
+//     required this.comment,
+//     required this.isliked,
+//     required this.datetime,
+//   });
+// }

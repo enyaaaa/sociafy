@@ -5,7 +5,6 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
 import '../models/messages.dart';
-import '../providers/data.dart';
 import '../widgets/drawer.dart';
 import '../widgets/search_item.dart';
 
@@ -25,7 +24,7 @@ class _MessageState extends State<Message> {
   void initState() {
     super.initState();
 
-    chat = chats;
+    //chat = chats;
   }
 
   @override
@@ -57,14 +56,14 @@ class _MessageState extends State<Message> {
             scaffoldkey.currentState?.openDrawer();
           },
           icon: CircleAvatar(
-            child: ClipOval(
-              child: Image(
-                width: 30.0,
-                height: 30.0,
-                image: AssetImage(currentUser.image),
-                fit: BoxFit.cover,
-              ),
-            ),
+            // child: ClipOval(
+            //   child: Image(
+            //     width: 30.0,
+            //     height: 30.0,
+            //     image: AssetImage(currentUser.image),
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
           ),
         ),
       ),
@@ -91,16 +90,16 @@ class _MessageState extends State<Message> {
   Widget getMessages() {
     return Expanded(
       child: ListView.builder(
-          itemCount: chat.length,
+          //itemCount: chat.length,
           itemBuilder: (BuildContext context, int index) {
-            UserChats userchat = chat[index];
+            //UserChats userchat = chat[index];
             return GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ViewMessage(
-                    user: userchat.userchats,
-                  ),
-                ));
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => ViewMessage(
+                //     user: userchat.userchats,
+                //   ),
+                // ));
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
@@ -122,50 +121,50 @@ class _MessageState extends State<Message> {
                     children: [
                       Row(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              child: Image.asset(userchat.userchats.image,
-                                  fit: BoxFit.cover),
-                            ),
-                          ),
+                          // ClipRRect(
+                          //   borderRadius: BorderRadius.circular(10),
+                          //   child: Container(
+                          //     height: 60,
+                          //     width: 60,
+                          //     child: Image.asset(userchat.userchats.image,
+                          //         fit: BoxFit.cover),
+                          //   ),
+                          // ),
                           SizedBox(
                             width: 20,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                width: 180,
-                                child: Text(
-                                  userchat.userchats.username,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
+                              // SizedBox(
+                              //   width: 180,
+                              //   child: Text(
+                              //     userchat.userchats.username,
+                              //     overflow: TextOverflow.ellipsis,
+                              //     style: TextStyle(
+                              //       fontFamily: "Poppins",
+                              //       fontSize: 13,
+                              //       fontWeight: FontWeight.bold,
+                              //     ),
+                              //   ),
+                              // ),
                               SizedBox(
                                 height: 5,
                               ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.45,
-                                child: SizedBox(
-                                  width: 180,
-                                  child: Text(
-                                    userchat.text,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ),
-                              )
+                              // Container(
+                              //   width: MediaQuery.of(context).size.width * 0.45,
+                              //   child: SizedBox(
+                              //     width: 180,
+                              //     child: Text(
+                              //       userchat.text,
+                              //       overflow: TextOverflow.ellipsis,
+                              //       style: TextStyle(
+                              //         fontFamily: "Poppins",
+                              //         fontSize: 13,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // )
                             ],
                           )
                         ],
@@ -175,32 +174,32 @@ class _MessageState extends State<Message> {
                         children: [
                           SizedBox(
                             width: 55,
-                            child: Text(
-                              timeago.format(userchat.datetime),
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontSize: 9,
-                              ),
-                            ),
+                            // child: Text(
+                            //   timeago.format(userchat.datetime),
+                            //   overflow: TextOverflow.ellipsis,
+                            //   style: TextStyle(
+                            //     fontFamily: "Poppins",
+                            //     fontSize: 9,
+                            //   ),
+                            // ),
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          userchat.unread
-                              ? CircleAvatar(
-                                  backgroundColor: iconbutton,
-                                  radius: 10,
-                                  child: Text(
-                                    "1",
-                                    style: TextStyle(
-                                      color: primary,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              : Container(),
+                          // userchat.unread
+                          //     ? CircleAvatar(
+                          //         backgroundColor: iconbutton,
+                          //         radius: 10,
+                          //         child: Text(
+                          //           "1",
+                          //           style: TextStyle(
+                          //             color: primary,
+                          //             fontSize: 10,
+                          //             fontWeight: FontWeight.bold,
+                          //           ),
+                          //         ),
+                          //       )
+                          //     : Container(),
                         ],
                       )
                     ],
@@ -216,16 +215,16 @@ class _MessageState extends State<Message> {
       text: query, onChanged: searchMessages, hintText: "Search Messages");
 
   void searchMessages(String query) {
-    final chat = chats.where((userchat) {
-      final titleLower = userchat.userchats.username.toLowerCase();
-      final searchLower = query.toLowerCase();
-
-      return titleLower.contains(searchLower);
-    }).toList();
-
-    setState(() {
-      this.query = query;
-      this.chat = chat;
-    });
+  //   final chat = chats.where((userchat) {
+  //     final titleLower = userchat.userchats.username.toLowerCase();
+  //     final searchLower = query.toLowerCase();
+  //
+  //     return titleLower.contains(searchLower);
+  //   }).toList();
+  //
+  //   setState(() {
+  //     this.query = query;
+  //     this.chat = chat;
+  //   });
   }
 }

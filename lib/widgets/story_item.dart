@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../color/colors.dart';
 import '../models/stories.dart';
-import '../providers/data.dart';
 import '../screens/view_story.dart';
 
 //a list view of story item displaying horizontally on the home page
@@ -21,9 +20,9 @@ class _story_itemState extends State<story_item> {
       height: 110,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: userstories.length,
+          //itemCount: userstories.length,
           itemBuilder: (BuildContext context, int index) {
-            UserStories story = userstories[index];
+            //UserStories story = userstories[index];
             if (index == 0) {
               return Padding(
                 padding: const EdgeInsets.only(
@@ -38,20 +37,20 @@ class _story_itemState extends State<story_item> {
                           Container(
                             width: 80,
                             height: 80,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                color: Colors.blueGrey,
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                    image: AssetImage(currentUser.image),
-                                    fit: BoxFit.cover),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.blueGrey,
-                                    offset: Offset(0, 2),
-                                    blurRadius: 8.0,
-                                  )
-                                ]),
+                            // decoration: BoxDecoration(
+                            //     shape: BoxShape.rectangle,
+                            //     color: Colors.blueGrey,
+                            //     borderRadius: BorderRadius.circular(10),
+                            //     image: DecorationImage(
+                            //         image: AssetImage(currentUser.image),
+                            //         fit: BoxFit.cover),
+                            //     boxShadow: [
+                            //       BoxShadow(
+                            //         color: Colors.blueGrey,
+                            //         offset: Offset(0, 2),
+                            //         blurRadius: 8.0,
+                            //       )
+                            //     ]),
                           ),
                           Positioned(
                               bottom: 0,
@@ -91,10 +90,10 @@ class _story_itemState extends State<story_item> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => ViewStory(user: story)),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //       builder: (context) => ViewStory(user: story)),
+                      // );
                     },
                     child: Container(
                       width: 59,
@@ -103,9 +102,9 @@ class _story_itemState extends State<story_item> {
                           shape: BoxShape.rectangle,
                           color: Colors.blueGrey,
                           borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              image: AssetImage(story.userstory.image),
-                              fit: BoxFit.cover),
+                          // image: DecorationImage(
+                          //     image: AssetImage(story.userstory.image),
+                          //     fit: BoxFit.cover),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.blueGrey,
@@ -118,14 +117,14 @@ class _story_itemState extends State<story_item> {
                   SizedBox(
                     height: 8,
                   ),
-                  SizedBox(
-                      width: 70,
-                      child: Text(
-                        story.userstory.username,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontFamily: 'Poppins', fontSize: 12),
-                      ))
+                  // SizedBox(
+                  //     width: 70,
+                  //     child: Text(
+                  //       story.userstory.username,
+                  //       textAlign: TextAlign.center,
+                  //       overflow: TextOverflow.ellipsis,
+                  //       style: TextStyle(fontFamily: 'Poppins', fontSize: 12),
+                  //     ))
                 ],
               ),
             );

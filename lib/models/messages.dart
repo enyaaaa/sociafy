@@ -2,7 +2,7 @@ import 'package:sociafy/models/user.dart';
 
 //chats that user have texted with
 class UserChats{
-  User userchats;
+  UserModel userchats;
   DateTime datetime;
   String text;
   bool unread;

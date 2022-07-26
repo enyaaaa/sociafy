@@ -1,15 +1,21 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sociafy/screens/profile.dart';
+import 'package:sociafy/services/auth_service.dart';
+import 'package:sociafy/services/firestore_service.dart';
+import 'package:sociafy/services/storage_service.dart';
 
 import '../color/colors.dart';
-import '../models/myPost.dart';
+import '../provider/user_provider.dart';
 
 //User can post an image
 class AddPost extends StatefulWidget {
@@ -21,8 +27,11 @@ class _AddPostState extends State<AddPost> {
   //allows validation of form
   final _formKey = GlobalKey<FormState>();
 
+  final TextEditingController captionController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+
   //the file that user pick from their device
-  File? _pickedFile;
+  File? _file;
 
   // set initial loading page to false
   bool loading = false;
@@ -30,55 +39,61 @@ class _AddPostState extends State<AddPost> {
   //initialise picker as ImagePicker
   final ImagePicker picker = ImagePicker();
 
-  //information on user when posting
-  String username = "zendaya";
-  String userprofilePic = "assets/users/zendaya.jpg";
-  DateTime timeAgo = DateTime.now();
-  String? image;
-  String? caption;
-  String? location;
-  bool isliked = false;
-  bool issaved = false;
+  String uid = "test";
+  String  username = "test";
+  String image = "test";
 
   //user have the selection of camara or gallery
-  Future selectphoto() async {
-    await showModalBottomSheet(
+  selectphoto(BuildContext parentContext) async {
+    await showDialog(
         context: context,
         builder: (context) => BottomSheet(
-              builder: (context) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.camera),
-                    title: Text("Camera"),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      pickImage(ImageSource.camera);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.filter),
-                    title: Text("Pick an image"),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      pickImage(ImageSource.gallery);
-                    },
-                  ),
-                ],
+          builder: (context) => SimpleDialog(
+            children: [
+              SimpleDialogOption(
+                child: ListTile(
+                  leading: Icon(Icons.camera),
+                  title: Text("Camera"),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    pickImage(ImageSource.camera);
+                  },
+                ),
               ),
-              onClosing: () {},
-            ));
+              SimpleDialogOption(
+                child: ListTile(
+                  leading: Icon(Icons.filter),
+                  title: Text("Pick an image"),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    pickImage(ImageSource.gallery);
+                  },
+                ),
+              ),
+              SimpleDialogOption(
+                child: ListTile(
+                  leading: Icon(Icons.close),
+                  title: Text("Close"),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
+          ),
+          onClosing: () {},
+        ));
   }
 
   //user to pick image and crop it
   Future pickImage(ImageSource source) async {
-    final _pickedFile = await picker.pickImage(source: source);
-    if (_pickedFile == null) {
+    final _file = await picker.pickImage(source: source);
+    if (_file == null) {
       return;
     }
 
     var file = await ImageCropper().cropImage(
-        sourcePath: _pickedFile.path,
+        sourcePath: _file.path,
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
     if (file == null) {
       return;
@@ -86,8 +101,9 @@ class _AddPostState extends State<AddPost> {
 
     file = await compressImage(file.path, 35);
     final Image = File(file.path);
-    setState(() => this._pickedFile = Image);
+    setState(() => this._file = Image);
   }
+
 
   Future<File> compressImage(String path, int quality) async {
     final newPath = p.join((await getTemporaryDirectory()).path,
@@ -100,87 +116,85 @@ class _AddPostState extends State<AddPost> {
   }
 
   //when user click on the share button to post the image
-  Future<void> postImage() async {
-    //when user do not select an image there will be a snack bar to tell user to insert an image before sharing
-    if (_pickedFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please select an image first'),
-      ));
-      return;
+  Future postImage(String uid, String username, String image) async {
+    final post = File(_file!.path);
+    try {
+      // upload to storage and db
+      String res = await FireStoreService().uploadPost(
+        captionController.text,
+        locationController.text,
+        post,
+        uid = "",
+        username = "",
+        image = "",
+      );
+      if (res == "success") {
+        Fluttertoast.showToast(msg: "Posted");
+        clearImage();
+      } else {
+        Fluttertoast.showToast(msg: res);
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
-
-    //set the loading screen to display
-    _setLoading(true);
-
-    //saving the users input in caption and location
-    _formKey.currentState!.save();
-
-    //the final selected image that user has picked out
-    final image = _pickedFile!.path;
-
-    //adding it into myPostList
-    context.read<myPostList>().addPost(myPost(
-          username: username,
-          userprofilePic: userprofilePic,
-          timeAgo: timeAgo,
-          image: image,
-          caption: caption,
-          location: location,
-          isliked: isliked,
-          issaved: issaved,
-        ));
-
-    //pop to the profile page to display the post that the users has posted
-    Navigator.pop(context);
-
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Profile()));
+    print(post);
+    print(captionController.text);
+    print(locationController.text);
   }
 
-  //function of the loading
-  void _setLoading(bool state, {bool shouldCallSetState = true}) {
-    if (loading != state) {
-      loading = state;
-      if (shouldCallSetState) {
-        setState(() {});
-      }
-    }
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:
-          PreferredSize(child: getAppBar(), preferredSize: Size.fromHeight(60)),
-      body: getBody(),
-    );
+  void dispose() {
+    super.dispose();
+    captionController.dispose();
+    locationController.dispose();
   }
+  AuthService authService = AuthService();
 
-  //display of the title add post and the share button
-  Widget getAppBar() {
-    return AppBar(
-      centerTitle: true,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      title: Text(
-        "New Post",
-        style: TextStyle(fontFamily: 'Poppins', color: primary),
+  @override
+  Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          "New Post",
+          style: TextStyle(fontFamily: 'Poppins', color: primary),
+        ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                  child: StreamBuilder<User?>(
+                    stream: authService.getAuthUser(),
+                    builder: (context, snapshot) {
+                      return GestureDetector(
+                        onTap: () {
+                          postImage(
+                            uid,
+                            username,
+                            image,);
+                        },
+                        child: Text(
+                          "Share",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: textbutton,
+                          ),
+                        ),
+                      );
+                    }
+                  )))
+        ],
       ),
-      actions: [
-        Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-                child: GestureDetector(
-              onTap: postImage,
-              child: Text(
-                "Share",
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  color: textbutton,
-                ),
-              ),
-            )))
-      ],
+      body: getBody(),
     );
   }
 
@@ -188,99 +202,97 @@ class _AddPostState extends State<AddPost> {
   Widget getBody() {
     return loading
         ? Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(
-                  height: 12,
-                ),
-                Text("Uploading...")
-              ],
-            ),
-          )
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(
+            height: 12,
+          ),
+          Text("Uploading...")
+        ],
+      ),
+    )
         : ListView(
-            children: [
-              InkWell(
-                  onTap: () => selectphoto(),
-                  child: SizedBox(
-                    height: 400,
-                    child: (_pickedFile != null)
-                        ? Container(
-                            margin: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.0),
-                              image: DecorationImage(
-                                image:
-                                    Image.file(File(_pickedFile!.path)).image,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          )
-                        : Container(
-                            margin: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black45,
-                                  offset: Offset(0, 5),
-                                  blurRadius: 8.0,
-                                ),
-                              ],
-                              gradient: LinearGradient(colors: [
-                                Color(0xFFD6B8DB),
-                                Color(0xFFC4EFEE)
-                              ]),
-                            ),
-                            height: 300,
-                            child: const Center(
-                              child: Text(
-                                "Tap to select an image",
-                                style: TextStyle(fontFamily: "Poppins"),
-                              ),
-                            ),
-                          ),
-                  )),
-              Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Write a caption",
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        onSaved: (value) {
-                          caption = value;
-                        },
-                        style: TextStyle(
-                          color: primary,
-                          fontFamily: "poppins",
-                        ),
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Put in a location",
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        onSaved: (value) {
-                          location = value;
-                        },
-                        style: TextStyle(
-                          color: primary,
-                          fontFamily: "poppins",
-                        ),
-                      ),
-                    ],
+      children: [
+        InkWell(
+            onTap: () => selectphoto(context),
+            child: SizedBox(
+              height: 400,
+              child: (_file != null)
+                  ? Container(
+                margin: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  image: DecorationImage(
+                    image: Image.file(File(_file!.path)).image,
+                    fit: BoxFit.cover,
                   ),
                 ),
               )
-            ],
-          );
+                  : Container(
+                margin: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black45,
+                      offset: Offset(0, 5),
+                      blurRadius: 8.0,
+                    ),
+                  ],
+                  gradient: LinearGradient(colors: [
+                    Color(0xFFD6B8DB),
+                    Color(0xFFC4EFEE)
+                  ]),
+                ),
+                height: 300,
+                child: const Center(
+                  child: Text(
+                    "Tap to select an image",
+                    style: TextStyle(fontFamily: "Poppins"),
+                  ),
+                ),
+              ),
+            )),
+        Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Write a caption",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(fontFamily: "Poppins"),
+                  ),
+                  controller: captionController,
+                   onSaved: (value) {
+                    captionController.text = value!;
+                  },
+                  style: TextStyle(
+                    color: primary,
+                    fontFamily: "poppins",
+                  ),
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Put in a location",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(fontFamily: "Poppins"),
+                  ),
+                  controller: locationController,
+                  style: TextStyle(
+                    color: primary,
+                    fontFamily: "poppins",
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sociafy/screens/explore.dart';
@@ -6,6 +7,7 @@ import 'package:sociafy/screens/message.dart';
 import 'package:sociafy/screens/notif.dart';
 
 class Rootpage extends StatefulWidget {
+
   @override
   State<Rootpage> createState() => _RootpageState();
 }

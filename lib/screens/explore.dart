@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 
 import '../color/colors.dart';
 import '../models/explore.dart';
-import '../providers/data.dart';
 import '../widgets/search_item.dart';
 
 class Explore extends StatefulWidget {
@@ -22,7 +21,7 @@ class _ExploreState extends State<Explore> {
     super.initState();
 
     //searchexplore as the search initialise in the data
-    searchexplore = search;
+    //searchexplore = search;
   }
 
   @override
@@ -48,17 +47,17 @@ class _ExploreState extends State<Explore> {
       search_item(text: query, onChanged: searchExplore, hintText: "Search");
 
   void searchExplore(String query) {
-    final searchexplore = search.where((explore) {
-      final titleLower = explore.name.toLowerCase();
-      final searchLower = query.toLowerCase();
-
-      return titleLower.contains(searchLower);
-    }).toList();
-
-    setState(() {
-      this.query = query;
-      this.searchexplore = searchexplore;
-    });
+    // final searchexplore = search.where((explore) {
+    //   final titleLower = explore.name.toLowerCase();
+    //   final searchLower = query.toLowerCase();
+    //
+    //   return titleLower.contains(searchLower);
+    // }).toList();
+    //
+    // setState(() {
+    //   this.query = query;
+    //   this.searchexplore = searchexplore;
+    // });
   }
 
   //display all images into a grid view
@@ -71,34 +70,34 @@ class _ExploreState extends State<Explore> {
           SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                  children: List.generate(searchCategories.length, (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: iconbutton)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, top: 15, bottom: 15),
-                      child: Text(
-                        searchCategories[index],
-                        style: TextStyle(
-                            color: primary,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
-                      ),
-                    ),
-                  ),
-                );
-              })),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10),
+          //   child: SingleChildScrollView(
+          //     scrollDirection: Axis.horizontal,
+          //     child: Row(
+          //         children: List.generate(searchCategories.length, (index) {
+          //       return Padding(
+          //         padding: const EdgeInsets.only(right: 10),
+          //         child: Container(
+          //           decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(10),
+          //               border: Border.all(color: iconbutton)),
+          //           child: Padding(
+          //             padding: const EdgeInsets.only(
+          //                 left: 20, right: 20, top: 15, bottom: 15),
+          //             child: Text(
+          //               searchCategories[index],
+          //               style: TextStyle(
+          //                   color: primary,
+          //                   fontWeight: FontWeight.w500,
+          //                   fontSize: 15),
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     })),
+          //   ),
+          // ),
           SizedBox(
             height: 10,
           ),

@@ -2,7 +2,7 @@ import 'package:sociafy/models/user.dart';
 
 //models for notification according to the users
 class Notifs{
-  User user;
+  UserModel user;
   DateTime  datetime;
   String notiftype;
   String? postreact;

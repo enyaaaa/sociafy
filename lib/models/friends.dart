@@ -2,7 +2,7 @@ import 'package:sociafy/models/user.dart';
 
 //models for search page
 class Friends{
-  User user;
+  UserModel user;
   bool isfollowedByMe;
 
   Friends({

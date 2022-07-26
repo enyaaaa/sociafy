@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "846043912446",
+    "project_id": "sociafy-c382f",
+    "storage_bucket": "sociafy-c382f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846043912446:android:abe129daa2577f26b02daf",
+        "android_client_info": {
+          "package_name": "com.example.sociafy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846043912446-5qk5k0m88mm0tr8nnlbvcup67od95hls.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5NiSZAlCRZQ85BNy02Ve0UhqKmfakkuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846043912446-5qk5k0m88mm0tr8nnlbvcup67od95hls.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

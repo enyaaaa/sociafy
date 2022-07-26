@@ -5,7 +5,6 @@ import 'package:sociafy/screens/add_post.dart';
 import 'package:sociafy/screens/search.dart';
 
 import '../color/colors.dart';
-import '../providers/data.dart';
 import '../widgets/drawer.dart';
 import '../widgets/post_item.dart';
 import '../widgets/story_item.dart';
@@ -46,14 +45,14 @@ class _HomeState extends State<Home> {
             scaffoldkey.currentState?.openDrawer();
           },
           icon: CircleAvatar(
-            child: ClipOval(
-              child: Image(
-                width: 30.0,
-                height: 30.0,
-                image: AssetImage(currentUser.image),
-                fit: BoxFit.cover,
-              ),
-            ),
+          //   child: ClipOval(
+          //     child: Image(
+          //       width: 30.0,
+          //       height: 30.0,
+          //       image: AssetImage(currentUser.image),
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
           ),
         ),
       ),
@@ -70,12 +69,12 @@ class _HomeState extends State<Home> {
         ),
         SizedBox(width: 5),
         InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Search()),
-            );
-          },
+          // onTap: () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => Search()),
+          //   );
+          // },
           child: SvgPicture.asset("assets/icon/search_icon.svg"),
         ),
         SizedBox(width: 10),

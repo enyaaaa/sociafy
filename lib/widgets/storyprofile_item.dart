@@ -19,10 +19,10 @@ class storyprofile_item extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundImage: AssetImage(user.userstory.image),
-              ),
+              // CircleAvatar(
+              //   radius: 24,
+              //   backgroundImage: AssetImage(user.userstory.image),
+              // ),
               SizedBox(
                 width: 13,
               ),
@@ -33,13 +33,13 @@ class storyprofile_item extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    user.userstory.username,
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 12,
-                        color: Colors.white),
-                  ),
+                  // Text(
+                  //   user.userstory.username,
+                  //   style: TextStyle(
+                  //       fontFamily: 'Poppins',
+                  //       fontSize: 12,
+                  //       color: Colors.white),
+                  // ),
                   Text(
                     timeago.format(date),
                     style: TextStyle(

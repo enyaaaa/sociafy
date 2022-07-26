@@ -3,7 +3,6 @@ import 'package:sociafy/screens/view_user.dart';
 
 import '../color/colors.dart';
 import '../models/friends.dart';
-import '../providers/data.dart';
 import '../widgets/search_item.dart';
 
 class Search extends StatefulWidget {
@@ -19,7 +18,7 @@ class _SearchState extends State<Search> {
   void initState() {
     super.initState();
 
-    friend = friends;
+    //friend = friends;
   }
 
   @override
@@ -31,7 +30,7 @@ class _SearchState extends State<Search> {
         ),
         body: Column(
           children: [
-            buildSearch(),
+            //buildSearch(),
             getFriends(),
           ],
         ));
@@ -68,10 +67,10 @@ class _SearchState extends State<Search> {
                 padding: const EdgeInsets.only(top: 10),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ViewUser(
-                              user: userfriends.user,
-                            )));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => ViewUser(
+                    //           user: userfriends.user,
+                    //         )));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,20 +153,20 @@ class _SearchState extends State<Search> {
   }
 
   //users can search for items base on users username
-  Widget buildSearch() => search_item(
-      text: query, onChanged: searchFriends, hintText: "Search Friends");
-
-  void searchFriends(String query) {
-    final friend = friends.where((userfriends) {
-      final titleLower = userfriends.user.username.toLowerCase();
-      final searchLower = query.toLowerCase();
-
-      return titleLower.contains(searchLower);
-    }).toList();
-
-    setState(() {
-      this.query = query;
-      this.friend = friend;
-    });
-  }
+  // Widget buildSearch() => search_item(
+  //     text: query, onChanged: searchFriends, hintText: "Search Friends");
+  //
+  // void searchFriends(String query) {
+  //   final friend = friends.where((userfriends) {
+  //     final titleLower = userfriends.user.username.toLowerCase();
+  //     final searchLower = query.toLowerCase();
+  //
+  //     return titleLower.contains(searchLower);
+  //   }).toList();
+  //
+  //   setState(() {
+  //     this.query = query;
+  //     this.friend = friend;
+  //   });
+  // }
 }

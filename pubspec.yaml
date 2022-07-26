@@ -46,7 +46,12 @@ dependencies:
   grouped_list:
   intl:
   settings_ui:
-
+  firebase_core:
+  cloud_firestore:
+  firebase_auth:
+  firebase_storage:
+  fluttertoast:
+  uuid:
 
 dev_dependencies:
   flutter_test:

@@ -6,7 +6,6 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
 import '../models/post.dart';
-import '../providers/data.dart';
 import '../screens/view_post.dart';
 
 class post_item extends StatefulWidget {
@@ -25,9 +24,9 @@ class _post_itemState extends State<post_item> {
     return Expanded(
       child: Container(
           child: ListView.builder(
-              itemCount: posts.length,
+              //itemCount: posts.length,
               itemBuilder: (BuildContext context, int index) {
-                Posts userpost = posts[index];
+                //Posts userpost = posts[index];
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
@@ -42,48 +41,48 @@ class _post_itemState extends State<post_item> {
                             children: [
                               Row(
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 16),
-                                    child: Container(
-                                      width: 45,
-                                      height: 45,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                            image:
-                                            AssetImage(userpost.user.image),
-                                            fit: BoxFit.cover,
-                                          )),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(left: 16),
+                                  //   child: Container(
+                                  //     width: 45,
+                                  //     height: 45,
+                                  //     decoration: BoxDecoration(
+                                  //         borderRadius:
+                                  //         BorderRadius.circular(10),
+                                  //         image: DecorationImage(
+                                  //           image:
+                                  //           AssetImage(userpost.user.image),
+                                  //           fit: BoxFit.cover,
+                                  //         )),
+                                  //   ),
+                                  // ),
                                   SizedBox(width: 10.0),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          userpost.user.username,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Poppins",
-                                              fontSize: 13),
-                                        ),
-                                        userpost.location != null
-                                            ? Text(
-                                          userpost.location!,
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 12),
-                                        )
-                                            : SizedBox.shrink(),
-                                        Text(
-                                          timeago.format(userpost.timeAgo),
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontSize: 10),
-                                        ),
+                                        // Text(
+                                        //   userpost.user.username,
+                                        //   style: TextStyle(
+                                        //       fontWeight: FontWeight.bold,
+                                        //       fontFamily: "Poppins",
+                                        //       fontSize: 13),
+                                        // ),
+                                        // userpost.location != null
+                                        //     ? Text(
+                                        //   userpost.location!,
+                                        //   style: TextStyle(
+                                        //       fontFamily: "Poppins",
+                                        //       fontSize: 12),
+                                        // )
+                                        //     : SizedBox.shrink(),
+                                        // Text(
+                                        //   timeago.format(userpost.timeAgo),
+                                        //   style: TextStyle(
+                                        //       fontFamily: "Poppins",
+                                        //       fontSize: 10),
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -100,28 +99,28 @@ class _post_itemState extends State<post_item> {
                                   ),
                                 ],
                               ),
-                              userpost.caption != null
-                                  ? Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: Container(
-                                    child: ReadMoreText(
-                                      userpost.caption!,
-                                      trimLines: 2,
-                                      textAlign: TextAlign.justify,
-                                      trimMode: TrimMode.Line,
-                                      trimCollapsedText: " Show More ",
-                                      trimExpandedText: " Show Less ",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        height: 2,
-                                        fontFamily: "Poppins",
-                                      ),
-                                    ),
-                                  ))
-                                  : Padding(
-                                  padding:
-                                  EdgeInsets.only(left: 10, right: 15)),
+                              // userpost.caption != null
+                              //     ? Padding(
+                              //     padding: EdgeInsets.symmetric(
+                              //         horizontal: 16.0),
+                              //     child: Container(
+                              //       child: ReadMoreText(
+                              //         userpost.caption!,
+                              //         trimLines: 2,
+                              //         textAlign: TextAlign.justify,
+                              //         trimMode: TrimMode.Line,
+                              //         trimCollapsedText: " Show More ",
+                              //         trimExpandedText: " Show Less ",
+                              //         style: TextStyle(
+                              //           fontSize: 14,
+                              //           height: 2,
+                              //           fontFamily: "Poppins",
+                              //         ),
+                              //       ),
+                              //     ))
+                              //     : Padding(
+                              //     padding:
+                              //     EdgeInsets.only(left: 10, right: 15)),
                               GestureDetector(
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -144,10 +143,10 @@ class _post_itemState extends State<post_item> {
                                             blurRadius: 8.0,
                                           ),
                                         ],
-                                        image: DecorationImage(
-                                          image: AssetImage(userpost.image),
-                                          fit: BoxFit.cover,
-                                        ),
+                                        // image: DecorationImage(
+                                        //   image: AssetImage(userpost.image),
+                                        //   fit: BoxFit.cover,
+                                        // ),
                                       ),
                                     ),
                                     Opacity(
@@ -167,10 +166,10 @@ class _post_itemState extends State<post_item> {
                                   ],
                                 ),
                                 onDoubleTap: () {
-                                  setState(() {
-                                    isHeartAnimating = true;
-                                    userpost.isliked = true;
-                                  });
+                                  // setState(() {
+                                  //   isHeartAnimating = true;
+                                  //   userpost.isliked = true;
+                                  // });
                                 },
                               ),
                               Padding(
@@ -184,15 +183,16 @@ class _post_itemState extends State<post_item> {
                                         children: [
                                           IconButton(
                                             onPressed: () {
-                                              setState(() {
-                                                userpost.isliked =
-                                                !userpost.isliked;
-                                              });
+                                              // setState(() {
+                                              //   userpost.isliked =
+                                              //   !userpost.isliked;
+                                              // });
                                             },
                                             icon: SvgPicture.asset(
-                                              userpost.isliked
-                                                  ? "assets/icon/like_active_icon.svg"
-                                                  : "assets/icon/like_icon.svg",
+                                              //userpost.isliked
+                                                  //? "assets/icon/like_active_icon.svg"
+                                                  //:
+                                            "assets/icon/like_icon.svg",
                                               width: 27,
                                             ),
                                           ),
@@ -201,13 +201,13 @@ class _post_itemState extends State<post_item> {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ViewPost(
-                                                            post: userpost)),
-                                              );
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //       builder: (context) =>
+                                              //           ViewPost(
+                                              //               post: userpost)),
+                                              // );
                                             },
                                             child: SvgPicture.asset(
                                               "assets/icon/comment_icon.svg",
@@ -218,15 +218,16 @@ class _post_itemState extends State<post_item> {
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          setState(() {
-                                            userpost.issaved =
-                                            !userpost.issaved;
-                                          });
+                                          // setState(() {
+                                          //   userpost.issaved =
+                                          //   !userpost.issaved;
+                                          // });
                                         },
                                         icon: SvgPicture.asset(
-                                          userpost.issaved
-                                              ? "assets/icon/save_active_icon.svg"
-                                              : "assets/icon/save_icon.svg",
+                                          //userpost.issaved
+                                              //? "assets/icon/save_active_icon.svg"
+                                              //:
+                                        "assets/icon/save_icon.svg",
                                           width: 27,
                                         ),
                                       )

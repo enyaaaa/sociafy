@@ -2,7 +2,7 @@ import 'package:sociafy/models/user.dart';
 
 //models for user stories
 class UserStories{
-  User userstory;
+  UserModel userstory;
   List<Stories> stories;
 
   UserStories({

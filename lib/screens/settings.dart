@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sociafy/screens/login.dart';
 
 import '../color/colors.dart';
+import '../services/auth_service.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -24,6 +27,21 @@ class _SettingsState extends State<Settings> {
     //when user click on the toggle button
     setState(() {
       valNotify2 = newValue2;
+    });
+  }
+
+  logout() {
+    AuthService authService = AuthService();
+
+    return authService.logout().then((value) {
+      FocusScope.of(context).unfocus();
+      Fluttertoast.showToast(msg: "Logout successfully :D");
+      Navigator.pushAndRemoveUntil(
+          (context), MaterialPageRoute(builder: (context) => Login()), (
+          route) => false);
+    }).catchError((e) {
+      FocusScope.of(context).unfocus();
+      Fluttertoast.showToast(msg: e!.message);
     });
   }
 
@@ -108,7 +126,9 @@ class _SettingsState extends State<Settings> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     )),
-                onPressed: () {},
+                onPressed: () {
+                  logout();
+                },
                 child: Text(
                   "Sign Out",
                   style: TextStyle(
