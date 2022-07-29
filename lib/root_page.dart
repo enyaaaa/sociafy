@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:sociafy/provider/user_provider.dart';
 import 'package:sociafy/screens/explore.dart';
 import 'package:sociafy/screens/home.dart';
 import 'package:sociafy/screens/message.dart';
@@ -15,6 +17,18 @@ class Rootpage extends StatefulWidget {
 class _RootpageState extends State<Rootpage> {
   //default page index to be the home page
   int pageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    addData();
+  }
+
+  addData() async {
+    UserProvider userProvider =
+    Provider.of<UserProvider>(context, listen: false);
+    await userProvider.refreshUser();
+  }
 
   //main pages to navigate to
   List<Widget> children = [

@@ -3,12 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/screens/edit_profile.dart';
 import 'package:sociafy/screens/media_post.dart';
 import 'package:sociafy/screens/socia_post.dart';
 
 import '../color/colors.dart';
+import '../provider/user_provider.dart';
 
 class Profile extends StatefulWidget {
   final String uid;
@@ -86,30 +88,6 @@ class profileBody extends StatefulWidget {
 }
 
 class _profileBodyState extends State<profileBody> {
-  var userData = {};
-  int postLen = 0;
-  int followers = 0;
-  int following = 0;
-  bool isFollowing = false;
-
-  @override
-  void initState(){
-    super.initState();
-    getData();
-  }
-
-  getData() async{
-    try{
-      var userSnap = await FirebaseFirestore.instance.collection("users").doc(widget.uid).get();
-      var postSnap = await FirebaseFirestore.instance.collection("post").where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid);
-
-      userData = userSnap.data()!;
-      setState(() {});
-    } catch(e){
-      Fluttertoast.showToast(msg: e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -154,6 +132,7 @@ class _profileBodyState extends State<profileBody> {
 
   //profile header display
   Widget profileHeader(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(color: Colors.white),
@@ -173,7 +152,7 @@ class _profileBodyState extends State<profileBody> {
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundImage: NetworkImage()
+                      backgroundImage: NetworkImage(userProvider.getUser.image)
                     ),
                     SizedBox(
                       width: 130,
@@ -228,7 +207,7 @@ class _profileBodyState extends State<profileBody> {
                   height: 8,
                 ),
                 Text(
-                  userData["name"],
+                  userProvider.getUser.name,
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 12,
@@ -238,10 +217,10 @@ class _profileBodyState extends State<profileBody> {
                 SizedBox(
                   height: 8,
                 ),
-                userData["bio"] != "" ? Padding(
+                userProvider.getUser.bio != "" ? Padding(
                   padding: const EdgeInsets.only(right: 110),
                   child: ReadMoreText(
-                    userData["bio"],
+                    userProvider.getUser.bio,
                     trimLines: 2,
                     trimMode: TrimMode.Line,
                     trimCollapsedText: " Show More ",
@@ -260,7 +239,7 @@ class _profileBodyState extends State<profileBody> {
                     Row(
                       children: [
                         // Text(
-                        //   "${currentUser.totalFollower}",
+                        //   userData[followers],
                         //   style: TextStyle(
                         //     fontFamily: "Poppins",
                         //     fontSize: 12,
@@ -280,7 +259,7 @@ class _profileBodyState extends State<profileBody> {
                     Row(
                       children: [
                         // Text(
-                        //   "${currentUser.totalFollowing}",
+                        //   userProvider.getUser.follower,
                         //   style: TextStyle(
                         //     fontFamily: "Poppins",
                         //     fontSize: 12,

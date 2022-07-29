@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sociafy/screens/add_post.dart';
 import 'package:sociafy/screens/search.dart';
 
 import '../color/colors.dart';
+import '../provider/user_provider.dart';
 import '../widgets/drawer.dart';
 import '../widgets/post_item.dart';
 import '../widgets/story_item.dart';
@@ -34,6 +37,7 @@ class _HomeState extends State<Home> {
   //add a post when user click on the add icon on the right
   //search for other users adn view their profile
   Widget getAppBar() {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return AppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
@@ -45,15 +49,15 @@ class _HomeState extends State<Home> {
             scaffoldkey.currentState?.openDrawer();
           },
           icon: CircleAvatar(
-          //   child: ClipOval(
-          //     child: Image(
-          //       width: 30.0,
-          //       height: 30.0,
-          //       image: AssetImage(currentUser.image),
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          ),
+                child: ClipOval(
+                  child: Image(
+                    width: 30.0,
+                    height: 30.0,
+                    image: NetworkImage(userProvider.getUser.image),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
         ),
       ),
       title: SvgPicture.asset("assets/logo.svg"),
@@ -69,12 +73,12 @@ class _HomeState extends State<Home> {
         ),
         SizedBox(width: 5),
         InkWell(
-          // onTap: () {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => Search()),
-          //   );
-          // },
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Search()),
+            );
+          },
           child: SvgPicture.asset("assets/icon/search_icon.svg"),
         ),
         SizedBox(width: 10),
@@ -91,7 +95,26 @@ class _HomeState extends State<Home> {
           color: primary.withOpacity(0.5),
         ),
         //display post that other users have posted
-        post_item(),
+        StreamBuilder(
+            stream: FirebaseFirestore.instance.collection("posts").snapshots(),
+            builder: (context,
+                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return Expanded(
+                child: Container(
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) => Container(
+                          child: post_item(snap: snapshot.data!.docs[index].data(),),
+                        )
+                    )
+                ),
+              );
+            })
       ],
     );
   }

@@ -7,6 +7,7 @@ import 'package:sociafy/models/user.dart';
 import 'package:sociafy/screens/login.dart';
 
 import '../color/colors.dart';
+import '../root_page.dart';
 import '../services/auth_service.dart';
 
 class Signup extends StatefulWidget {
@@ -40,6 +41,12 @@ class _SignupState extends State<Signup> {
       AuthService authService = AuthService();
       return authService.register(email, password).then((value) {
         postDetailsToFirestore();
+        // navigate to the home screen
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => Rootpage(),
+          ),
+        );
       }).catchError((e) {
         Fluttertoast.showToast(msg: e!.message);
       });
@@ -67,10 +74,6 @@ class _SignupState extends State<Signup> {
         .doc(user.uid)
         .set(userModel.toJson());
     Fluttertoast.showToast(msg: "Account created successfully :D");
-
-    Navigator.pushAndRemoveUntil(
-        (context), MaterialPageRoute(builder: (context) => Login()), (
-        route) => false);
   }
 
   bool showPassword = true;

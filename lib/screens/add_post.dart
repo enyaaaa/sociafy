@@ -39,10 +39,6 @@ class _AddPostState extends State<AddPost> {
   //initialise picker as ImagePicker
   final ImagePicker picker = ImagePicker();
 
-  String uid = "test";
-  String  username = "test";
-  String image = "test";
-
   //user have the selection of camara or gallery
   selectphoto(BuildContext parentContext) async {
     await showDialog(
@@ -117,6 +113,12 @@ class _AddPostState extends State<AddPost> {
 
   //when user click on the share button to post the image
   Future postImage(String uid, String username, String image) async {
+
+    if (_file == null) {
+      Fluttertoast.showToast(msg: "Please add an image");
+      return;
+    }
+
     final post = File(_file!.path);
     try {
       // upload to storage and db
@@ -124,9 +126,9 @@ class _AddPostState extends State<AddPost> {
         captionController.text,
         locationController.text,
         post,
-        uid = "",
-        username = "",
-        image = "",
+        uid,
+        username,
+        image,
       );
       if (res == "success") {
         Fluttertoast.showToast(msg: "Posted");
@@ -137,9 +139,7 @@ class _AddPostState extends State<AddPost> {
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
-    print(post);
-    print(captionController.text);
-    print(locationController.text);
+    Navigator.of(context).pop();
   }
 
   void clearImage() {
@@ -178,9 +178,9 @@ class _AddPostState extends State<AddPost> {
                       return GestureDetector(
                         onTap: () {
                           postImage(
-                            uid,
-                            username,
-                            image,);
+                            userProvider.getUser.uid,
+                            userProvider.getUser.username,
+                            userProvider.getUser.image,);
                         },
                         child: Text(
                           "Share",
