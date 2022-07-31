@@ -53,7 +53,7 @@ class AppDrawer extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Text(
-                userProvider.getUser.email,
+                userProvider.getUser.username,
                 style: TextStyle(
                   fontSize: 15,
                   fontFamily: 'Poppins',

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sociafy/provider/user_provider.dart';
 import 'package:sociafy/root_page.dart';
-import 'package:sociafy/screens/home.dart';
 import 'package:sociafy/screens/login.dart';
 import 'package:sociafy/services/auth_service.dart';
 

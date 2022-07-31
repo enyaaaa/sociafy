@@ -37,7 +37,7 @@ class _search_itemState extends State<search_item> {
         color: background,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: primary),

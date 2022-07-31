@@ -13,6 +13,7 @@ class Explore extends StatefulWidget {
 class _ExploreState extends State<Explore> {
   //set search input as an empty string
   String query = '';
+
   //initialising the list as searchexplore
   late List<SearchExplore> searchexplore;
 
@@ -43,8 +44,11 @@ class _ExploreState extends State<Explore> {
   }
 
   //the search function to filter out users request
-  Widget buildSearch() =>
-      search_item(text: query, onChanged: searchExplore, hintText: "Search");
+  Widget buildSearch() => search_item(
+        text: query,
+        onChanged: searchExplore,
+        hintText: "Search",
+      );
 
   void searchExplore(String query) {
     // final searchexplore = search.where((explore) {

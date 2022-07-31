@@ -16,6 +16,7 @@ class Message extends StatefulWidget {
 class _MessageState extends State<Message> {
   //creating an empty string
   String query = '';
+
   //list of user chats
   late List<UserChats> chat;
   var scaffoldkey = GlobalKey<ScaffoldState>();
@@ -44,7 +45,6 @@ class _MessageState extends State<Message> {
         ));
   }
 
-
   Widget getAppBar() {
     return AppBar(
       backgroundColor: Colors.transparent,
@@ -56,15 +56,15 @@ class _MessageState extends State<Message> {
             scaffoldkey.currentState?.openDrawer();
           },
           icon: CircleAvatar(
-            // child: ClipOval(
-            //   child: Image(
-            //     width: 30.0,
-            //     height: 30.0,
-            //     image: AssetImage(currentUser.image),
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-          ),
+              // child: ClipOval(
+              //   child: Image(
+              //     width: 30.0,
+              //     height: 30.0,
+              //     image: AssetImage(currentUser.image),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
+              ),
         ),
       ),
       title: Padding(
@@ -92,139 +92,142 @@ class _MessageState extends State<Message> {
       child: ListView.builder(
           //itemCount: chat.length,
           itemBuilder: (BuildContext context, int index) {
-            //UserChats userchat = chat[index];
-            return GestureDetector(
-              onTap: () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (context) => ViewMessage(
-                //     user: userchat.userchats,
-                //   ),
-                // ));
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: EdgeInsets.only(
-                    top: 5,
-                    bottom: 5,
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //UserChats userchat = chat[index];
+        return GestureDetector(
+          onTap: () {
+            // Navigator.of(context).push(MaterialPageRoute(
+            //   builder: (context) => ViewMessage(
+            //     user: userchat.userchats,
+            //   ),
+            // ));
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: EdgeInsets.only(
+                top: 5,
+                bottom: 5,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     children: [
-                      Row(
+                      // ClipRRect(
+                      //   borderRadius: BorderRadius.circular(10),
+                      //   child: Container(
+                      //     height: 60,
+                      //     width: 60,
+                      //     child: Image.asset(userchat.userchats.image,
+                      //         fit: BoxFit.cover),
+                      //   ),
+                      // ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // ClipRRect(
-                          //   borderRadius: BorderRadius.circular(10),
-                          //   child: Container(
-                          //     height: 60,
-                          //     width: 60,
-                          //     child: Image.asset(userchat.userchats.image,
-                          //         fit: BoxFit.cover),
+                          // SizedBox(
+                          //   width: 180,
+                          //   child: Text(
+                          //     userchat.userchats.username,
+                          //     overflow: TextOverflow.ellipsis,
+                          //     style: TextStyle(
+                          //       fontFamily: "Poppins",
+                          //       fontSize: 13,
+                          //       fontWeight: FontWeight.bold,
+                          //     ),
                           //   ),
                           // ),
                           SizedBox(
-                            width: 20,
+                            height: 5,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // SizedBox(
-                              //   width: 180,
-                              //   child: Text(
-                              //     userchat.userchats.username,
-                              //     overflow: TextOverflow.ellipsis,
-                              //     style: TextStyle(
-                              //       fontFamily: "Poppins",
-                              //       fontSize: 13,
-                              //       fontWeight: FontWeight.bold,
-                              //     ),
-                              //   ),
-                              // ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              // Container(
-                              //   width: MediaQuery.of(context).size.width * 0.45,
-                              //   child: SizedBox(
-                              //     width: 180,
-                              //     child: Text(
-                              //       userchat.text,
-                              //       overflow: TextOverflow.ellipsis,
-                              //       style: TextStyle(
-                              //         fontFamily: "Poppins",
-                              //         fontSize: 13,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // )
-                            ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            width: 55,
-                            // child: Text(
-                            //   timeago.format(userchat.datetime),
-                            //   overflow: TextOverflow.ellipsis,
-                            //   style: TextStyle(
-                            //     fontFamily: "Poppins",
-                            //     fontSize: 9,
-                            //   ),
-                            // ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          // userchat.unread
-                          //     ? CircleAvatar(
-                          //         backgroundColor: iconbutton,
-                          //         radius: 10,
-                          //         child: Text(
-                          //           "1",
-                          //           style: TextStyle(
-                          //             color: primary,
-                          //             fontSize: 10,
-                          //             fontWeight: FontWeight.bold,
-                          //           ),
-                          //         ),
-                          //       )
-                          //     : Container(),
+                          // Container(
+                          //   width: MediaQuery.of(context).size.width * 0.45,
+                          //   child: SizedBox(
+                          //     width: 180,
+                          //     child: Text(
+                          //       userchat.text,
+                          //       overflow: TextOverflow.ellipsis,
+                          //       style: TextStyle(
+                          //         fontFamily: "Poppins",
+                          //         fontSize: 13,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       )
                     ],
                   ),
-                ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        width: 55,
+                        // child: Text(
+                        //   timeago.format(userchat.datetime),
+                        //   overflow: TextOverflow.ellipsis,
+                        //   style: TextStyle(
+                        //     fontFamily: "Poppins",
+                        //     fontSize: 9,
+                        //   ),
+                        // ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // userchat.unread
+                      //     ? CircleAvatar(
+                      //         backgroundColor: iconbutton,
+                      //         radius: 10,
+                      //         child: Text(
+                      //           "1",
+                      //           style: TextStyle(
+                      //             color: primary,
+                      //             fontSize: 10,
+                      //             fontWeight: FontWeight.bold,
+                      //           ),
+                      //         ),
+                      //       )
+                      //     : Container(),
+                    ],
+                  )
+                ],
               ),
-            );
-          }),
+            ),
+          ),
+        );
+      }),
     );
   }
 
   Widget buildSearch() => search_item(
-      text: query, onChanged: searchMessages, hintText: "Search Messages");
+        text: query,
+        onChanged: searchMessages,
+        hintText: "Search Messages",
+      );
 
   void searchMessages(String query) {
-  //   final chat = chats.where((userchat) {
-  //     final titleLower = userchat.userchats.username.toLowerCase();
-  //     final searchLower = query.toLowerCase();
-  //
-  //     return titleLower.contains(searchLower);
-  //   }).toList();
-  //
-  //   setState(() {
-  //     this.query = query;
-  //     this.chat = chat;
-  //   });
+    //   final chat = chats.where((userchat) {
+    //     final titleLower = userchat.userchats.username.toLowerCase();
+    //     final searchLower = query.toLowerCase();
+    //
+    //     return titleLower.contains(searchLower);
+    //   }).toList();
+    //
+    //   setState(() {
+    //     this.query = query;
+    //     this.chat = chat;
+    //   });
   }
 }

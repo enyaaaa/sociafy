@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sociafy/models/user.dart' as model;
+import 'package:sociafy/root_page.dart';
 import 'package:sociafy/services/firestore_service.dart';
 import 'package:sociafy/widgets/heart_animation.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -16,6 +17,7 @@ import '../screens/view_post.dart';
 
 class post_item extends StatefulWidget {
   final snap;
+
   const post_item({Key? key, required this.snap}) : super(key: key);
 
   @override
@@ -48,11 +50,32 @@ class _post_itemState extends State<post_item> {
   }
 
   deletePost(String postId) async {
-    try {
-      await FireStoreService().deletePost(postId);
-    } catch (err) {
-      Fluttertoast.showToast(msg: err.toString());
-    }
+    showDialog<Null>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Confirmation'),
+            content: Text('Are you sure you want to delete?'),
+            backgroundColor: iconbutton,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    setState(() async {
+                      await FireStoreService().deletePost(postId);
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Yes')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('No')),
+            ],
+          );
+        });
   }
 
   @override
@@ -67,145 +90,129 @@ class _post_itemState extends State<post_item> {
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Column(
           children: [
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 16),
-                        child: Container(
-                          width: 45,
-                          height: 45,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: NetworkImage(widget.snap['image'].toString()),
-                                fit: BoxFit.cover,
-                              )),
+                  Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(widget.snap['image'].toString()),
+                        radius: 16,
+                      )),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.snap["username"].toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Poppins",
+                              fontSize: 13),
                         ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                        widget.snap["location"].toString() != ""
+                            ? Text(
+                                widget.snap["location"].toString(),
+                                style: TextStyle(
+                                    fontFamily: "Poppins", fontSize: 12),
+                              )
+                            : SizedBox.shrink(),
+                        Text(
+                          timeago.format(widget.snap["timeAgo"].toDate()),
+                          style: TextStyle(fontFamily: "Poppins", fontSize: 10),
+                        ),
+                      ],
+                    ),
+                  ),
+                  widget.snap['uid'].toString() == user.uid
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Text(
-                              widget.snap["username"].toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins",
-                                  fontSize: 13),
-                            ),
-                            widget.snap["location"].toString() != ""
-                                ? Text(
-                              widget.snap["location"].toString(),
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 12),
-                            )
-                                : SizedBox.shrink(),
-                            Text(
-                              timeago.format(widget.snap["timeAgo"].toDate()),
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 10),
+                            PopupMenuButton<MenuValues>(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0))),
+                              itemBuilder: (BuildContext context) => [
+                                PopupMenuItem(
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.edit,
+                                        color: primary,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "edit",
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  value: MenuValues.edit,
+                                ),
+                                PopupMenuItem(
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.delete_outline_rounded,
+                                        color: primary,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "delete",
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  value: MenuValues.delete,
+                                ),
+                              ],
+                              child: Icon(
+                                Icons.more_vert,
+                                color: primary,
+                              ),
+                              onSelected: (value) {
+                                switch (value) {
+                                  case MenuValues.edit:
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) =>
+                                    //           EditPost(
+                                    //               mypost: mypost,
+                                    //               i: i,
+                                    //               socialScreenSetState: setState
+                                    //           )),
+                                    // );
+                                    break;
+                                  case MenuValues.delete:
+                                    deletePost(
+                                      widget.snap['postId'].toString(),
+                                    );
+                                }
+                              },
                             ),
                           ],
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment:
-                        CrossAxisAlignment.end,
-                        children: [
-                          PopupMenuButton<MenuValues>(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0))),
-                            itemBuilder: (BuildContext context) =>
-                            [
-                              PopupMenuItem(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.edit,
-                                      color: primary,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "edit",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                                value: MenuValues.edit,
-                              ),
-                              PopupMenuItem(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons
-                                          .delete_outline_rounded,
-                                      color: primary,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "delete",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                                value: MenuValues.delete,
-                              ),
-                            ],
-                            child: Icon(
-                              Icons.more_vert,
-                              color: primary,
-                            ),
-                            onSelected: (value) {
-                              switch (value) {
-                                case MenuValues.edit:
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           EditPost(
-                                  //               mypost: mypost,
-                                  //               i: i,
-                                  //               socialScreenSetState: setState
-                                  //           )),
-                                  // );
-                                  break;
-                                case MenuValues.delete:
-                                  deletePost(
-                                    widget.snap['postId']
-                                        .toString(),
-                                  );
-                                  // remove the dialog box
-                                  Navigator.of(context).pop();
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 10,)
-                    ],
-                  ),
-                  widget.snap["caption"].toString() != ""
-                      ? Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 16.0),
+                        )
+                      : Container(),
+                  SizedBox(
+                    width: 10,
+                  )
+                ],
+              ),
+              widget.snap["caption"].toString() != ""
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
                       child: Container(
                         child: ReadMoreText(
                           widget.snap["caption"].toString(),
@@ -221,138 +228,133 @@ class _post_itemState extends State<post_item> {
                           ),
                         ),
                       ))
-                      : Padding(
-                      padding:
-                      EdgeInsets.only(left: 10, right: 15)),
-                  GestureDetector(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                              top: 10,
-                              bottom: 0),
-                          width: double.infinity,
-                          height: 390.0,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.circular(25.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: postbackground,
-                                offset: Offset(0, 1),
-                                blurRadius: 8.0,
-                              ),
-                            ],
-                            image: DecorationImage(
-                              image: NetworkImage(widget.snap["postUrl"].toString()),
-                              fit: BoxFit.cover,
-                            ),
+                  : Padding(padding: EdgeInsets.only(left: 10, right: 15)),
+              GestureDetector(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 10, right: 10, top: 10, bottom: 0),
+                      width: double.infinity,
+                      height: 390.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: postbackground,
+                            offset: Offset(0, 1),
+                            blurRadius: 8.0,
                           ),
-                        ),
-                        Opacity(
-                          opacity: isHeartAnimating ? 1 : 0,
-                          child: HeartAnimation(
-                            isAnimating: isHeartAnimating,
-                            duration: Duration(milliseconds: 700),
-                            child: SvgPicture.asset(
-                              "assets/icon/like_active_icon.svg",
-                              width: 60,
-                            ),
-                            onEnd: () => setState(
-                                  () => isHeartAnimating = false,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    onDoubleTap: () {
-                      setState(() {
-                        isHeartAnimating = true;
-                      });
-                      FireStoreService().likePost(
-                        widget.snap['postId'].toString(),
-                        user.uid,
-                        widget.snap['likes'],
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10, top: 10),
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () => FireStoreService().likePost(
-                                  widget.snap['postId'].toString(),
-                                  user.uid,
-                                  widget.snap['likes'],
-                                ),
-                                icon: SvgPicture.asset(
-                                  widget.snap['likes'].contains(user.uid) ? "assets/icon/like_active_icon.svg" : "assets/icon/like_icon.svg",
-                                  width: 27,
-                                ),
-                              ),
-                              Text(
-                                '${widget.snap['likes'].length}',
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 15),
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ViewPost(postId: widget.snap['postId'].toString(),),
-                                  ));
-                                },
-                                child: SvgPicture.asset(
-                                  "assets/icon/comment_icon.svg",
-                                  width: 27,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '$commentLen',
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              // setState(() {
-                              //   userpost.issaved =
-                              //   !userpost.issaved;
-                              // });
-                            },
-                            icon: SvgPicture.asset(
-                              //userpost.issaved
-                              //? "assets/icon/save_active_icon.svg"
-                              //:
-                              "assets/icon/save_icon.svg",
-                              width: 27,
-                            ),
-                          )
                         ],
+                        image: DecorationImage(
+                          image:
+                              NetworkImage(widget.snap["postUrl"].toString()),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  )
-                ]),
+                    Opacity(
+                      opacity: isHeartAnimating ? 1 : 0,
+                      child: HeartAnimation(
+                        isAnimating: isHeartAnimating,
+                        duration: Duration(milliseconds: 700),
+                        child: SvgPicture.asset(
+                          "assets/icon/like_active_icon.svg",
+                          width: 60,
+                        ),
+                        onEnd: () => setState(
+                          () => isHeartAnimating = false,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                onDoubleTap: () {
+                  setState(() {
+                    isHeartAnimating = true;
+                  });
+                  FireStoreService().likePost(
+                    widget.snap['postId'].toString(),
+                    user.uid,
+                    widget.snap['likes'],
+                  );
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 10, top: 10),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => FireStoreService().likePost(
+                              widget.snap['postId'].toString(),
+                              user.uid,
+                              widget.snap['likes'],
+                            ),
+                            icon: SvgPicture.asset(
+                              widget.snap['likes'].contains(user.uid)
+                                  ? "assets/icon/like_active_icon.svg"
+                                  : "assets/icon/like_icon.svg",
+                              width: 27,
+                            ),
+                          ),
+                          Text(
+                            '${widget.snap['likes'].length}',
+                            style:
+                                TextStyle(fontFamily: "Poppins", fontSize: 15),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ViewPost(
+                                      postId: widget.snap['postId'].toString(),
+                                    ),
+                                  ));
+                            },
+                            child: SvgPicture.asset(
+                              "assets/icon/comment_icon.svg",
+                              width: 27,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            '$commentLen',
+                            style:
+                                TextStyle(fontFamily: "Poppins", fontSize: 15),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          // setState(() {
+                          //   userpost.issaved =
+                          //   !userpost.issaved;
+                          // });
+                        },
+                        icon: SvgPicture.asset(
+                          //userpost.issaved
+                          //? "assets/icon/save_active_icon.svg"
+                          //:
+                          "assets/icon/save_icon.svg",
+                          width: 27,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ]),
           ],
         ),
       ),

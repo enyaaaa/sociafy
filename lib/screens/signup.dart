@@ -18,6 +18,7 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -32,6 +33,7 @@ class _SignupState extends State<Signup> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    nameController.dispose();
     usernameController.dispose();
     confirmPasswordController.dispose();
   }
@@ -62,9 +64,9 @@ class _SignupState extends State<Signup> {
         uid: user!.uid,
         image: "https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg",
         username: usernameController.text,
-        name: emailController.text,
+        name: nameController.text,
         bio: "",
-        follower: [],
+        followers: [],
         following: []
     );
 
@@ -95,7 +97,7 @@ class _SignupState extends State<Signup> {
         child: ListView(
           children: [
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Container(
                 height: 80,
@@ -116,35 +118,55 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   buildTextField(
+                  "Email",
+                  "Email",
+                  false,
+                      (value) {
+                    if (value == "")
+                      return "Please provide an email address.";
+                    else if (!value.contains('@'))
+                      return "Please provide a valid email address.";
+                    else
+                      return null;
+                  },
+                  emailController,
+                      (value) {
+                    emailController.text = value;
+                  },
+                ),
+                  buildTextField(
+                    "Name",
+                    "Name",
+                    false,
+                        (value) {
+                      if (value == "")
+                        return "Please provide a name.";
+                      else
+                        return null;
+                    },
+                    nameController,
+                        (value) {
+                      nameController.text = value;
+                    },
+                  ),
+                  buildTextField(
                     "Username",
                     "Username",
                     false,
                         (value) {
                       if (value == "")
                         return "Please provide a username.";
+                      else if (!RegExp(
+                          r'^[a-zA-Z0-9]+$')
+                          .hasMatch(value)){
+                        return 'Please enter a valid username.';
+                      }
                       else
                         return null;
                     },
                     usernameController,
                         (value) {
                       usernameController.text = value;
-                    },
-                  ),
-                  buildTextField(
-                    "Email",
-                    "Email",
-                    false,
-                        (value) {
-                      if (value == "")
-                        return "Please provide an email address.";
-                      else if (!value.contains('@'))
-                        return "Please provide a valid email address.";
-                      else
-                        return null;
-                    },
-                    emailController,
-                        (value) {
-                      emailController.text = value;
                     },
                   ),
                   buildTextField(
@@ -166,7 +188,7 @@ class _SignupState extends State<Signup> {
                   ),
                   buildTextField(
                     "Confirm Password",
-                    "confirm Password",
+                    "Confirm Password",
                     true,
                         (value) {
                       if (value == "")
@@ -190,7 +212,7 @@ class _SignupState extends State<Signup> {
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 130,
-                vertical: 20,
+                vertical: 10,
               ),
               child: MaterialButton(
                 color: iconbutton,
@@ -208,7 +230,7 @@ class _SignupState extends State<Signup> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Center(
               child: Text(

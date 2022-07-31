@@ -8,7 +8,7 @@ class UserModel{
   String username;
   String name;
   String bio;
-  List follower;
+  List followers;
   List following;
 
   UserModel({
@@ -18,7 +18,7 @@ class UserModel{
     required this.username,
     required this.name,
     required this.bio,
-    required this.follower,
+    required this.followers,
     required this.following,
   });
 
@@ -31,7 +31,7 @@ class UserModel{
       username: snapshot['username'],
       name: snapshot['name'],
       bio: snapshot['bio'],
-      follower: snapshot['follower'],
+      followers: snapshot['followers'],
       following: snapshot['following'],
     );
   }
@@ -43,7 +43,7 @@ class UserModel{
       "username": username,
       "name": name,
       "bio": bio,
-      "follower": follower,
+      "followers": followers,
       "following": following,
   };
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sociafy/provider/user_provider.dart';
 import 'package:sociafy/screens/explore.dart';
 import 'package:sociafy/screens/home.dart';
+import 'package:sociafy/screens/login.dart';
 import 'package:sociafy/screens/message.dart';
 import 'package:sociafy/screens/notif.dart';
 
@@ -40,9 +41,28 @@ class _RootpageState extends State<Rootpage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: children[pageIndex],
-      bottomNavigationBar: getFooter(),
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.hasData) {
+            return Scaffold(
+              body: children[pageIndex],
+              bottomNavigationBar: getFooter(),
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('${snapshot.error}'),
+          );
+        }if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Login();
+      }
+
     );
   }
 
