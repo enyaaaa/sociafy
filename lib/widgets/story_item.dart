@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../color/colors.dart';
 import '../models/stories.dart';
+import '../provider/user_provider.dart';
 import '../screens/view_story.dart';
 
 //a list view of story item displaying horizontally on the home page
@@ -16,6 +18,7 @@ class story_item extends StatefulWidget {
 class _story_itemState extends State<story_item> {
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Container(
       height: 110,
       child: ListView.builder(
@@ -37,20 +40,20 @@ class _story_itemState extends State<story_item> {
                           Container(
                             width: 80,
                             height: 80,
-                            // decoration: BoxDecoration(
-                            //     shape: BoxShape.rectangle,
-                            //     color: Colors.blueGrey,
-                            //     borderRadius: BorderRadius.circular(10),
-                            //     image: DecorationImage(
-                            //         image: AssetImage(currentUser.image),
-                            //         fit: BoxFit.cover),
-                            //     boxShadow: [
-                            //       BoxShadow(
-                            //         color: Colors.blueGrey,
-                            //         offset: Offset(0, 2),
-                            //         blurRadius: 8.0,
-                            //       )
-                            //     ]),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: Colors.blueGrey,
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: NetworkImage(userProvider.getUser.image),
+                                    fit: BoxFit.cover),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blueGrey,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 8.0,
+                                  )
+                                ]),
                           ),
                           Positioned(
                               bottom: 0,
@@ -102,9 +105,9 @@ class _story_itemState extends State<story_item> {
                           shape: BoxShape.rectangle,
                           color: Colors.blueGrey,
                           borderRadius: BorderRadius.circular(10),
-                          // image: DecorationImage(
-                          //     image: AssetImage(story.userstory.image),
-                          //     fit: BoxFit.cover),
+                          image: DecorationImage(
+                              image: NetworkImage("https://firebasestorage.googleapis.com/v0/b/sociafy-c382f.appspot.com/o/profilePics%2Fdaniel_profilepic.jpg?alt=media&token=3dc41d6c-2c2b-4e83-b276-0fee3eff3d34"),
+                              fit: BoxFit.cover),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.blueGrey,
@@ -117,14 +120,14 @@ class _story_itemState extends State<story_item> {
                   SizedBox(
                     height: 8,
                   ),
-                  // SizedBox(
-                  //     width: 70,
-                  //     child: Text(
-                  //       story.userstory.username,
-                  //       textAlign: TextAlign.center,
-                  //       overflow: TextOverflow.ellipsis,
-                  //       style: TextStyle(fontFamily: 'Poppins', fontSize: 12),
-                  //     ))
+                  SizedBox(
+                      width: 70,
+                      child: Text(
+                        "seaveydaniel",
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontFamily: 'Poppins', fontSize: 12),
+                      ))
                 ],
               ),
             );

@@ -39,15 +39,17 @@ class _sociaState extends State<socia> {
               child: CircularProgressIndicator(),
             );
           }
-          return Expanded(
-            child: Container(
+          return Column(
+            children: [
+              Expanded(
                 child: ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) => Container(
                       child: post_item(snap: snapshot.data!.docs[index].data(),),
                     )
-                )
-            ),
+                ),
+              ),
+            ],
           );
         });
   }

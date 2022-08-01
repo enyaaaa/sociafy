@@ -46,7 +46,6 @@ class _post_itemState extends State<post_item> {
     } catch (err) {
       Fluttertoast.showToast(msg: err.toString());
     }
-    setState(() {});
   }
 
   deletePost(String postId) async {
@@ -61,11 +60,10 @@ class _post_itemState extends State<post_item> {
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             actions: [
               TextButton(
-                  onPressed: () {
-                    setState(() async {
-                      await FireStoreService().deletePost(postId);
-                    });
+                  onPressed: () async {
                     Navigator.of(context).pop();
+                    await FireStoreService().deletePost(postId);
+
                   },
                   child: Text('Yes')),
               TextButton(
@@ -229,7 +227,7 @@ class _post_itemState extends State<post_item> {
                         ),
                       ))
                   : Padding(padding: EdgeInsets.only(left: 10, right: 15)),
-              GestureDetector(
+              widget.snap["postUrl"] != "" ? GestureDetector(
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -280,7 +278,7 @@ class _post_itemState extends State<post_item> {
                     widget.snap['likes'],
                   );
                 },
-              ),
+              ): SizedBox.shrink(),
               Padding(
                 padding: EdgeInsets.only(left: 10, top: 10),
                 child: Container(

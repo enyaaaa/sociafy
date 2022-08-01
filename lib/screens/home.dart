@@ -21,6 +21,11 @@ class _HomeState extends State<Home> {
   var scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldkey,
@@ -105,12 +110,10 @@ class _HomeState extends State<Home> {
                 );
               }
               return Expanded(
-                child: Container(
-                    child: ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) => Container(
-                          child: post_item(snap: snapshot.data!.docs[index].data(),),
-                        )
+                child: ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) => Container(
+                      child: post_item(snap: snapshot.data!.docs[index].data(),),
                     )
                 ),
               );

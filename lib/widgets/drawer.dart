@@ -107,8 +107,8 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
 
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (context) => Search()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Search()));
             }),
         ListTile(
             leading: Icon(Icons.favorite_border),

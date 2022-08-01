@@ -126,11 +126,11 @@ class _ProfileState extends State<Profile> {
                                                         color: Colors.white,
                                                         elevation: 0,
                                                         onPressed: () {
-                                                          // Navigator.push(
-                                                          //   context,
-                                                          //   MaterialPageRoute(
-                                                          //       builder: (context) => EditProfile()),
-                                                          // );
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) => EditProfile()),
+                                                          );
                                                         },
                                                         shape:
                                                             RoundedRectangleBorder(
@@ -374,16 +374,17 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Expanded(
-                          child: TabBarView(
-                        children: [
-                          media(
-                            uid: widget.uid,
-                          ),
-                          socia(
-                            uid: widget.uid,
-                          ),
-                        ],
-                      ))
+                        child: TabBarView(
+                          children: [
+                        media(
+                          uid: widget.uid,
+                        ),
+                        socia(
+                          uid: widget.uid,
+                        ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 )));
