@@ -134,33 +134,6 @@ class _SearchState extends State<Search> {
                                     ),
                                   ],
                                 ),
-                                // Container(
-                                //   height: 40,
-                                //   decoration: BoxDecoration(
-                                //       border: Border.all(color: iconbutton),
-                                //       borderRadius: BorderRadius.circular(20)),
-                                //   child: MaterialButton(
-                                //     elevation: 0,
-                                //     color: userfriends.isfollowedByMe
-                                //         ? iconbutton
-                                //         : Colors.white,
-                                //     onPressed: () {
-                                //       //change the state of the button
-                                //       setState(() {
-                                //         userfriends.isfollowedByMe =
-                                //             !userfriends.isfollowedByMe;
-                                //       });
-                                //     },
-                                //     shape: RoundedRectangleBorder(
-                                //         borderRadius: BorderRadius.circular(20)),
-                                //     child: Text(
-                                //       //if user is followed by me it will display following if not it will display follow
-                                //       userfriends.isfollowedByMe ? "Following" : "Follow",
-                                //       style: TextStyle(
-                                //           fontFamily: "Poppins", color: primary),
-                                //     ),
-                                //   ),
-                                // )
                               ],
                             ),
                           ),

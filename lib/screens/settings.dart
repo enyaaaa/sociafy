@@ -6,12 +6,14 @@ import 'package:sociafy/screens/login.dart';
 import '../color/colors.dart';
 import '../services/auth_service.dart';
 
-class Settings extends StatefulWidget {
+class Setting extends StatefulWidget {
+  const Setting({Key? key}) : super(key: key);
+
   @override
-  State<Settings> createState() => _SettingsState();
+  State<Setting> createState() => _SettingState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingState extends State<Setting> {
   //initialise toggle button to display off
   bool valNotify1 = false;
   bool valNotify2 = false;

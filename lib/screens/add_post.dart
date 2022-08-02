@@ -25,7 +25,7 @@ class AddPost extends StatefulWidget {
 
 class _AddPostState extends State<AddPost> {
   //allows validation of form
-  final _formKey = GlobalKey<FormState>();
+  final form = GlobalKey<FormState>();
 
   final TextEditingController captionController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
@@ -256,7 +256,7 @@ class _AddPostState extends State<AddPost> {
               ),
             )),
         Form(
-          key: _formKey,
+          key: form,
           child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Column(

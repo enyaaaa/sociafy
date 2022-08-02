@@ -122,8 +122,8 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
 
-              // Navigator.of(context).push(
-              //     MaterialPageRoute(builder: (context) => Favorite()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => Favorite(uid: FirebaseAuth.instance.currentUser!.uid,)));
             }),
         ListTile(
             leading: Icon(Icons.star_border),
@@ -154,7 +154,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.pop(context);
 
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => Settings()));
+                  MaterialPageRoute(builder: (context) => Setting()));
             })
       ],
     ),

@@ -95,7 +95,7 @@ class _HomeState extends State<Home> {
     return Column(
       children: [
         //display stories that other users have posted
-        story_item(),
+        //story_item(),
         Divider(
           color: primary.withOpacity(0.5),
         ),

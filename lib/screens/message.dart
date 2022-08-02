@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sociafy/screens/view_message.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
 import '../models/messages.dart';
+import '../provider/user_provider.dart';
 import '../widgets/drawer.dart';
 import '../widgets/search_item.dart';
 
@@ -46,6 +48,7 @@ class _MessageState extends State<Message> {
   }
 
   Widget getAppBar() {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -56,14 +59,14 @@ class _MessageState extends State<Message> {
             scaffoldkey.currentState?.openDrawer();
           },
           icon: CircleAvatar(
-              // child: ClipOval(
-              //   child: Image(
-              //     width: 30.0,
-              //     height: 30.0,
-              //     image: AssetImage(currentUser.image),
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
+              child: ClipOval(
+                child: Image(
+                  width: 30.0,
+                  height: 30.0,
+                  image: NetworkImage(userProvider.getUser.image),
+                  fit: BoxFit.cover,
+                ),
+              ),
               ),
         ),
       ),
@@ -121,50 +124,46 @@ class _MessageState extends State<Message> {
                 children: [
                   Row(
                     children: [
-                      // ClipRRect(
-                      //   borderRadius: BorderRadius.circular(10),
-                      //   child: Container(
-                      //     height: 60,
-                      //     width: 60,
-                      //     child: Image.asset(userchat.userchats.image,
-                      //         fit: BoxFit.cover),
-                      //   ),
-                      // ),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://firebasestorage.googleapis.com/v0/b/sociafy-c382f.appspot.com/o/profilePics%2Fzendaya_profilepic.jfif?alt=media&token=5e27af6a-8271-4b14-8dd7-55c57e1b7d1d"),
+                        radius: 20,
+                      ),
                       SizedBox(
-                        width: 20,
+                        width: 15,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // SizedBox(
-                          //   width: 180,
-                          //   child: Text(
-                          //     userchat.userchats.username,
-                          //     overflow: TextOverflow.ellipsis,
-                          //     style: TextStyle(
-                          //       fontFamily: "Poppins",
-                          //       fontSize: 13,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          // ),
+                          SizedBox(
+                            width: 180,
+                            child: Text(
+                              "zendaya",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                           SizedBox(
                             height: 5,
                           ),
-                          // Container(
-                          //   width: MediaQuery.of(context).size.width * 0.45,
-                          //   child: SizedBox(
-                          //     width: 180,
-                          //     child: Text(
-                          //       userchat.text,
-                          //       overflow: TextOverflow.ellipsis,
-                          //       style: TextStyle(
-                          //         fontFamily: "Poppins",
-                          //         fontSize: 13,
-                          //       ),
-                          //     ),
-                          //   ),
-                          // )
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            child: SizedBox(
+                              width: 180,
+                              child: Text(
+                                "hello",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       )
                     ],
@@ -174,14 +173,15 @@ class _MessageState extends State<Message> {
                     children: [
                       SizedBox(
                         width: 55,
-                        // child: Text(
-                        //   timeago.format(userchat.datetime),
-                        //   overflow: TextOverflow.ellipsis,
-                        //   style: TextStyle(
-                        //     fontFamily: "Poppins",
-                        //     fontSize: 9,
-                        //   ),
-                        // ),
+                        child: Text(
+                          "10 min",
+                          //timeago.format(userchat.datetime),
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 9,
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 10,

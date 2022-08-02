@@ -25,4 +25,19 @@ class StorageService {
     String downloadUrl = await snapshot.ref.getDownloadURL();
     return downloadUrl;
   }
+
+  Future<String> uploadProfilePicture(String childName, String url, File file) async {
+    String id = Uuid().v1();
+    Reference ref = FirebaseStorage.instance.ref().child(childName).child(auth.currentUser!.uid);
+
+    if (url.isNotEmpty) {
+      ref = ref.child(id);
+    }
+    UploadTask uploadTask = ref
+        .child('images/users/userProfile_$id.jpg')
+        .putFile(file);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
 }

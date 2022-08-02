@@ -5,6 +5,7 @@ import 'package:sociafy/services/storage_service.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/post.dart';
+import '../models/user.dart';
 
 class FireStoreService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -34,6 +35,16 @@ class FireStoreService {
       res = err.toString();
     }
     return res;
+  }
+
+  updateUserData(UserModel user) {
+    firestore.collection('users').doc(user.uid).update({
+      'image': user.image,
+      'name': user.name,
+      'username': user.username,
+      'email': user.email,
+      'bio': user.bio,
+    });
   }
 
   Future<String> likePost(String postId, String uid, List likes) async {
