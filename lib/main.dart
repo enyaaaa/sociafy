@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:sociafy/provider/user_provider.dart';
 import 'package:sociafy/root_page.dart';
 import 'package:sociafy/screens/login.dart';
 import 'package:sociafy/services/auth_service.dart';
@@ -26,11 +24,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider(),),
-      ],
-      child: MaterialApp(
+    return MaterialApp(
           debugShowCheckedModeBanner: false,
           //navigate to the root page
           home: StreamBuilder(
@@ -56,7 +50,8 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.grey,
             fontFamily: "Poppins",
             textTheme: Theme.of(context).textTheme.apply(bodyColor: primary),
-          )),
-    );
+          )
+      );
+
   }
 }

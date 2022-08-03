@@ -3,19 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
-import 'package:sociafy/models/user.dart';
 import 'package:sociafy/screens/edit_profile.dart';
 import 'package:sociafy/screens/media_post.dart';
 import 'package:sociafy/screens/socia_post.dart';
 import 'package:sociafy/services/firestore_service.dart';
 
 import '../color/colors.dart';
-import '../provider/user_provider.dart';
 
 class Profile extends StatefulWidget {
   final String uid;
+
   const Profile({Key? key, required this.uid}) : super(key: key);
 
   @override
@@ -59,7 +57,7 @@ class _ProfileState extends State<Profile> {
           .contains(FirebaseAuth.instance.currentUser!.uid);
       setState(() {});
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
     }
     setState(() {
       isLoading = false;
@@ -81,7 +79,6 @@ class _ProfileState extends State<Profile> {
                 length: 2,
                 child: NestedScrollView(
                   headerSliverBuilder: (context, snapshot) {
-
                     return [
                       SliverList(
                         delegate: SliverChildListDelegate(
@@ -130,7 +127,11 @@ class _ProfileState extends State<Profile> {
                                                           Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
-                                                                builder: (context) => EditProfile(uid: FirebaseAuth.instance.currentUser!.uid)),
+                                                                builder: (context) => EditProfile(
+                                                                    uid: FirebaseAuth
+                                                                        .instance
+                                                                        .currentUser!
+                                                                        .uid)),
                                                           );
                                                         },
                                                         shape:
@@ -377,12 +378,12 @@ class _ProfileState extends State<Profile> {
                       Expanded(
                         child: TabBarView(
                           children: [
-                        media(
-                          uid: widget.uid,
-                        ),
-                        socia(
-                          uid: widget.uid,
-                        ),
+                            media(
+                              uid: widget.uid,
+                            ),
+                            socia(
+                              uid: widget.uid,
+                            ),
                           ],
                         ),
                       )

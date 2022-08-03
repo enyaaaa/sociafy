@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sociafy/screens/profile.dart';
 
-import '../color/colors.dart';
-import '../models/explore.dart';
 import '../widgets/search_item.dart';
 
 class Explore extends StatefulWidget {
@@ -42,10 +40,11 @@ class _ExploreState extends State<Explore> {
                   children: [
                     Expanded(
                         child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 15, top: 10, right: 15),
+                            padding: const EdgeInsets.only(
+                                left: 15, top: 10, right: 15),
                             child: ListView.builder(
-                                itemCount: (snapshot.data as dynamic).docs.length,
+                                itemCount:
+                                    (snapshot.data as dynamic).docs.length,
                                 itemBuilder: (context, int index) {
                                   if ((snapshot.data! as dynamic)
                                       .docs[index]['username']
@@ -93,23 +92,29 @@ class _ExploreState extends State<Explore> {
                                                                     .docs[index]
                                                                 ['username'],
                                                         style: TextStyle(
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontFamily: "Poppins",
+                                                            fontFamily:
+                                                                "Poppins",
                                                             fontSize: 13),
                                                       ),
                                                     ),
                                                     SizedBox(
                                                       width: 180,
                                                       child: Text(
-                                                        (snapshot.data! as dynamic)
-                                                            .docs[index]['name'],
+                                                        (snapshot.data!
+                                                                    as dynamic)
+                                                                .docs[index]
+                                                            ['name'],
                                                         style: TextStyle(
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
-                                                            fontFamily: "Poppins",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            fontFamily:
+                                                                "Poppins",
                                                             fontSize: 12),
                                                       ),
                                                     )
@@ -131,26 +136,26 @@ class _ExploreState extends State<Explore> {
           : Padding(
               padding: const EdgeInsets.only(top: 10),
               child: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection("posts").snapshots(),
+                stream:
+                    FirebaseFirestore.instance.collection("posts").snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-
                   return GridView.builder(
                     shrinkWrap: true,
                     itemCount: (snapshot.data! as dynamic).docs.length,
                     gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 2,
                       mainAxisSpacing: 2,
                     ),
                     itemBuilder: (context, index) {
                       DocumentSnapshot snap =
-                      (snapshot.data! as dynamic).docs[index];
+                          (snapshot.data! as dynamic).docs[index];
 
                       return Container(
                         decoration: BoxDecoration(
@@ -164,8 +169,7 @@ class _ExploreState extends State<Explore> {
                     },
                   );
                 },
-              )
-            ),
+              )),
     );
   }
 

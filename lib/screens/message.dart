@@ -1,12 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:sociafy/screens/view_message.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
 import '../models/messages.dart';
-import '../provider/user_provider.dart';
 import '../widgets/drawer.dart';
 import '../widgets/search_item.dart';
 
@@ -34,7 +31,7 @@ class _MessageState extends State<Message> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldkey,
-        drawer: AppDrawer(),
+        drawer: AppDrawer(uid: FirebaseAuth.instance.currentUser!.uid),
         appBar: PreferredSize(
           child: getAppBar(),
           preferredSize: Size.fromHeight(60),
@@ -48,28 +45,28 @@ class _MessageState extends State<Message> {
   }
 
   Widget getAppBar() {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 10),
-        child: IconButton(
-          onPressed: () {
-            scaffoldkey.currentState?.openDrawer();
-          },
-          icon: CircleAvatar(
-              child: ClipOval(
-                child: Image(
-                  width: 30.0,
-                  height: 30.0,
-                  image: NetworkImage(userProvider.getUser.image),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              ),
-        ),
-      ),
+      // leading: Padding(
+      //   padding: const EdgeInsets.only(left: 10),
+      //   child:
+      //   IconButton(
+      //     onPressed: () {
+      //       scaffoldkey.currentState?.openDrawer();
+      //     },
+      //     icon: CircleAvatar(
+      //         child: ClipOval(
+      //           child: Image(
+      //             width: 30.0,
+      //             height: 30.0,
+      //             image: Image.network(""),
+      //             fit: BoxFit.cover,
+      //           ),
+      //         ),
+      //         ),
+      //   ),
+      // ),
       title: Padding(
         padding: const EdgeInsets.only(left: 80),
         child: Row(
@@ -126,7 +123,7 @@ class _MessageState extends State<Message> {
                     children: [
                       CircleAvatar(
                         backgroundImage: NetworkImage(
-                            "https://firebasestorage.googleapis.com/v0/b/sociafy-c382f.appspot.com/o/profilePics%2Fzendaya_profilepic.jfif?alt=media&token=5e27af6a-8271-4b14-8dd7-55c57e1b7d1d"),
+                            "https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg"),
                         radius: 20,
                       ),
                       SizedBox(

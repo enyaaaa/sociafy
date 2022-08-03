@@ -22,7 +22,8 @@ class _SignupState extends State<Signup> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   var form = GlobalKey<FormState>();
 
@@ -50,7 +51,7 @@ class _SignupState extends State<Signup> {
           ),
         );
       }).catchError((e) {
-        Fluttertoast.showToast(msg: e!.message);
+        Fluttertoast.showToast(msg: e!.message, backgroundColor: iconbutton, textColor: primary);
       });
     }
   }
@@ -62,20 +63,20 @@ class _SignupState extends State<Signup> {
     UserModel userModel = UserModel(
         email: emailController.text,
         uid: user!.uid,
-        image: "https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg",
+        image:
+            "https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg",
         username: usernameController.text,
         name: nameController.text,
         bio: "",
         followers: [],
-        following: []
-    );
+        following: []);
 
     // adding user in our database
     await firebaseFirestore
         .collection("users")
         .doc(user.uid)
         .set(userModel.toJson());
-    Fluttertoast.showToast(msg: "Account created successfully :D");
+    Fluttertoast.showToast(msg: "Account created successfully :D", backgroundColor: iconbutton, textColor: primary);
   }
 
   bool showPassword = true;
@@ -118,34 +119,34 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   buildTextField(
-                  "Email",
-                  "Email",
-                  false,
-                      (value) {
-                    if (value == "")
-                      return "Please provide an email address.";
-                    else if (!value.contains('@'))
-                      return "Please provide a valid email address.";
-                    else
-                      return null;
-                  },
-                  emailController,
-                      (value) {
-                    emailController.text = value;
-                  },
-                ),
+                    "Email",
+                    "Email",
+                    false,
+                    (value) {
+                      if (value == "")
+                        return "Please provide an email address.";
+                      else if (!value.contains('@'))
+                        return "Please provide a valid email address.";
+                      else
+                        return null;
+                    },
+                    emailController,
+                    (value) {
+                      emailController.text = value;
+                    },
+                  ),
                   buildTextField(
                     "Name",
                     "Name",
                     false,
-                        (value) {
+                    (value) {
                       if (value == "")
                         return "Please provide a name.";
                       else
                         return null;
                     },
                     nameController,
-                        (value) {
+                    (value) {
                       nameController.text = value;
                     },
                   ),
@@ -153,19 +154,16 @@ class _SignupState extends State<Signup> {
                     "Username",
                     "Username",
                     false,
-                        (value) {
+                    (value) {
                       if (value == "")
                         return "Please provide a username.";
-                      else if (!RegExp(
-                          r'^[a-zA-Z0-9]+$')
-                          .hasMatch(value)){
+                      else if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
                         return 'Please enter a valid username.';
-                      }
-                      else
+                      } else
                         return null;
                     },
                     usernameController,
-                        (value) {
+                    (value) {
                       usernameController.text = value;
                     },
                   ),
@@ -173,7 +171,7 @@ class _SignupState extends State<Signup> {
                     "Password",
                     "Password",
                     true,
-                        (value) {
+                    (value) {
                       if (value == "")
                         return 'Please provide a password.';
                       else if (value.length < 6)
@@ -182,7 +180,7 @@ class _SignupState extends State<Signup> {
                         return null;
                     },
                     passwordController,
-                        (value) {
+                    (value) {
                       passwordController.text = value;
                     },
                   ),
@@ -190,7 +188,7 @@ class _SignupState extends State<Signup> {
                     "Confirm Password",
                     "Confirm Password",
                     true,
-                        (value) {
+                    (value) {
                       if (value == "")
                         return 'Please provide a password.';
                       else if (value.length < 6)
@@ -202,7 +200,7 @@ class _SignupState extends State<Signup> {
                         return null;
                     },
                     confirmPasswordController,
-                        (value) {
+                    (value) {
                       confirmPasswordController.text = value;
                     },
                   ),
@@ -276,15 +274,15 @@ class _SignupState extends State<Signup> {
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
                 ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    showPassword = !showPassword;
-                  });
-                },
-                icon: Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.grey,
-                ))
+                    onPressed: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ))
                 : null,
             contentPadding: EdgeInsets.only(bottom: 5),
             labelText: labelText,

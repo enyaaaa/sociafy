@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sociafy/services/storage_service.dart';
 import 'package:uuid/uuid.dart';
@@ -45,6 +45,10 @@ class FireStoreService {
       'email': user.email,
       'bio': user.bio,
     });
+    firestore.collection('post').doc(user.uid).update({
+      'image': user.image,
+      'username': user.username,
+    });
   }
 
   Future<String> likePost(String postId, String uid, List likes) async {
@@ -68,8 +72,41 @@ class FireStoreService {
     return res;
   }
 
+  Future<String> likeComment(
+      String postId, String commentId, String uid, List likes) async {
+    String res = "Some error occurred";
+    try {
+      if (likes.contains(uid)) {
+        // if the likes list contains the user uid, we need to remove it
+        firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .update({
+          'likes': FieldValue.arrayRemove([uid])
+        });
+      } else {
+        // else we need to add uid to the likes array
+        firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .update({
+          'likes': FieldValue.arrayUnion([uid])
+        });
+      }
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
   // Post comment
-  Future<String> postComment(String postId, String comment, String uid, String username, String image) async {
+  Future<String> postComment(String postId, String comment, String uid,
+      String username, String image) async {
     String res = "Some error occurred";
     try {
       if (comment.isNotEmpty) {
@@ -86,6 +123,7 @@ class FireStoreService {
           'uid': uid,
           'comment': comment,
           'commentId': commentId,
+          'likes': [],
           'timeAgo': DateTime.now(),
         });
         res = 'success';
@@ -110,15 +148,13 @@ class FireStoreService {
     return res;
   }
 
-  Future<void> followUser(
-      String uid,
-      String followId
-      ) async {
+  Future<void> followUser(String uid, String followId) async {
     try {
-      DocumentSnapshot snap = await firestore.collection('users').doc(uid).get();
+      DocumentSnapshot snap =
+          await firestore.collection('users').doc(uid).get();
       List following = (snap.data()! as dynamic)['following'];
 
-      if(following.contains(followId)) {
+      if (following.contains(followId)) {
         await firestore.collection('users').doc(followId).update({
           'followers': FieldValue.arrayRemove([uid])
         });
@@ -135,8 +171,7 @@ class FireStoreService {
           'following': FieldValue.arrayUnion([followId])
         });
       }
-
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }

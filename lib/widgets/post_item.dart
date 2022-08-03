@@ -1,24 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
-import 'package:sociafy/models/user.dart' as model;
-import 'package:sociafy/root_page.dart';
 import 'package:sociafy/services/firestore_service.dart';
 import 'package:sociafy/widgets/heart_animation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
-import '../models/post.dart';
-import '../provider/user_provider.dart';
 import '../screens/view_post.dart';
 
 class post_item extends StatefulWidget {
   final snap;
+  final uid;
 
-  const post_item({Key? key, required this.snap}) : super(key: key);
+  const post_item({Key? key, required this.snap, required this.uid})
+      : super(key: key);
 
   @override
   State<post_item> createState() => _post_itemState();
@@ -32,6 +30,7 @@ class _post_itemState extends State<post_item> {
   @override
   void initState() {
     super.initState();
+    getData();
     fetchCommentLen();
   }
 
@@ -44,7 +43,7 @@ class _post_itemState extends State<post_item> {
           .get();
       commentLen = snap.docs.length;
     } catch (err) {
-      Fluttertoast.showToast(msg: err.toString());
+      Fluttertoast.showToast(msg: err.toString(), backgroundColor: iconbutton, textColor: primary);
     }
   }
 
@@ -63,7 +62,6 @@ class _post_itemState extends State<post_item> {
                   onPressed: () async {
                     Navigator.of(context).pop();
                     await FireStoreService().deletePost(postId);
-
                   },
                   child: Text('Yes')),
               TextButton(
@@ -76,9 +74,31 @@ class _post_itemState extends State<post_item> {
         });
   }
 
+  var userData = {};
+  bool isLoading = false;
+
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var usersnap = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(widget.uid)
+          .get();
+
+      userData = usersnap.data()!;
+      setState(() {});
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final model.UserModel user = Provider.of<UserProvider>(context).getUser;
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
@@ -124,7 +144,7 @@ class _post_itemState extends State<post_item> {
                       ],
                     ),
                   ),
-                  widget.snap['uid'].toString() == user.uid
+                  widget.snap['uid'].toString() == userData['uid']
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -227,58 +247,60 @@ class _post_itemState extends State<post_item> {
                         ),
                       ))
                   : Padding(padding: EdgeInsets.only(left: 10, right: 15)),
-              widget.snap["postUrl"] != "" ? GestureDetector(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: 10, right: 10, top: 10, bottom: 0),
-                      width: double.infinity,
-                      height: 390.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: postbackground,
-                            offset: Offset(0, 1),
-                            blurRadius: 8.0,
+              widget.snap["postUrl"] != ""
+                  ? GestureDetector(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: 10, right: 10, top: 10, bottom: 0),
+                            width: double.infinity,
+                            height: 390.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: postbackground,
+                                  offset: Offset(0, 1),
+                                  blurRadius: 8.0,
+                                ),
+                              ],
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    widget.snap["postUrl"].toString()),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Opacity(
+                            opacity: isHeartAnimating ? 1 : 0,
+                            child: HeartAnimation(
+                              isAnimating: isHeartAnimating,
+                              duration: Duration(milliseconds: 700),
+                              child: SvgPicture.asset(
+                                "assets/icon/like_active_icon.svg",
+                                width: 60,
+                              ),
+                              onEnd: () => setState(
+                                () => isHeartAnimating = false,
+                              ),
+                            ),
                           ),
                         ],
-                        image: DecorationImage(
-                          image:
-                              NetworkImage(widget.snap["postUrl"].toString()),
-                          fit: BoxFit.cover,
-                        ),
                       ),
-                    ),
-                    Opacity(
-                      opacity: isHeartAnimating ? 1 : 0,
-                      child: HeartAnimation(
-                        isAnimating: isHeartAnimating,
-                        duration: Duration(milliseconds: 700),
-                        child: SvgPicture.asset(
-                          "assets/icon/like_active_icon.svg",
-                          width: 60,
-                        ),
-                        onEnd: () => setState(
-                          () => isHeartAnimating = false,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                onDoubleTap: () {
-                  setState(() {
-                    isHeartAnimating = true;
-                  });
-                  FireStoreService().likePost(
-                    widget.snap['postId'].toString(),
-                    user.uid,
-                    widget.snap['likes'],
-                  );
-                },
-              ): SizedBox.shrink(),
+                      onDoubleTap: () {
+                        setState(() {
+                          isHeartAnimating = true;
+                        });
+                        FireStoreService().likePost(
+                          widget.snap['postId'].toString(),
+                          userData['uid'],
+                          widget.snap['likes'],
+                        );
+                      },
+                    )
+                  : SizedBox.shrink(),
               Padding(
                 padding: EdgeInsets.only(left: 10, top: 10),
                 child: Container(
@@ -290,11 +312,13 @@ class _post_itemState extends State<post_item> {
                           IconButton(
                             onPressed: () => FireStoreService().likePost(
                               widget.snap['postId'].toString(),
-                              user.uid,
+                              userData['uid'],
                               widget.snap['likes'],
                             ),
                             icon: SvgPicture.asset(
-                              widget.snap['likes'].contains(user.uid)
+                              widget.snap['likes'].contains(
+                                userData['uid'],
+                              )
                                   ? "assets/icon/like_active_icon.svg"
                                   : "assets/icon/like_icon.svg",
                               width: 27,
@@ -314,8 +338,10 @@ class _post_itemState extends State<post_item> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ViewPost(
-                                      postId: widget.snap['postId'].toString(),
-                                    ),
+                                        postId:
+                                            widget.snap['postId'].toString(),
+                                        uid: FirebaseAuth
+                                            .instance.currentUser!.uid),
                                   ));
                             },
                             child: SvgPicture.asset(

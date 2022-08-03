@@ -11,27 +11,35 @@ class AuthService {
     User currentUser = auth.currentUser!;
 
     DocumentSnapshot documentSnapshot =
-    await firestore.collection('users').doc(currentUser.uid).get();
+        await firestore.collection('users').doc(currentUser.uid).get();
 
     return model.UserModel.fromSnap(documentSnapshot);
   }
 
   // Signing Up User
   Future<UserCredential> register(email, password) {
-    return FirebaseAuth.instance.createUserWithEmailAndPassword(email: email,
-        password: password);
+    return FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
   }
+
   //User login
   Future<UserCredential> login(email, password) {
-    return FirebaseAuth.instance.signInWithEmailAndPassword(email: email,
-        password: password);
+    return FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
   }
+
   Future<void> forgotPassword(email) {
     return FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
+
   Stream<User?> getAuthUser() {
     return FirebaseAuth.instance.authStateChanges();
   }
+
+  User? getCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
+  }
+
   logout() {
     return FirebaseAuth.instance.signOut();
   }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,13 +8,11 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:sociafy/models/user.dart';
 import 'package:sociafy/screens/settings.dart';
 import 'package:sociafy/services/firestore_service.dart';
 
 import '../color/colors.dart';
-import '../provider/user_provider.dart';
 import '../services/storage_service.dart';
 
 class EditProfile extends StatefulWidget {
@@ -29,17 +26,17 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   var userData = {};
+  String? name;
+  String? username;
+  String? bio;
   bool isLoading = false;
   var form = GlobalKey<FormState>();
 
+  //the file that user pick from their device
+  File? _file;
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController bioController = TextEditingController();
-
-  bool nameValid = true;
-  bool usernameValid = true;
-  bool bioValid = true;
+  //initialise picker as ImagePicker
+  final ImagePicker picker = ImagePicker();
 
   @override
   void initState() {
@@ -58,26 +55,17 @@ class _EditProfileState extends State<EditProfile> {
           .get();
 
       userData = usersnap.data()!;
-      nameController.text = userData["name"];
-      usernameController.text = userData["username"];
-      bioController.text = userData["bio"];
+      name = userData["name"];
+      username = userData["username"];
+      bio = userData["bio"];
       setState(() {});
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton,  textColor: primary  );
     }
     setState(() {
       isLoading = false;
     });
   }
-
-  //the file that user pick from their device
-  File? _file;
-
-  // set initial loading page to false
-  bool loading = false;
-
-  //initialise picker as ImagePicker
-  final ImagePicker picker = ImagePicker();
 
   //user have the selection of camara or gallery
   selectphoto(BuildContext parentContext) async {
@@ -151,39 +139,37 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   saveProfile() async {
+    print(name);
+    print(username);
+    print(bio);
+    print(_file);
+
     form.currentState!.save();
-    if (form.currentState!.validate() && !loading) {
+    if (form.currentState!.validate() && !isLoading) {
       setState(() {
-        loading = true;
+        isLoading = true;
       });
       String profilePic = '';
-      if (_file == "") {
+      if (_file == null) {
         profilePic = userData["image"];
       } else {
-        profilePic = await StorageService().uploadProfilePicture('profilePic', userData["image"], _file!);
+        profilePic = await StorageService()
+            .uploadProfilePicture('profilePic', userData["image"], _file!);
       }
       UserModel user = UserModel(
           email: userData["email"],
           uid: widget.uid,
           image: profilePic,
-          username: usernameController.text,
-          name: nameController.text,
-          bio: bioController.text,
+          username: username!,
+          name: name!,
+          bio: bio!,
           followers: userData["followers"],
-          following: userData["following"]
-      );
+          following: userData["following"]);
 
       FireStoreService().updateUserData(user);
       Navigator.pop(context);
+      Fluttertoast.showToast(msg: "Successfully Updated Profile", backgroundColor: iconbutton, textColor: primary);
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    nameController.dispose();
-    usernameController.dispose();
-    bioController.dispose();
   }
 
   @override
@@ -296,7 +282,8 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     Center(
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+                        padding:
+                            EdgeInsets.only(bottom: 20, left: 20, right: 20),
                         child: Text(
                           userData["email"],
                           style: TextStyle(
@@ -306,46 +293,107 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                       ),
                     ),
-                    buildTextField(
-                      "Name",
-                      userData["name"],
-                      nameController,
-                      //     (value) {
-                      //   nameController.text = value;
-                      // },
-                      // (value) {
-                      //   if (value == "")
-                      //     return "Please provide a name.";
-                      //   else
-                      //     return null;
-                      // },
-                    ),
-                    buildTextField(
-                      "Username",
-                      userData["username"],
-                      usernameController,
-                      //     (value) {
-                      //   usernameController.text = value;
-                      // },
-                      // (value) {
-                      //   if (value == "")
-                      //     return "Please provide a username.";
-                      //   else if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
-                      //     return 'Please enter a valid username.';
-                      //   } else
-                      //     return null;
-                      // },
-                    ),
-                    buildTextField(
-                      "Bio",
-                      userData["bio"],
-                      bioController,
-                      // (value) {
-                      //   bioController.text = value!;
-                      // },
-                      // (value) {
-                      //   return null;
-                      // },
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+                      child: Form(
+                        key: form,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              initialValue: name,
+                              validator: (value) {
+                                if (value == "")
+                                  return "Please provide a name.";
+                                else
+                                  return null;
+                              },
+                              onSaved: (value) {
+                                name = value;
+                              },
+                              decoration: InputDecoration(
+                                  labelText: 'Name',
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: primary,
+                                  ),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  hintText: "name",
+                                  hintStyle: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: postbackground,
+                                  )),
+                              style: TextStyle(
+                                fontSize: 14,
+                                height: 2,
+                                fontFamily: "Poppins",
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              initialValue: username,
+                              validator: (value) {
+                                if (value == "")
+                                  return "Please provide a username.";
+                                else if (!RegExp(r'^[a-zA-Z0-9]+$')
+                                    .hasMatch(value!)) {
+                                  return 'Please enter a valid username.';
+                                } else
+                                  return null;
+                              },
+                              onSaved: (value) {
+                                username = value;
+                              },
+                              decoration: InputDecoration(
+                                  labelText: 'Username',
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: primary,
+                                  ),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  hintText: "username",
+                                  hintStyle: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: postbackground,
+                                  )),
+                              style: TextStyle(
+                                fontSize: 14,
+                                height: 2,
+                                fontFamily: "Poppins",
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              initialValue: bio,
+                              validator: (value) {
+                                return null;
+                              },
+                              onSaved: (value) {
+                                bio = value;
+                              },
+                              decoration: InputDecoration(
+                                  labelText: 'Bio',
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: primary,
+                                  ),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  hintText: "bio",
+                                  hintStyle: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: postbackground,
+                                  )),
+                              style: TextStyle(
+                                fontSize: 14,
+                                height: 2,
+                                fontFamily: "Poppins",
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 80),
@@ -392,34 +440,5 @@ class _EditProfileState extends State<EditProfile> {
               ),
             ),
           );
-  }
-
-  //style of the text field for edit profile
-  Widget buildTextField(String labelText, String placeholder, controller) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
-      child: TextField(
-        controller: controller,
-        // onSaved: onsaved,
-        // validator: validator,
-        decoration: InputDecoration(
-            labelText: labelText,
-            labelStyle: TextStyle(
-              fontFamily: 'Poppins',
-              color: primary,
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontFamily: 'Poppins',
-              color: postbackground,
-            )),
-        style: TextStyle(
-          fontSize: 14,
-          height: 2,
-          fontFamily: "Poppins",
-        ),
-      ),
-    );
   }
 }

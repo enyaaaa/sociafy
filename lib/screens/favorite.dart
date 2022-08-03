@@ -1,18 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:readmore/readmore.dart';
-import 'package:sociafy/screens/view_post.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
-import '../models/post.dart';
-import '../widgets/heart_animation.dart';
 import '../widgets/post_item.dart';
 
 class Favorite extends StatefulWidget {
   final String uid;
+
   const Favorite({Key? key, required this.uid}) : super(key: key);
+
   @override
   State<Favorite> createState() => _FavoriteState();
 }
@@ -49,9 +46,10 @@ class _FavoriteState extends State<Favorite> {
                   child: ListView.builder(
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) => Container(
-                        child: post_item(snap: snapshot.data!.docs[index].data(),),
-                      )
-                  ),
+                            child: post_item(
+                                snap: snapshot.data!.docs[index].data(),
+                                uid: FirebaseAuth.instance.currentUser!.uid),
+                          )),
                 ),
               ],
             );

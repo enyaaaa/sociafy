@@ -1,36 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sociafy/root_page.dart';
-import 'package:sociafy/screens/forgot_password.dart';
 import 'package:sociafy/screens/signup.dart';
 
 import '../color/colors.dart';
 import '../services/auth_service.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<ForgetPassword> createState() => _ForgetPasswordState();
 }
 
-class _LoginState extends State<Login> {
+class _ForgetPasswordState extends State<ForgetPassword> {
   var form = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void login(String email, String password) async {
+  void ForgetPassword(String email) async {
     if (form.currentState!.validate()) {
       form.currentState!.save();
       AuthService authService = AuthService();
-      return authService.login(email, password).then((value) {
-        Fluttertoast.showToast(msg: "Login successfully :D", backgroundColor: iconbutton,  textColor: primary);
-        Navigator.pushAndRemoveUntil(
-            (context),
-            MaterialPageRoute(builder: (context) => Rootpage()),
-            (route) => false);
+      return authService.forgotPassword(email).then((value) {
+        Fluttertoast.showToast(
+            msg: "Please check your email for to reset your password :D", backgroundColor: iconbutton, textColor: primary);
+        Navigator.of(context).pop();
       }).catchError((e) {
         Fluttertoast.showToast(msg: e!.message, backgroundColor: iconbutton, textColor: primary);
       });
@@ -64,9 +60,9 @@ class _LoginState extends State<Login> {
                 child: SvgPicture.asset("assets/logo.svg")),
             Center(
               child: Text(
-                "L O G I N",
+                "F O R G E T  P A S S W O R D",
                 style: TextStyle(
-                    fontFamily: "Poppins", color: primary, fontSize: 30),
+                    fontFamily: "Poppins", color: primary, fontSize: 20),
               ),
             ),
             SizedBox(
@@ -74,77 +70,40 @@ class _LoginState extends State<Login> {
             ),
             Form(
               key: form,
-              child: Column(
-                children: [
-                  buildTextField(
-                    "Email",
-                    "Email",
-                    false,
+              child: buildTextField(
+                "Email",
+                "Email",
+                false,
                     (value) {
-                      if (value == null)
-                        return "Please provide an email.";
-                      else if (!value.contains('@'))
-                        return "Please provide a valid email address.";
-                      else
-                        return null;
-                    },
-                    emailController,
+                  if (value == null)
+                    return "Please provide an email.";
+                  else if (!value.contains('@'))
+                    return "Please provide a valid email address.";
+                  else
+                    return null;
+                },
+                emailController,
                     (value) {
-                      emailController.text = value;
-                    },
-                  ),
-                  buildTextField(
-                    "Password",
-                    "Password",
-                    true,
-                    (value) {
-                      if (value == null)
-                        return 'Please provide a password.';
-                      else if (value.length < 6)
-                        return 'Password must be at least 6 characters.';
-                      else
-                        return null;
-                    },
-                    passwordController,
-                    (value) {
-                      passwordController.text = value;
-                    },
-                  ),
-                ],
+                  emailController.text = value;
+                },
               ),
-            ),
-            InkWell(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 210),
-                child: Text(
-                  "Forgot Password?",
-                  style: TextStyle(
-                      fontFamily: "Poppins", color: primary, fontSize: 15),
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ForgetPassword()),
-                );
-              },
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 130,
+                horizontal: 100,
                 vertical: 30,
               ),
               child: MaterialButton(
                 color: iconbutton,
                 elevation: 0,
                 onPressed: () {
-                  login(emailController.text, passwordController.text);
+                  ForgetPassword(emailController.text);
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  "Login",
+                  "Reset Password",
                   style: TextStyle(fontFamily: "Poppins", color: primary),
                 ),
               ),
@@ -196,15 +155,15 @@ class _LoginState extends State<Login> {
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
                 ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showPassword = !showPassword;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.grey,
-                    ))
+                onPressed: () {
+                  setState(() {
+                    showPassword = !showPassword;
+                  });
+                },
+                icon: Icon(
+                  Icons.remove_red_eye,
+                  color: Colors.grey,
+                ))
                 : null,
             contentPadding: EdgeInsets.only(bottom: 5),
             labelText: labelText,

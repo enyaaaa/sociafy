@@ -1,23 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
-import 'package:readmore/readmore.dart';
 import 'package:sociafy/services/firestore_service.dart';
-import 'package:sociafy/widgets/post_item.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
-import '../models/post.dart';
-import '../provider/user_provider.dart';
 import '../widgets/comment_item.dart';
-import '../widgets/heart_animation.dart';
 
 class ViewPost extends StatefulWidget {
   final postId;
-  ViewPost({Key? key, required this.postId}) : super(key: key);
+  final uid;
+
+  ViewPost({Key? key, required this.postId, required this.uid})
+      : super(key: key);
 
   @override
   State<ViewPost> createState() => _ViewPostState();
@@ -25,25 +20,45 @@ class ViewPost extends StatefulWidget {
 
 class _ViewPostState extends State<ViewPost> {
   final TextEditingController commentController = TextEditingController();
-  void postComment(String uid, String name, String profilePic) async {
+
+  void postComment(String uid, String name, String image) async {
     try {
       String res = await FireStoreService().postComment(
         widget.postId,
         commentController.text,
         uid,
         name,
-        profilePic,
+        image,
       );
 
       if (res != 'success') {
-        Fluttertoast.showToast(msg: res);
+        Fluttertoast.showToast(msg: res, backgroundColor: iconbutton, textColor: primary);
       }
       setState(() {
         commentController.text = "";
       });
     } catch (err) {
-      Fluttertoast.showToast(msg: err.toString());
+      Fluttertoast.showToast(msg: err.toString(), backgroundColor: iconbutton, textColor: primary);
     }
+  }
+
+  var userData = {};
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    var usersnap = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.uid)
+        .get();
+
+    userData = usersnap.data()!;
+    setState(() {});
   }
 
   @override
@@ -54,7 +69,6 @@ class _ViewPostState extends State<ViewPost> {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: PreferredSize(
         child: getAppBar(),
@@ -81,8 +95,8 @@ class _ViewPostState extends State<ViewPost> {
                     child: ListView.builder(
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (ctx, index) => comment_item(
-                        snap: snapshot.data!.docs[index],
-                      ),
+                          snap: snapshot.data!.docs[index],
+                          uid: FirebaseAuth.instance.currentUser!.uid),
                     ),
                   ),
                   Padding(
@@ -98,8 +112,7 @@ class _ViewPostState extends State<ViewPost> {
                         children: [
                           CircleAvatar(
                             radius: 15,
-                            backgroundImage:
-                                NetworkImage(userProvider.getUser.image),
+                            backgroundImage: NetworkImage(userData['image']),
                           ),
                           Expanded(
                             child: TextField(
@@ -115,7 +128,7 @@ class _ViewPostState extends State<ViewPost> {
                                   ),
                                   contentPadding: EdgeInsets.all(12),
                                   hintText:
-                                      "Comment as ${userProvider.getUser.username}",
+                                      "Comment as ${userData['username']}",
                                   hintStyle: TextStyle(
                                       color: postbackground,
                                       fontFamily: "poppins"),
@@ -136,11 +149,8 @@ class _ViewPostState extends State<ViewPost> {
                                   color: iconbutton,
                                   borderRadius: BorderRadius.circular(10)),
                               child: IconButton(
-                                onPressed: () => postComment(
-                                      userProvider.getUser.uid,
-                                      userProvider.getUser.username,
-                                      userProvider.getUser.image
-                                ),
+                                onPressed: () => postComment(userData['uid'],
+                                    userData['username'], userData['image']),
                                 icon: Icon(
                                   Icons.near_me,
                                   size: 25,

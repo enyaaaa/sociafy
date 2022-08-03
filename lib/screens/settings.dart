@@ -37,13 +37,12 @@ class _SettingState extends State<Setting> {
 
     return authService.logout().then((value) {
       FocusScope.of(context).unfocus();
-      Fluttertoast.showToast(msg: "Logout successfully :D");
-      Navigator.pushAndRemoveUntil(
-          (context), MaterialPageRoute(builder: (context) => Login()), (
-          route) => false);
+      Fluttertoast.showToast(msg: "Logout successfully :D", backgroundColor: iconbutton, textColor: primary);
+      Navigator.pushAndRemoveUntil((context),
+          MaterialPageRoute(builder: (context) => Login()), (route) => false);
     }).catchError((e) {
       FocusScope.of(context).unfocus();
-      Fluttertoast.showToast(msg: e!.message);
+      Fluttertoast.showToast(msg: e!.message, backgroundColor: iconbutton, textColor: primary);
     });
   }
 

@@ -57,18 +57,3 @@ class Post{
     "saved": saved,
   };
 }
-
-// //models of comments left on the post
-// class Comments {
-//   UserModel user;
-//   String comment;
-//   DateTime datetime;
-//   bool isliked;
-//
-//   Comments({
-//     required this.user,
-//     required this.comment,
-//     required this.isliked,
-//     required this.datetime,
-//   });
-// }
