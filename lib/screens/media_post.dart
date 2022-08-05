@@ -55,7 +55,7 @@ class _mediaState extends State<media> {
                 },
               )
             : Center(
-              child: Column(
+                child: Column(
                   children: [
                     SizedBox(
                       height: 50,
@@ -73,7 +73,7 @@ class _mediaState extends State<media> {
                     ),
                   ],
                 ),
-            );
+              );
       },
     ));
   }

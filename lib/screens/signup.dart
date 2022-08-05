@@ -51,7 +51,8 @@ class _SignupState extends State<Signup> {
           ),
         );
       }).catchError((e) {
-        Fluttertoast.showToast(msg: e!.message, backgroundColor: iconbutton, textColor: primary);
+        Fluttertoast.showToast(
+            msg: e!.message, backgroundColor: iconbutton, textColor: primary);
       });
     }
   }
@@ -76,7 +77,10 @@ class _SignupState extends State<Signup> {
         .collection("users")
         .doc(user.uid)
         .set(userModel.toJson());
-    Fluttertoast.showToast(msg: "Account created successfully :D", backgroundColor: iconbutton, textColor: primary);
+    Fluttertoast.showToast(
+        msg: "Account created successfully :D",
+        backgroundColor: iconbutton,
+        textColor: primary);
   }
 
   bool showPassword = true;
@@ -116,6 +120,7 @@ class _SignupState extends State<Signup> {
             ),
             Form(
               key: form,
+              autovalidateMode: AutovalidateMode.always,
               child: Column(
                 children: [
                   buildTextField(
@@ -231,29 +236,29 @@ class _SignupState extends State<Signup> {
               height: 10,
             ),
             Center(
-              child: Text(
-                "Already Have An Account?",
-                style: TextStyle(
-                    fontFamily: "Poppins", color: primary, fontSize: 15),
-              ),
-            ),
-            InkWell(
-              child: Center(
-                child: Text(
-                  "Login Now :D",
-                  style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: primary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Login()),
-                );
-              },
+              child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Login()),
+                    );
+                  },
+                  child: RichText(
+                    text: const TextSpan(
+                      text: "Already Have An Account?",
+                      style: TextStyle(
+                          fontFamily: "Poppins", color: Colors.black54),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: ' LOGIN :D',
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold,
+                              color: primary),
+                        ),
+                      ],
+                    ),
+                  )),
             ),
           ],
         ),

@@ -27,6 +27,7 @@ class _AddPostState extends State<AddPost> {
   //allows validation of form
   final form = GlobalKey<FormState>();
 
+  //controllers for the text fields
   final TextEditingController captionController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
 
@@ -39,8 +40,8 @@ class _AddPostState extends State<AddPost> {
   //initialise picker as ImagePicker
   final ImagePicker picker = ImagePicker();
 
+  //creating a variable
   var userData = {};
-  bool isLoading = false;
 
   @override
   void initState() {
@@ -48,9 +49,10 @@ class _AddPostState extends State<AddPost> {
     getData();
   }
 
+  //get current user data
   getData() async {
     setState(() {
-      isLoading = true;
+      loading = true;
     });
     try {
       var usersnap = await FirebaseFirestore.instance
@@ -61,10 +63,11 @@ class _AddPostState extends State<AddPost> {
       userData = usersnap.data()!;
       setState(() {});
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
+      Fluttertoast.showToast(
+          msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
     }
     setState(() {
-      isLoading = false;
+      loading = false;
     });
   }
 
@@ -129,6 +132,7 @@ class _AddPostState extends State<AddPost> {
     setState(() => this._file = Image);
   }
 
+  //compress the selected image
   Future<File> compressImage(String path, int quality) async {
     final newPath = p.join((await getTemporaryDirectory()).path,
         '${DateTime.now()}.${p.extension(path)}');
@@ -142,7 +146,10 @@ class _AddPostState extends State<AddPost> {
   //when user click on the share button to post the image
   Future postImage(String uid, String username, String image) async {
     if (_file == null) {
-      Fluttertoast.showToast(msg: "Please add an image", backgroundColor: iconbutton, textColor: primary);
+      Fluttertoast.showToast(
+          msg: "Please add an image",
+          backgroundColor: iconbutton,
+          textColor: primary);
       return;
     }
 
@@ -158,23 +165,28 @@ class _AddPostState extends State<AddPost> {
         image,
       );
       if (res == "success") {
-        Fluttertoast.showToast(msg: "Posted", backgroundColor: iconbutton, textColor: primary);
+        Fluttertoast.showToast(
+            msg: "Posted", backgroundColor: iconbutton, textColor: primary);
         clearImage();
       } else {
-        Fluttertoast.showToast(msg: res, backgroundColor: iconbutton, textColor: primary);
+        Fluttertoast.showToast(
+            msg: res, backgroundColor: iconbutton, textColor: primary);
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
+      Fluttertoast.showToast(
+          msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
     }
     Navigator.of(context).pop();
   }
 
+  // clear image after user have successfully posted post
   void clearImage() {
     setState(() {
       _file = null;
     });
   }
 
+  //discard any resources that are not in need anymore
   @override
   void dispose() {
     super.dispose();
@@ -199,6 +211,7 @@ class _AddPostState extends State<AddPost> {
           Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
+                //getting user data from database
                   child: StreamBuilder<User?>(
                       stream: authService.getAuthUser(),
                       builder: (context, snapshot) {
@@ -281,6 +294,7 @@ class _AddPostState extends State<AddPost> {
                   )),
               Form(
                 key: form,
+                autovalidateMode: AutovalidateMode.always,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: Column(

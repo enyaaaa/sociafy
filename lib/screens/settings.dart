@@ -34,16 +34,45 @@ class _SettingState extends State<Setting> {
 
   logout() {
     AuthService authService = AuthService();
-
-    return authService.logout().then((value) {
-      FocusScope.of(context).unfocus();
-      Fluttertoast.showToast(msg: "Logout successfully :D", backgroundColor: iconbutton, textColor: primary);
-      Navigator.pushAndRemoveUntil((context),
-          MaterialPageRoute(builder: (context) => Login()), (route) => false);
-    }).catchError((e) {
-      FocusScope.of(context).unfocus();
-      Fluttertoast.showToast(msg: e!.message, backgroundColor: iconbutton, textColor: primary);
-    });
+    return showDialog<Null>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Confirmation'),
+            content: Text('Are you sure you want to delete?'),
+            backgroundColor: iconbutton,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    authService.logout().then((value) {
+                      FocusScope.of(context).unfocus();
+                      Fluttertoast.showToast(
+                          msg: "Logout successfully :D",
+                          backgroundColor: iconbutton,
+                          textColor: primary);
+                      Navigator.pushAndRemoveUntil(
+                          (context),
+                          MaterialPageRoute(builder: (context) => Login()),
+                          (route) => false);
+                    }).catchError((e) {
+                      FocusScope.of(context).unfocus();
+                      Fluttertoast.showToast(
+                          msg: e!.message,
+                          backgroundColor: iconbutton,
+                          textColor: primary);
+                    });
+                  },
+                  child: Text('Yes')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('No')),
+            ],
+          );
+        });
   }
 
   //displaying all the settings user when change

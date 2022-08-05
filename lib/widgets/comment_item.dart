@@ -37,7 +37,7 @@ class _comment_itemState extends State<comment_item> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20, left: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 20,
@@ -45,6 +45,7 @@ class _comment_itemState extends State<comment_item> {
               widget.snap.data()['image'],
             ),
           ),
+          SizedBox(width: 20,),
           Row(
             children: [
               Column(
@@ -86,31 +87,11 @@ class _comment_itemState extends State<comment_item> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        "${widget.snap['likes'].length} likes",
-                        style: TextStyle(fontFamily: "Poppins", fontSize: 10),
-                      ),
                     ],
                   )
                 ],
               ),
             ],
-          ),
-          IconButton(
-            onPressed: () => FireStoreService().likeComment(
-              widget.snap['postId'],
-              widget.snap['commentId'].toString(),
-              userData['uid'],
-              widget.snap['likes'],
-            ),
-            icon: SvgPicture.asset(
-              widget.snap['likes'].contains(
-                userData['uid'],
-              )
-                  ? "assets/icon/like_active_icon.svg"
-                  : "assets/icon/like_icon.svg",
-              width: 15,
-            ),
           ),
         ],
       ),

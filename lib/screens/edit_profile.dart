@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sociafy/models/user.dart';
+import 'package:sociafy/root_page.dart';
 import 'package:sociafy/screens/settings.dart';
 import 'package:sociafy/services/firestore_service.dart';
 
@@ -25,11 +26,17 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+
+  //creating a variable
   var userData = {};
+
+  //fields for users input
   String? name;
   String? username;
   String? bio;
-  bool isLoading = false;
+
+  //set loading to false
+  bool loading = false;
   var form = GlobalKey<FormState>();
 
   //the file that user pick from their device
@@ -38,15 +45,17 @@ class _EditProfileState extends State<EditProfile> {
   //initialise picker as ImagePicker
   final ImagePicker picker = ImagePicker();
 
+  //initialize data
   @override
   void initState() {
     super.initState();
     getData();
   }
 
+  //get user data from database collection
   getData() async {
     setState(() {
-      isLoading = true;
+      loading = true;
     });
     try {
       var usersnap = await FirebaseFirestore.instance
@@ -60,10 +69,11 @@ class _EditProfileState extends State<EditProfile> {
       bio = userData["bio"];
       setState(() {});
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton,  textColor: primary  );
+      Fluttertoast.showToast(
+          msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
     }
     setState(() {
-      isLoading = false;
+      loading = false;
     });
   }
 
@@ -128,6 +138,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() => this._file = Image);
   }
 
+  //compress image that user picked
   Future<File> compressImage(String path, int quality) async {
     final newPath = p.join((await getTemporaryDirectory()).path,
         '${DateTime.now()}.${p.extension(path)}');
@@ -138,6 +149,7 @@ class _EditProfileState extends State<EditProfile> {
     return result!;
   }
 
+  //function for user to save profile when they click on save
   saveProfile() async {
     print(name);
     print(username);
@@ -145,9 +157,9 @@ class _EditProfileState extends State<EditProfile> {
     print(_file);
 
     form.currentState!.save();
-    if (form.currentState!.validate() && !isLoading) {
+    if (form.currentState!.validate() && !loading) {
       setState(() {
-        isLoading = true;
+        loading = true;
       });
       String profilePic = '';
       if (_file == null) {
@@ -167,14 +179,19 @@ class _EditProfileState extends State<EditProfile> {
           following: userData["following"]);
 
       FireStoreService().updateUserData(user);
-      Navigator.pop(context);
-      Fluttertoast.showToast(msg: "Successfully Updated Profile", backgroundColor: iconbutton, textColor: primary);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Rootpage()));
+      Fluttertoast.showToast(
+          msg: "Successfully Updated Profile",
+          backgroundColor: iconbutton,
+          textColor: primary);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
+    //returning loading and returning the scaffold when the data is fetched from the database
+    return loading
         ? const Center(
             child: CircularProgressIndicator(),
           )
@@ -297,6 +314,7 @@ class _EditProfileState extends State<EditProfile> {
                       padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
                       child: Form(
                         key: form,
+                        autovalidateMode: AutovalidateMode.always,
                         child: Column(
                           children: [
                             TextFormField(

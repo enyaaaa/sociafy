@@ -45,10 +45,6 @@ class FireStoreService {
       'email': user.email,
       'bio': user.bio,
     });
-    firestore.collection('post').doc(user.uid).update({
-      'image': user.image,
-      'username': user.username,
-    });
   }
 
   Future<String> likePost(String postId, String uid, List likes) async {
@@ -72,8 +68,28 @@ class FireStoreService {
     return res;
   }
 
-  Future<String> likeComment(
-      String postId, String commentId, String uid, List likes) async {
+  Future<String> savePost(String postId, String uid, List saved) async {
+    String res = "Some error occurred";
+    try {
+      if (saved.contains(uid)) {
+        // if the likes list contains the user uid, we need to remove it
+        firestore.collection('posts').doc(postId).update({
+          'saved': FieldValue.arrayRemove([uid])
+        });
+      } else {
+        // else we need to add uid to the likes array
+        firestore.collection('posts').doc(postId).update({
+          'saved': FieldValue.arrayUnion([uid])
+        });
+      }
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> likeComments(String postId,String commentId, String uid, List likes) async {
     String res = "Some error occurred";
     try {
       if (likes.contains(uid)) {
@@ -82,8 +98,7 @@ class FireStoreService {
             .collection('posts')
             .doc(postId)
             .collection('comments')
-            .doc(commentId)
-            .update({
+            .doc(commentId).update({
           'likes': FieldValue.arrayRemove([uid])
         });
       } else {
@@ -91,9 +106,8 @@ class FireStoreService {
         firestore
             .collection('posts')
             .doc(postId)
-            .collection('comments')
-            .doc(commentId)
-            .update({
+        .collection('comments')
+        .doc(commentId).update({
           'likes': FieldValue.arrayUnion([uid])
         });
       }
@@ -136,6 +150,16 @@ class FireStoreService {
     return res;
   }
 
+  updatePostData(Post post) {
+    firestore.collection('posts').doc(post.postId).update({
+      'image': post.image,
+      'username': post.username,
+      'postUrl': post.postUrl,
+      'caption': post.caption,
+      'location': post.location,
+    });
+  }
+
   // Delete Post
   Future<String> deletePost(String postId) async {
     String res = "Some error occurred";
@@ -148,31 +172,73 @@ class FireStoreService {
     return res;
   }
 
-  Future<void> followUser(String uid, String followId) async {
+  Future<void> followUser(String email, String followId) async {
     try {
       DocumentSnapshot snap =
-          await firestore.collection('users').doc(uid).get();
+          await firestore.collection('users').doc(email).get();
       List following = (snap.data()! as dynamic)['following'];
 
       if (following.contains(followId)) {
         await firestore.collection('users').doc(followId).update({
-          'followers': FieldValue.arrayRemove([uid])
+          'followers': FieldValue.arrayRemove([email])
         });
 
-        await firestore.collection('users').doc(uid).update({
+        await firestore.collection('users').doc(email).update({
           'following': FieldValue.arrayRemove([followId])
         });
       } else {
         await firestore.collection('users').doc(followId).update({
-          'followers': FieldValue.arrayUnion([uid])
+          'followers': FieldValue.arrayUnion([email])
         });
 
-        await firestore.collection('users').doc(uid).update({
+        await firestore.collection('users').doc(email).update({
           'following': FieldValue.arrayUnion([followId])
         });
       }
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<String> addChatRoom(chatRoom, chatRoomId) async {
+    String res = "Some error occurred";
+    try {
+      await firestore.collection("chatRoom").doc(chatRoomId).set(chatRoom);
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  getChats(String chatRoomId) async {
+    return firestore
+        .collection("chatRoom")
+        .doc(chatRoomId)
+        .collection("chats")
+        .orderBy('time')
+        .snapshots();
+  }
+
+  Future<String> addMessage(String chatRoomId, chatMessageData) async {
+    String res = "Some error occurred";
+    try {
+      await firestore
+          .collection("chatRoom")
+          .doc(chatRoomId)
+          .collection("chats")
+          .add(chatMessageData);
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  getUserChats(String itIsMyName) async {
+    return await firestore
+        .collection("chatRoom")
+        .where('users', arrayContains: itIsMyName)
+        .snapshots();
   }
 }

@@ -45,7 +45,8 @@ class _HomeState extends State<Home> {
       userData = usersnap.data()!;
       setState(() {});
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
+      Fluttertoast.showToast(
+          msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
     }
     setState(() {
       isLoading = false;
@@ -113,8 +114,9 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Search(uid: FirebaseAuth
-                        .instance.currentUser!.uid)),
+                    MaterialPageRoute(
+                        builder: (context) => Search(
+                            uid: FirebaseAuth.instance.currentUser!.uid)),
                   );
                 },
                 child: SvgPicture.asset("assets/icon/search_icon.svg"),
@@ -137,32 +139,38 @@ class _HomeState extends State<Home> {
                 color: primary.withOpacity(0.5),
               ),
               //display post that other users have posted
-              FutureBuilder(
-                  future: FirebaseFirestore.instance
-                      .collection('users')
-                      .where('following', arrayContains: userData['uid'])
-                      .get(),
-                  builder: (context,
-                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                      snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(
+                        FirebaseAuth.instance.currentUser!.uid,
+                      )
+                      .snapshots(),
+                  builder: (context, userSnapshot) {
+                    if (userSnapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
-                    return snapshot.data!.docs.length > 0
-                        ? Expanded(
-                            child: ListView.builder(
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: (context, index) => Container(
-                                      child: post_item(
-                                          snap:
-                                              snapshot.data!.docs[index].data(),
-                                          uid: FirebaseAuth
-                                              .instance.currentUser!.uid),
-                                    )),
-                          )
-                        : Column(
+                    List followingList = userSnapshot.data!["following"];
+                    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: FirebaseFirestore.instance
+                          .collection("posts")
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        var posts = snapshot.data!.docs.where((element) {
+                          return followingList.contains(element["uid"]);
+                        }).toList();
+
+                        if (posts.isEmpty) {
+                          return Column(
                             children: [
                               SizedBox(
                                 height: 50,
@@ -184,8 +192,9 @@ class _HomeState extends State<Home> {
                                 elevation: 0,
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => Search(uid: FirebaseAuth
-                                          .instance.currentUser!.uid)));
+                                      builder: (context) => Search(
+                                          uid: FirebaseAuth
+                                              .instance.currentUser!.uid)));
                                 },
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -198,7 +207,20 @@ class _HomeState extends State<Home> {
                               ),
                             ],
                           );
-                  })
+                        }
+                        return Expanded(
+                          child: ListView.builder(
+                            itemCount: posts.length,
+                            itemBuilder: (context, index) => Container(
+                              child: post_item(
+                                  snap: posts[index].data(),
+                                  uid: FirebaseAuth.instance.currentUser!.uid),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
             ],
           );
   }

@@ -1,7 +1,7 @@
-//models of user details
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserModel{
+//models of user details
+class UserModel {
   String email;
   String uid;
   String image;
@@ -37,13 +37,13 @@ class UserModel{
   }
 
   Map<String, dynamic> toJson() => {
-      "email": email,
-      "uid": uid,
-      "image": image,
-      "username": username,
-      "name": name,
-      "bio": bio,
-      "followers": followers,
-      "following": following,
-  };
+        "email": email,
+        "uid": uid,
+        "image": image,
+        "username": username,
+        "name": name,
+        "bio": bio,
+        "followers": followers,
+        "following": following,
+      };
 }

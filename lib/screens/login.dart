@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sociafy/root_page.dart';
 import 'package:sociafy/screens/forgot_password.dart';
 import 'package:sociafy/screens/signup.dart';
@@ -35,6 +38,42 @@ class _LoginState extends State<Login> {
         Fluttertoast.showToast(msg: e!.message, backgroundColor: iconbutton, textColor: primary);
       });
     }
+  }
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser =
+    await GoogleSignIn(scopes: <String>["email"]).signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+    await googleUser!.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    User? user = auth.currentUser;
+    await FirebaseFirestore.instance.collection("users").doc(user!.uid).set({
+      'email': googleUser.email,
+      'uid': user.uid,
+      'image': googleUser.photoUrl,
+      'username': googleUser.email.replaceAll("@gmail.com", ""),
+      'name': googleUser.displayName,
+      'bio': "",
+      'followers': [],
+      'following': [],
+    });
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => Rootpage()),
+            (route) => false);
   }
 
   bool showPassword = true;
@@ -74,6 +113,7 @@ class _LoginState extends State<Login> {
             ),
             Form(
               key: form,
+              autovalidateMode: AutovalidateMode.always,
               child: Column(
                 children: [
                   buildTextField(
@@ -132,7 +172,7 @@ class _LoginState extends State<Login> {
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 130,
-                vertical: 30,
+                vertical: 10,
               ),
               child: MaterialButton(
                 color: iconbutton,
@@ -150,32 +190,63 @@ class _LoginState extends State<Login> {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 10,
             ),
             Center(
               child: Text(
-                "Don't Have An Account?",
-                style: TextStyle(
-                    fontFamily: "Poppins", color: primary, fontSize: 15),
+                "or sign in with",
+                style: TextStyle(fontFamily: "Poppins", color: Colors.black26),
               ),
             ),
-            InkWell(
-              child: Center(
-                child: Text(
-                  "Sign Up Now :D",
-                  style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: primary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
+            SizedBox(
+              height: 10,
+            ),
+          InkWell(
+            onTap: () {
+              signInWithGoogle();
+            },
+            child: Container(
+              padding: EdgeInsets.all(12.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.black26,
                 ),
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Signup()),
-                );
-              },
+              child: Container(
+                height: 30,
+                  width: 30,
+                  child: Image.network("https://blog.capterra.com/wp-content/uploads/2021/04/Google-Workspace-Logo.png")
+              )
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Signup()),
+                    );
+                  },
+                  child: RichText(
+                    text: const TextSpan(
+                      text: "Don't have an account? ",
+                      style: TextStyle(fontFamily: "Poppins", color: Colors.black54),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'SIGN UP :D',
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold,
+                              color: primary),
+                        ),
+                      ],
+                    ),
+                  )),
             ),
           ],
         ),

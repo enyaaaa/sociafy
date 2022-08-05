@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../color/colors.dart';
-import '../screens/favorite.dart';
 import '../screens/profile.dart';
 import '../screens/search.dart';
 import '../screens/settings.dart';
@@ -44,9 +43,7 @@ class _AppDrawerState extends State<AppDrawer> {
       setState(() {});
     } catch (e) {
       Fluttertoast.showToast(
-        msg: e.toString(),
-        backgroundColor: iconbutton, textColor: primary
-      );
+          msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
     }
     setState(() {
       isLoading = false;
@@ -141,41 +138,9 @@ class _AppDrawerState extends State<AppDrawer> {
                               Navigator.pop(context);
 
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Search(uid: FirebaseAuth
-                                      .instance.currentUser!.uid)));
-                            }),
-                        ListTile(
-                            leading: Icon(Icons.favorite_border),
-                            title: Text(
-                              'Favorite',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: primary,
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.pop(context);
-
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Favorite(
-                                        uid: FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                      )));
-                            }),
-                        ListTile(
-                            leading: Icon(Icons.star_border),
-                            title: Text(
-                              'Saved',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: primary,
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.pop(context);
-
-                              // Navigator.of(context)
-                              //     .push(MaterialPageRoute(builder: (context) => Saved()));
+                                  builder: (context) => Search(
+                                      uid: FirebaseAuth
+                                          .instance.currentUser!.uid)));
                             }),
                         Divider(color: primary),
                         ListTile(

@@ -48,7 +48,7 @@ class _sociaState extends State<socia> {
                   ],
                 )
               : Center(
-                child: Column(
+                  child: Column(
                     children: [
                       SizedBox(
                         height: 50,
@@ -66,7 +66,7 @@ class _sociaState extends State<socia> {
                       ),
                     ],
                   ),
-              );
+                );
         });
   }
 }

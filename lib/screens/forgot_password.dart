@@ -14,26 +14,32 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
+
+  // key for validation of users input
   var form = GlobalKey<FormState>();
 
+  // email and password controller
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+
+  //function for forget password when user clicks on the reset password
   void ForgetPassword(String email) async {
     if (form.currentState!.validate()) {
       form.currentState!.save();
       AuthService authService = AuthService();
       return authService.forgotPassword(email).then((value) {
         Fluttertoast.showToast(
-            msg: "Please check your email for to reset your password :D", backgroundColor: iconbutton, textColor: primary);
+            msg: "Please check your email for to reset your password :D",
+            backgroundColor: iconbutton,
+            textColor: primary);
         Navigator.of(context).pop();
       }).catchError((e) {
-        Fluttertoast.showToast(msg: e!.message, backgroundColor: iconbutton, textColor: primary);
+        Fluttertoast.showToast(
+            msg: e!.message, backgroundColor: iconbutton, textColor: primary);
       });
     }
   }
-
-  bool showPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +76,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             ),
             Form(
               key: form,
+              autovalidateMode: AutovalidateMode.always,
               child: buildTextField(
                 "Email",
                 "Email",
-                false,
-                    (value) {
+                (value) {
                   if (value == null)
                     return "Please provide an email.";
                   else if (!value.contains('@'))
@@ -83,7 +89,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     return null;
                 },
                 emailController,
-                    (value) {
+                (value) {
                   emailController.text = value;
                 },
               ),
@@ -111,22 +117,23 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             SizedBox(
               height: 30,
             ),
-            Center(
-              child: Text(
-                "Don't Have An Account?",
-                style: TextStyle(
-                    fontFamily: "Poppins", color: primary, fontSize: 15),
-              ),
-            ),
             InkWell(
               child: Center(
-                child: Text(
-                  "Sign Up Now :D",
-                  style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: primary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
+                child: RichText(
+                  text: const TextSpan(
+                    text: "Don't have an account? ",
+                    style:
+                        TextStyle(fontFamily: "Poppins", color: Colors.black54),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'SIGN UP :D',
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.bold,
+                            color: primary),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               onTap: () {
@@ -143,28 +150,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   }
 
   //style of the text field for edit profile
-  Widget buildTextField(String labelText, String placeholder,
-      bool isPasswordTextField, validator, controller, onsaved) {
+  Widget buildTextField(String labelText, String placeholder, validator, controller, onsaved) {
     return Padding(
       padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
       child: TextFormField(
         validator: validator,
         controller: controller,
         onSaved: onsaved,
-        obscureText: isPasswordTextField ? showPassword : false,
         decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    showPassword = !showPassword;
-                  });
-                },
-                icon: Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.grey,
-                ))
-                : null,
             contentPadding: EdgeInsets.only(bottom: 5),
             labelText: labelText,
             labelStyle: TextStyle(

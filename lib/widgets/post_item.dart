@@ -9,6 +9,7 @@ import 'package:sociafy/widgets/heart_animation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
+import '../screens/edit_post.dart';
 import '../screens/view_post.dart';
 
 class post_item extends StatefulWidget {
@@ -43,7 +44,8 @@ class _post_itemState extends State<post_item> {
           .get();
       commentLen = snap.docs.length;
     } catch (err) {
-      Fluttertoast.showToast(msg: err.toString(), backgroundColor: iconbutton, textColor: primary);
+      Fluttertoast.showToast(
+          msg: err.toString(), backgroundColor: iconbutton, textColor: primary);
     }
   }
 
@@ -90,7 +92,8 @@ class _post_itemState extends State<post_item> {
       userData = usersnap.data()!;
       setState(() {});
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
+      Fluttertoast.showToast(
+          msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
     }
     setState(() {
       isLoading = false;
@@ -202,16 +205,14 @@ class _post_itemState extends State<post_item> {
                               onSelected: (value) {
                                 switch (value) {
                                   case MenuValues.edit:
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //       builder: (context) =>
-                                    //           EditPost(
-                                    //               mypost: mypost,
-                                    //               i: i,
-                                    //               socialScreenSetState: setState
-                                    //           )),
-                                    // );
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditPost(
+                                              postId: widget.snap['postId'],
+                                              uid: FirebaseAuth
+                                                  .instance.currentUser!.uid),
+                                        ));
                                     break;
                                   case MenuValues.delete:
                                     deletePost(
@@ -360,20 +361,20 @@ class _post_itemState extends State<post_item> {
                         ],
                       ),
                       IconButton(
-                        onPressed: () {
-                          // setState(() {
-                          //   userpost.issaved =
-                          //   !userpost.issaved;
-                          // });
-                        },
+                        onPressed: () => FireStoreService().savePost(
+                          widget.snap['postId'].toString(),
+                          userData['uid'],
+                          widget.snap['saved'],
+                        ),
                         icon: SvgPicture.asset(
-                          //userpost.issaved
-                          //? "assets/icon/save_active_icon.svg"
-                          //:
-                          "assets/icon/save_icon.svg",
+                          widget.snap['saved'].contains(
+                            userData['uid'],
+                          )
+                              ? "assets/icon/save_active_icon.svg"
+                              : "assets/icon/save_icon.svg",
                           width: 27,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

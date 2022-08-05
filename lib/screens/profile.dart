@@ -7,6 +7,7 @@ import 'package:readmore/readmore.dart';
 import 'package:sociafy/screens/edit_profile.dart';
 import 'package:sociafy/screens/media_post.dart';
 import 'package:sociafy/screens/socia_post.dart';
+import 'package:sociafy/screens/view_message.dart';
 import 'package:sociafy/services/firestore_service.dart';
 
 import '../color/colors.dart';
@@ -22,6 +23,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   var userData = {};
+  var currentUser = {};
   int postLen = 0;
   int followers = 0;
   int following = 0;
@@ -57,11 +59,52 @@ class _ProfileState extends State<Profile> {
           .contains(FirebaseAuth.instance.currentUser!.uid);
       setState(() {});
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
+      Fluttertoast.showToast(
+          msg: e.toString(), backgroundColor: iconbutton, textColor: primary);
     }
     setState(() {
       isLoading = false;
     });
+  }
+
+  // 1.create a chatroom, send user to the chatroom, other userdetails
+  sendMessage() async {
+    List<String> users = [
+      FirebaseAuth.instance.currentUser!.email.toString(),
+      userData['email']
+    ];
+    String chatRoomId = getChatRoomId(
+        FirebaseAuth.instance.currentUser!.email.toString(), userData['email']);
+    DateTime time = DateTime.now();
+
+    Map<String, dynamic> chatRoom = {
+      "users": users,
+      "chatRoomId": chatRoomId,
+      "time": time,
+    };
+
+    FireStoreService().addChatRoom(chatRoom, chatRoomId);
+    var otherUser = (await FirebaseFirestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: widget.uid)
+            .get())
+        .docs[0];
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Chat(
+                  chatRoomId: chatRoomId,
+                  otherUser: otherUser,
+                )));
+  }
+
+  getChatRoomId(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
   }
 
   @override
@@ -107,7 +150,7 @@ class _ProfileState extends State<Profile> {
                                                 backgroundImage: NetworkImage(
                                                     userData["image"])),
                                             SizedBox(
-                                              width: 130,
+                                              width: 100,
                                             ),
                                             Container(
                                                 height: 35,
@@ -149,41 +192,70 @@ class _ProfileState extends State<Profile> {
                                                         ),
                                                       )
                                                     : isFollowing
-                                                        ? MaterialButton(
-                                                            color: Colors.white,
-                                                            elevation: 0,
-                                                            onPressed:
-                                                                () async {
-                                                              await FireStoreService()
-                                                                  .followUser(
-                                                                FirebaseAuth
-                                                                    .instance
-                                                                    .currentUser!
-                                                                    .uid,
-                                                                userData['uid'],
-                                                              );
+                                                        ? Row(
+                                                            children: [
+                                                              MaterialButton(
+                                                                color:
+                                                                    iconbutton,
+                                                                elevation: 0,
+                                                                onPressed: () {
+                                                                  sendMessage();
+                                                                },
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: Text(
+                                                                  "chat",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Poppins",
+                                                                      color:
+                                                                          primary),
+                                                                ),
+                                                              ),
+                                                              MaterialButton(
+                                                                color: Colors
+                                                                    .white,
+                                                                elevation: 0,
+                                                                onPressed:
+                                                                    () async {
+                                                                  await FireStoreService()
+                                                                      .followUser(
+                                                                    FirebaseAuth
+                                                                        .instance
+                                                                        .currentUser!
+                                                                        .uid,
+                                                                    userData[
+                                                                        'uid'],
+                                                                  );
 
-                                                              setState(() {
-                                                                isFollowing =
-                                                                    false;
-                                                                followers--;
-                                                              });
-                                                            },
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                            ),
-                                                            child: Text(
-                                                              "Unfollow",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Poppins",
-                                                                  color:
-                                                                      primary),
-                                                            ),
+                                                                  setState(() {
+                                                                    isFollowing =
+                                                                        false;
+                                                                    followers--;
+                                                                  });
+                                                                },
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                ),
+                                                                child: Text(
+                                                                  "Unfollow",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Poppins",
+                                                                      color:
+                                                                          primary),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           )
                                                         : MaterialButton(
                                                             color: iconbutton,
@@ -221,32 +293,10 @@ class _ProfileState extends State<Profile> {
                                                                       primary),
                                                             ),
                                                           )),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Container(
-                                              width: 45,
-                                              height: 35,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: Colors.white,
-                                                border: Border.all(
-                                                    color: iconbutton),
-                                              ),
-                                              child: Center(
-                                                  child: Icon(
-                                                Icons.more_horiz,
-                                                color: primary,
-                                                size: 20,
-                                              )),
-                                            ),
                                           ],
                                         ),
                                         SizedBox(
-                                          height: 8,
+                                          height: 10,
                                         ),
                                         Text(
                                           userData["name"],

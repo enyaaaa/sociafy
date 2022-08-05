@@ -5,10 +5,8 @@ import 'package:sociafy/screens/explore.dart';
 import 'package:sociafy/screens/home.dart';
 import 'package:sociafy/screens/login.dart';
 import 'package:sociafy/screens/message.dart';
-import 'package:sociafy/screens/notif.dart';
 
 class Rootpage extends StatefulWidget {
-
   @override
   State<Rootpage> createState() => _RootpageState();
 }
@@ -26,36 +24,34 @@ class _RootpageState extends State<Rootpage> {
   //main pages to navigate to
   List<Widget> children = [
     Home(uid: FirebaseAuth.instance.currentUser!.uid),
-    Message(),
+    Message(uid: FirebaseAuth.instance.currentUser!.uid),
     Explore(),
-    Notif(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          if (snapshot.hasData) {
-            return Scaffold(
-              body: children[pageIndex],
-              bottomNavigationBar: getFooter(),
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              return Scaffold(
+                body: children[pageIndex],
+                bottomNavigationBar: getFooter(),
+              );
+            }
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('${snapshot.error}'),
             );
           }
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text('${snapshot.error}'),
-          );
-        }if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Login();
-      }
-
-    );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Login();
+        });
   }
 
   //navigation bar
@@ -70,16 +66,13 @@ class _RootpageState extends State<Rootpage> {
       pageIndex == 2
           ? "assets/icon/explore_active_icon.svg"
           : "assets/icon/explore_icon.svg",
-      pageIndex == 3
-          ? "assets/icon/notification_active_icon.svg"
-          : "assets/icon/notification_icon.svg"
     ];
     return Container(
       width: double.infinity,
       height: 80,
       child: Padding(
         padding:
-            const EdgeInsets.only(left: 50, right: 50, bottom: 20, top: 15),
+            const EdgeInsets.only(left: 70, right: 70, bottom: 20, top: 15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(icons.length, (index) {

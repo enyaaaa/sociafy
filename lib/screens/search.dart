@@ -21,8 +21,6 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-
-    //friend = friends;
   }
 
   @override

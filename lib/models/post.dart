@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //models for other users post
-class Post{
+class Post {
   final String uid;
   final String username;
   final String image;
@@ -12,7 +12,6 @@ class Post{
   final String postUrl;
   final likes;
   final saved;
-
 
   Post({
     required this.uid,
@@ -27,7 +26,7 @@ class Post{
     required this.saved,
   });
 
-  static Post fromSnap(DocumentSnapshot snap){
+  static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return Post(
@@ -45,15 +44,15 @@ class Post{
   }
 
   Map<String, dynamic> toJson() => {
-    "uid": uid,
-    "username": username,
-    "image": image,
-    "postId": postId,
-    "caption": caption,
-    "location": location,
-    "timeAgo": timeAgo,
-    "postUrl": postUrl,
-    "likes": likes,
-    "saved": saved,
-  };
+        "uid": uid,
+        "username": username,
+        "image": image,
+        "postId": postId,
+        "caption": caption,
+        "location": location,
+        "timeAgo": timeAgo,
+        "postUrl": postUrl,
+        "likes": likes,
+        "saved": saved,
+      };
 }

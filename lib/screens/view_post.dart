@@ -32,13 +32,15 @@ class _ViewPostState extends State<ViewPost> {
       );
 
       if (res != 'success') {
-        Fluttertoast.showToast(msg: res, backgroundColor: iconbutton, textColor: primary);
+        Fluttertoast.showToast(
+            msg: res, backgroundColor: iconbutton, textColor: primary);
       }
       setState(() {
         commentController.text = "";
       });
     } catch (err) {
-      Fluttertoast.showToast(msg: err.toString(), backgroundColor: iconbutton, textColor: primary);
+      Fluttertoast.showToast(
+          msg: err.toString(), backgroundColor: iconbutton, textColor: primary);
     }
   }
 
@@ -137,7 +139,10 @@ class _ViewPostState extends State<ViewPost> {
                                 color: primary,
                                 fontFamily: "poppins",
                               ),
-                              onSubmitted: (text) {},
+                              onSubmitted: (text) {
+                                postComment(userData['uid'],
+                                    userData['username'], userData['image']);
+                              },
                             ),
                           ),
                           Padding(
