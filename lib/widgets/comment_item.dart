@@ -19,9 +19,13 @@ class comment_item extends StatefulWidget {
 }
 
 class _comment_itemState extends State<comment_item> {
+
+  //creating a variable
   var userData = {};
+
   bool isLoading = false;
 
+  //getting user data
   getData() async {
     var usersnap = await FirebaseFirestore.instance
         .collection("users")

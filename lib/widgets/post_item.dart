@@ -36,6 +36,7 @@ class _post_itemState extends State<post_item> {
     fetchCommentLen();
   }
 
+  //fetching the length of post
   fetchCommentLen() async {
     try {
       QuerySnapshot snap = await FirebaseFirestore.instance
@@ -50,6 +51,7 @@ class _post_itemState extends State<post_item> {
     }
   }
 
+  //function for deleting a post
   deletePost(String postId) async {
     showDialog<Null>(
         context: context,
@@ -78,9 +80,11 @@ class _post_itemState extends State<post_item> {
         });
   }
 
+  //creating a variable
   var userData = {};
   bool isLoading = false;
 
+  // getting user data
   getData() async {
     setState(() {
       isLoading = true;

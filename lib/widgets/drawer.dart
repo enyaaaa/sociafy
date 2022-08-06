@@ -20,6 +20,7 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> {
   final padding = EdgeInsets.symmetric(horizontal: 20, vertical: 20);
 
+  //creating a variable
   var userData = {};
   bool isLoading = false;
 
@@ -29,6 +30,7 @@ class _AppDrawerState extends State<AppDrawer> {
     getData();
   }
 
+  //getting user data
   getData() async {
     setState(() {
       isLoading = true;

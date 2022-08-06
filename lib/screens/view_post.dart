@@ -53,6 +53,7 @@ class _ViewPostState extends State<ViewPost> {
     getData();
   }
 
+  //get data of user
   getData() async {
     var usersnap = await FirebaseFirestore.instance
         .collection("users")

@@ -23,9 +23,9 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
-  //Stream<QuerySnapshot> chats;
   late Stream<QuerySnapshot<Map<String, dynamic>>> chats;
 
+  //controller for text field
   TextEditingController controller = TextEditingController();
 
   Widget chatMessages() {
@@ -75,6 +75,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  //function to add a message
   addMessage() {
     if (controller.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
