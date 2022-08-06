@@ -10,6 +10,7 @@ import '../models/user.dart';
 class FireStoreService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  //function for when user make a post
   uploadPost(String caption, String location, File file, String uid,
       String username, String image) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
@@ -37,6 +38,7 @@ class FireStoreService {
     return res;
   }
 
+  //function for user to update the post
   updateUserData(UserModel user) {
     firestore.collection('users').doc(user.uid).update({
       'image': user.image,
@@ -47,6 +49,7 @@ class FireStoreService {
     });
   }
 
+  //when user like a post
   Future<String> likePost(String postId, String uid, List likes) async {
     String res = "Some error occurred";
     try {
@@ -68,6 +71,7 @@ class FireStoreService {
     return res;
   }
 
+  //when user save a post
   Future<String> savePost(String postId, String uid, List saved) async {
     String res = "Some error occurred";
     try {
@@ -80,35 +84,6 @@ class FireStoreService {
         // else we need to add uid to the likes array
         firestore.collection('posts').doc(postId).update({
           'saved': FieldValue.arrayUnion([uid])
-        });
-      }
-      res = 'success';
-    } catch (err) {
-      res = err.toString();
-    }
-    return res;
-  }
-
-  Future<String> likeComments(String postId,String commentId, String uid, List likes) async {
-    String res = "Some error occurred";
-    try {
-      if (likes.contains(uid)) {
-        // if the likes list contains the user uid, we need to remove it
-        firestore
-            .collection('posts')
-            .doc(postId)
-            .collection('comments')
-            .doc(commentId).update({
-          'likes': FieldValue.arrayRemove([uid])
-        });
-      } else {
-        // else we need to add uid to the likes array
-        firestore
-            .collection('posts')
-            .doc(postId)
-        .collection('comments')
-        .doc(commentId).update({
-          'likes': FieldValue.arrayUnion([uid])
         });
       }
       res = 'success';
@@ -150,6 +125,7 @@ class FireStoreService {
     return res;
   }
 
+  //updating the post
   updatePostData(Post post) {
     firestore.collection('posts').doc(post.postId).update({
       'image': post.image,
@@ -172,6 +148,7 @@ class FireStoreService {
     return res;
   }
 
+  //function when user follows or unfollows
   Future<void> followUser(String email, String followId) async {
     try {
       DocumentSnapshot snap =
@@ -200,6 +177,7 @@ class FireStoreService {
     }
   }
 
+  //creating a chat room for user to chat with each other
   Future<String> addChatRoom(chatRoom, chatRoomId) async {
     String res = "Some error occurred";
     try {
@@ -211,15 +189,7 @@ class FireStoreService {
     return res;
   }
 
-  getChats(String chatRoomId) async {
-    return firestore
-        .collection("chatRoom")
-        .doc(chatRoomId)
-        .collection("chats")
-        .orderBy('time')
-        .snapshots();
-  }
-
+  //sending a message to the other user
   Future<String> addMessage(String chatRoomId, chatMessageData) async {
     String res = "Some error occurred";
     try {
@@ -233,12 +203,5 @@ class FireStoreService {
       res = err.toString();
     }
     return res;
-  }
-
-  getUserChats(String itIsMyName) async {
-    return await firestore
-        .collection("chatRoom")
-        .where('users', arrayContains: itIsMyName)
-        .snapshots();
   }
 }

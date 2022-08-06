@@ -15,6 +15,8 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+
+  //users input in search field
   String query = '';
   final controller = TextEditingController();
 
@@ -136,6 +138,7 @@ class _SearchState extends State<Search> {
         ));
   }
 
+  //getting the app bar for search
   Widget getAppBar() {
     return AppBar(
       centerTitle: true,

@@ -33,6 +33,7 @@ class _MessageState extends State<Message> {
     getData();
   }
 
+  //getting current user
   getData() async {
     setState(() {
       isLoading = true;
@@ -75,6 +76,7 @@ class _MessageState extends State<Message> {
             ));
   }
 
+  //app bar for message
   Widget getAppBar() {
     return AppBar(
         backgroundColor: Colors.transparent,

@@ -8,7 +8,7 @@ class AuthService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-// get user details
+  // get user details
   Future<model.UserModel> getUserDetails() async {
     User currentUser = auth.currentUser!;
 
@@ -30,18 +30,17 @@ class AuthService {
         .signInWithEmailAndPassword(email: email, password: password);
   }
 
+  //user forgets password
   Future<void> forgotPassword(email) {
     return FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
+  //getting current authenticated user
   Stream<User?> getAuthUser() {
     return FirebaseAuth.instance.authStateChanges();
   }
 
-  User? getCurrentUser() {
-    return FirebaseAuth.instance.currentUser;
-  }
-
+  //user logout
   logout() {
     return FirebaseAuth.instance.signOut();
   }

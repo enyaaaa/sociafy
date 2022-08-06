@@ -19,11 +19,15 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  // key for validation of users input
   var form = GlobalKey<FormState>();
 
+  //controllers for the text fields
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  //function for login when user press on the login button
   void login(String email, String password) async {
     if (form.currentState!.validate()) {
       form.currentState!.save();
@@ -42,6 +46,7 @@ class _LoginState extends State<Login> {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  //function for when user press the sign in button
   signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser =
@@ -85,6 +90,7 @@ class _LoginState extends State<Login> {
     );
   }
 
+  //getting body of the login form
   Widget getBody() {
     return Container(
       padding: EdgeInsets.only(left: 15, top: 20, right: 15),

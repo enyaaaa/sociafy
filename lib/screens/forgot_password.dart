@@ -48,6 +48,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     );
   }
 
+  //getting the body of forget password form
   Widget getBody() {
     return Container(
       padding: EdgeInsets.only(left: 15, top: 20, right: 15),

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:sociafy/screens/profile.dart';
 
 import '../color/colors.dart';
 import '../models/post.dart';
@@ -183,7 +185,8 @@ class _EditPostState extends State<EditPost> {
           saved: userPost['saved']);
 
       FireStoreService().updatePostData(user);
-      Navigator.pop(context);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => Profile(uid: FirebaseAuth.instance.currentUser!.uid,)));
       Fluttertoast.showToast(
           msg: "Successfully Updated Post",
           backgroundColor: iconbutton,

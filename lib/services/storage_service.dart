@@ -29,6 +29,7 @@ class StorageService {
     return downloadUrl;
   }
 
+  //uploading a profile picture and add it into firebase storage
   Future<String> uploadProfilePicture(
       String childName, String url, File file) async {
     String id = Uuid().v1();

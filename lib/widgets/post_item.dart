@@ -10,6 +10,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../color/colors.dart';
 import '../screens/edit_post.dart';
+import '../screens/profile.dart';
 import '../screens/view_post.dart';
 
 class post_item extends StatefulWidget {
@@ -62,7 +63,8 @@ class _post_itemState extends State<post_item> {
             actions: [
               TextButton(
                   onPressed: () async {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => Profile(uid: FirebaseAuth.instance.currentUser!.uid,)));
                     await FireStoreService().deletePost(postId);
                   },
                   child: Text('Yes')),

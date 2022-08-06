@@ -32,6 +32,7 @@ class _SettingState extends State<Setting> {
     });
   }
 
+  //when user press the logout button this function will be called
   logout() {
     AuthService authService = AuthService();
     return showDialog<Null>(
@@ -39,7 +40,7 @@ class _SettingState extends State<Setting> {
         builder: (context) {
           return AlertDialog(
             title: Text('Confirmation'),
-            content: Text('Are you sure you want to delete?'),
+            content: Text('Are you sure you want to logout?'),
             backgroundColor: iconbutton,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),

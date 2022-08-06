@@ -22,8 +22,12 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+  //creating a variable
   var userData = {};
   var currentUser = {};
+
+  //initialise post length, followers, following to default 0
   int postLen = 0;
   int followers = 0;
   int following = 0;
@@ -36,6 +40,7 @@ class _ProfileState extends State<Profile> {
     getData();
   }
 
+  //getting current users post and details
   getData() async {
     setState(() {
       isLoading = true;
@@ -67,7 +72,7 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  // 1.create a chatroom, send user to the chatroom, other userdetails
+  // create a chatroom, send user to the chatroom, other user details
   sendMessage() async {
     List<String> users = [
       FirebaseAuth.instance.currentUser!.email.toString(),
@@ -99,6 +104,7 @@ class _ProfileState extends State<Profile> {
                 )));
   }
 
+  //getting the chat room id with users email
   getChatRoomId(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
       return "$b\_$a";

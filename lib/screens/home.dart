@@ -21,9 +21,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  // key for validation of users input
   var key = GlobalKey<ScaffoldState>();
 
+  //creating a variable
   var userData = {};
+
+  //set initial loading to false
   bool isLoading = false;
 
   @override
@@ -32,6 +37,7 @@ class _HomeState extends State<Home> {
     getData();
   }
 
+  //getting current user
   getData() async {
     setState(() {
       isLoading = true;

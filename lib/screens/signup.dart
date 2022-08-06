@@ -18,6 +18,8 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+
+  //controllers for the text fields
   final TextEditingController nameController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -25,6 +27,7 @@ class _SignupState extends State<Signup> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
+  //key for validation
   var form = GlobalKey<FormState>();
 
   final auth = FirebaseAuth.instance;
@@ -39,6 +42,7 @@ class _SignupState extends State<Signup> {
     confirmPasswordController.dispose();
   }
 
+  //sign up function when user click on sign up button
   void signup(String email, String password) async {
     if (form.currentState!.validate()) {
       AuthService authService = AuthService();
@@ -57,6 +61,7 @@ class _SignupState extends State<Signup> {
     }
   }
 
+  //when user clicks on the signup button it will push all this info into database
   postDetailsToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = auth.currentUser;
